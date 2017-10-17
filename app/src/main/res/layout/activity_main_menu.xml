@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:background="@color/bezch"
+    android:orientation="vertical"
+    tools:context="izenka.hfad.com.bookstore.MainMenuActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="60dp"
+            android:text="Bookstore"
+            android:textColor="@color/color2"
+            android:textSize="20sp" />
+
+        <ImageButton
+            android:id="@+id/imgBtnShopCart"
+            android:layout_width="70dp"
+            android:layout_height="45dp"
+            android:layout_gravity="right|center"
+            android:backgroundTint="@color/darkBrown"
+            android:onClick="onShopCartClick"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/basket" />
+
+    </FrameLayout>
+
+    <com.beardedhen.androidbootstrap.BootstrapEditText
+        app:roundedCorners="true"
+        android:id="@+id/etSearch"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:background="@color/lightBlue"
+        android:drawableLeft="@drawable/search3"
+        android:drawablePadding="10dp"
+        android:hint="Поиск"
+        android:padding="4dp"
+        android:textSize="20sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_margin="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="КАТЕГОРИИ:"
+        android:gravity="center"
+        android:textSize="20sp"/>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+
+        <TableRow
+            android:paddingBottom="5dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnForeign"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="2.5dp"
+                android:background="@drawable/foreign"
+                android:backgroundTint="@color/color6"
+                android:backgroundTintMode="src_over"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:text="Иностранная \nлитература"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/btnKid"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2.5dp"
+                android:background="@drawable/kid"
+                android:backgroundTint="@color/color3"
+                android:backgroundTintMode="src_over"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:text="Детская \nлитература"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp">
+
+            <Button
+                android:id="@+id/btnBusieness"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="2.5dp"
+                android:background="@drawable/busieness"
+                android:backgroundTint="@color/lightYellow"
+                android:backgroundTintMode="src_over"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:text="Бизнес-литература"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/btnFiction"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2.5dp"
+                android:background="@drawable/fiction"
+                android:backgroundTint="@color/color4"
+                android:backgroundTintMode="src_over"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:text="Художественная\n литература"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+        </TableRow>
+        <TableRow
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnStudy"
+
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="2.5dp"
+                android:background="@drawable/study"
+                android:backgroundTint="@color/color7"
+                android:backgroundTintMode="src_over"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:text="Учебная \nлитература"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/btnNonfiction"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2.5dp"
+                android:background="@drawable/nonfiction"
+                android:backgroundTint="@color/lightYellow"
+                android:backgroundTintMode="src_over"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:text="Нехудожественная литература"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
