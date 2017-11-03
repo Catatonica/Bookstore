@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
     android:background="@color/bezch"
     android:orientation="vertical"
@@ -12,7 +12,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color1">
+        android:background="@color/color9">
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_width="70dp"
             android:layout_height="45dp"
             android:layout_gravity="right|center"
-            android:backgroundTint="@color/darkBrown"
+            android:backgroundTint="@color/color9"
             android:onClick="onShopCartClick"
             android:padding="5dp"
             android:scaleType="fitCenter"
@@ -37,7 +37,6 @@
     </FrameLayout>
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
-        app:roundedCorners="true"
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -49,25 +48,18 @@
         android:hint="Поиск"
         android:padding="4dp"
         android:textSize="20sp"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        app:roundedCorners="true" />
 
-    <TextView
-        android:layout_margin="7dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="КАТЕГОРИИ:"
-        android:gravity="center"
-        android:textSize="20sp"/>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        >
+        android:gravity="center">
 
         <TableRow
-            android:paddingBottom="5dp"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp">
 
             <Button
                 android:id="@+id/btnForeign"
@@ -103,6 +95,7 @@
                 android:textStyle="bold|italic"
                 android:typeface="monospace" />
         </TableRow>
+
         <TableRow
             android:gravity="center_horizontal"
             android:paddingBottom="5dp">
@@ -141,8 +134,8 @@
                 android:textStyle="bold|italic"
                 android:typeface="monospace" />
         </TableRow>
-        <TableRow
-            android:gravity="center_horizontal">
+
+        <TableRow android:gravity="center_horizontal">
 
             <Button
                 android:id="@+id/btnStudy"

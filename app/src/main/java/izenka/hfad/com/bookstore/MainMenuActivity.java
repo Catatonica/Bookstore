@@ -5,13 +5,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -20,63 +39,120 @@ import stanford.androidlib.data.SimpleDatabase;
 
 public class MainMenuActivity extends SimpleActivity {
 
+    public static final String FIREBASE_USERNAME="izenka666@gmail.com";
+    public static final String FIREBASE_PASSWORD="sepultura777";
+
+    private FirebaseAuth mAuth;
+    private ArrayList<String> categoriesNames;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-       // SimpleDatabase.with(this)
-         // .executeSqlFile("bookstore");
 
-        SQLiteDatabase db=openOrCreateDatabase("bookstore", MODE_PRIVATE,null);
-        Cursor cr=db.rawQuery("SELECT category_name FROM category ORDER BY category_id",null);
-        String categoryName[] = new String[6];
-        int i=0;
-        if(cr.moveToFirst()){
-            do{
-                categoryName[i]=cr.getString(cr.getColumnIndex("category_name"));
-                i++;
-            }while(cr.moveToNext());
-            cr.close();
-            setButtonText(categoryName);
-        }
+        mAuth=FirebaseAuth.getInstance();
+        mAuth.signInWithEmailAndPassword(FIREBASE_USERNAME,FIREBASE_PASSWORD);
+
+        setCategoriesNames();
     }
 
-    private void setButtonText(String [] categoryName){
-        $B(R.id.btnForeign).setText(categoryName[0]);
-        $B(R.id.btnKid).setText(categoryName[1]);
-        $B(R.id.btnBusieness).setText(categoryName[2]);
-        $B(R.id.btnFiction).setText(categoryName[3]);
-        $B(R.id.btnStudy).setText(categoryName[4]);
-        $B(R.id.btnNonfiction).setText(categoryName[5]);
+    private void setCategoriesNames(){
+        categoriesNames=new ArrayList<>();
+        final ArrayList<String> catPicsPaths=new ArrayList<>();
+        DatabaseReference fb= FirebaseDatabase.getInstance().getReference();
+        DatabaseReference cat=fb.child("bookstore/category");
+        Query query=cat.orderByChild("category_id");
+        query.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot data) {
+                log("data: "+data);
+                if(!data.hasChildren()){
+                    return;
+                }
+                for(DataSnapshot child: data.getChildren()){
+                    Category category=child.getValue(Category.class);
+                    log("category: "+category);
+                    String categoryName=category.category_name;
+                    String imagePath=category.image_path;
+                    categoriesNames.add(categoryName);
+                    catPicsPaths.add(imagePath);
+                }
+                log("catNames"+categoriesNames);
+
+                setButtonText(categoriesNames);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                Log.d("Error"," Event Listener error");
+            }
+        });
+
+    }
+
+    private void setButtonImages(ArrayList<String> images){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imageRef = storage.getReferenceFromUrl(images.get(0));
+        log("imageRef"+imageRef);
+
+        Button btnForeign=(Button) findViewById(R.id.btnForeign);
+        ImageView imageView=new ImageView(this);
+
+        Glide.with(this /* context */)
+                .using(new FirebaseImageLoader())
+                .load(imageRef)
+                .into(imageView);
+        btnForeign.setBackground(imageView.getDrawable());
+
+    }
+
+    private void setButtonText(ArrayList<String> categoryName){
+        List<Button> btnArray=new ArrayList<>();
+        btnArray.add($B(R.id.btnForeign));
+        btnArray.add($B(R.id.btnKid));
+        btnArray.add($B(R.id.btnBusieness));
+        btnArray.add($B(R.id.btnFiction));
+        btnArray.add($B(R.id.btnStudy));
+        btnArray.add($B(R.id.btnNonfiction));
+
+        for(int i=0; i<btnArray.size(); i++){
+            btnArray.get(i).setText(categoryName.get(i));
+            btnArray.get(i).setTypeface(Typeface.createFromAsset(
+                    getAssets(), "fonts/5.ttf"));
+            btnArray.get(i).setTextSize(36);
+        }
     }
 
     public void onKindOfBookClick(View view) {
         Intent intent=new Intent(this, BookListActivity.class);
-        int categoryID=0;
         switch(view.getId()){
             case R.id.btnBusieness:
-                categoryID=3;
-                intent.putExtra("categoryID", categoryID);
+                Log.d("List",categoriesNames.get(2));
+                intent.putExtra("categoryName", categoriesNames.get(2));
+                intent.putExtra("categoryID", 2);
                 break;
             case R.id.btnFiction:
-                categoryID=4;
-                intent.putExtra("categoryID", categoryID);
+                intent.putExtra("categoryName", categoriesNames.get(3));
+                intent.putExtra("categoryID", 3);
                 break;
             case R.id.btnForeign:
-                categoryID=1;
-                intent.putExtra("categoryID", categoryID);
+                intent.putExtra("categoryName", categoriesNames.get(0));
+                intent.putExtra("categoryID", 0);
                 break;
             case R.id.btnKid:
-                categoryID=2;
-                intent.putExtra("categoryID", categoryID);
+                intent.putExtra("categoryName", categoriesNames.get(1));
+                intent.putExtra("categoryID", 1);
                 break;
             case R.id.btnNonfiction:
-                categoryID=6;
-                intent.putExtra("categoryID", categoryID);
+                intent.putExtra("categoryName", categoriesNames.get(5));
+                intent.putExtra("categoryID", 5);
                 break;
             case R.id.btnStudy:
-                categoryID=5;
-                intent.putExtra("categoryID", categoryID);
+                intent.putExtra("categoryName", categoriesNames.get(4));
+                intent.putExtra("categoryID", 4);
                 break;
         }
         startActivity(intent);
