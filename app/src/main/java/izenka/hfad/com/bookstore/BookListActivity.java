@@ -1,121 +1,154 @@
 package izenka.hfad.com.bookstore;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.List;
 
-public class BookListActivity extends AppCompatActivity {
+import stanford.androidlib.SimpleActivity;
 
-    private GridLayout gridLayout;
-    //private Map<String,String> categoryDef;
+public class BookListActivity extends SimpleActivity {
 
+    private DatabaseReference fb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
-        gridLayout=(GridLayout) findViewById(R.id.gridLayout);
-
-        getBooksInCategory();
-
+        Intent intent=getIntent();
+        String categoryName=intent.getStringExtra("categoryName");
+        TextView tvKindOfBook=$TV(R.id.tvKindOfBook);
+        tvKindOfBook.setText(categoryName);
+        tvKindOfBook.setTypeface(Typeface.createFromAsset(
+         getAssets(), "fonts/5.ttf"));
+        tvKindOfBook.setTextSize(42);
+        int categoryID=intent.getIntExtra("categoryID", 0);
+        getBooksInCategory(categoryID);
     }
 
-   /* private void makeMap(){
-        categoryDef =new HashMap<>();
-        categoryDef.put("busieness","Бизнес-литература");
-        categoryDef.put("fiction","Художественная литература");
-        categoryDef.put("nonfiction","Нехудожественная литература");
-        categoryDef.put("kid","Детская литература");
-        categoryDef.put("study","Учебная литература");
-        categoryDef.put("foreign","Иностранная литература");
-    }
-    */
+   private void getBooksInCategory(final int categoryID){
 
-   private void getBooksInCategory(){
-       Intent intent=getIntent();
-       int categoryID=intent.getIntExtra("categoryID",0);
-       SQLiteDatabase db=openOrCreateDatabase("bookstore", MODE_PRIVATE,null);
-       Cursor crBooksCategories=db.rawQuery("SELECT book_id FROM booksCategories WHERE category_id="+categoryID+"",null);
-       Cursor crCategory=db.rawQuery("SELECT category_name from category where category_id="+categoryID+"",null);
+       fb= FirebaseDatabase.getInstance().getReference();
+       final DatabaseReference bookRef=fb.child("bookstore/book");
+       final Query queryBook=bookRef.orderByChild("book_id");
+       queryBook.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot data) {
+               for (DataSnapshot bookData : data.getChildren())
+                   for (DataSnapshot id : bookData.child("Categories").getChildren())
+                       if (String.valueOf(id.getValue()).equals(String.valueOf(categoryID))) {
+                               {
+                                   Book book = bookData.getValue(Book.class);
+                                   Log.d("book", book.toString());
+                                   final View view = getLayoutInflater().inflate(R.layout.book, null);
 
-       TextView tvKindOfBook=(TextView) findViewById(R.id.tvKindOfBook);
-       tvKindOfBook.setText(crCategory.getString(crCategory.getColumnIndex("category_name")));
-       crCategory.close();
+                                   String title = book.title;
+                                   String price = book.price;
 
-       if(crBooksCategories.moveToFirst()){
-           do{
-               int bookID=crBooksCategories.getInt(crBooksCategories.getColumnIndex("book_id"));
-               Cursor crBook=db.rawQuery("SELECT book_title, book_prise FROM book WHERE book_id="+bookID+"",null);
-               Cursor crBooksAuthors=db.rawQuery("SELECT author_id FROM booksAuthors WHERE book_id"+bookID+"",null);
-               int authorID=crBooksAuthors.getInt(crBooksAuthors.getColumnIndex("author_id"));
-               Cursor crAuthor=db.rawQuery("SELECT author_name FROM author WHERE author_id="+authorID+"",null);
+                                   List<Integer> Authors=new ArrayList<>();
+                                   for(DataSnapshot authID: bookData.child("Authors").getChildren()){
+                                       Authors.add( Integer.parseInt(String.valueOf(authID.getValue())));
+                                   }
+                                   setAuthor(Authors, view);
+                                   List <String> Images=new ArrayList<String>();
+                                   for(DataSnapshot imagesID: bookData.child("Images").getChildren()){
+                                       Images.add( imagesID.getValue().toString());
+                                   }
+                                   int bookID = book.book_id;
+                                           setImage(Images, bookID, view);
 
-               String bookName=crBook.getString(crBook.getColumnIndex("book_title"));
-               String bookAuthor=crAuthor.getString(crAuthor.getColumnIndex("author_name"));
-               String bookPrise=crBook.getString(crBook.getColumnIndex("book_prise"));
 
-               View view=getLayoutInflater().inflate(R.layout.book, null);
+                                   TextView tvBookPrise = (TextView) view.findViewById(R.id.tvBookPrise);
+                                   tvBookPrise.setText(price);
+                                   TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
+                                   tvBookName.setText("\"" + title + "\"");
 
-               ImageButton imgBtnBook=(ImageButton) view.findViewById(R.id.imgBtnBook);
-               //R.drawable.bus_books
-              // int bookImageID=getResources().getIdentifier(bookImageName,"drawable", getPackageName());
-             //  imgBtnBook.setImageResource(bookImageID);
-               TextView tvBookName=(TextView) view.findViewById(R.id.tvBookName);
-               tvBookName.setText(bookName);
-               TextView tvBookAuthor=(TextView) view.findViewById(R.id.tvBookAuthor);
-               tvBookAuthor.setText(bookAuthor);
-               TextView tvBookPrise=(TextView) view.findViewById(R.id.tvBookPrise);
-               tvBookPrise.setText(bookPrise);
+                                   //R.drawable.bus_books
+                                   // int bookImageID=getResources().getIdentifier(bookImageName,"drawable", getPackageName());
+                                   //  imgBtnBook.setImageResource(bookImageID);
 
-               gridLayout.addView(view);
-           }while(crBooksCategories.moveToNext());
-           crBooksCategories.close();
-       }
+
+                                   GridLayout gridLayout = (GridLayout) findViewById(R.id.gridLayout);
+                                   gridLayout.addView(view);
+                               }
+                           }
+           }
+
+        @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
    }
 
-   /*
-    private void getBooks(String kindOfBook){
+   private void setAuthor( List<Integer> authorsID, final View view){
+       final List<String> authorSurName=new ArrayList<>();
+       DatabaseReference authorRef=fb.child("bookstore/author");
+       for(int authorID:authorsID){
+           Log.d("List", authorID+"");
+           Query queryAuthor=authorRef.orderByChild("author_id").equalTo(authorID);
+           queryAuthor.addValueEventListener(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
+                   Author author=dataSnapshot.getChildren().iterator().next().getValue(Author.class);
+                   String authorName=author.author_name.substring(0,1);
+                   String authorSurname=author.author_surname;
+                   authorSurName.add(authorSurname+" "+authorName+".");
+                   String auth=authorSurName.toString();
+                   TextView tvBookAuthor=(TextView) view.findViewById(R.id.tvBookAuthor);
+                   tvBookAuthor.setText(auth.substring(1,auth.length()-1));
+               }
 
-        //R.raw.bus_books
-        int kindOfBookID=getResources().getIdentifier(kindOfBook,"raw", getPackageName());
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
 
-        Scanner scanner=new Scanner(getResources().openRawResource(kindOfBookID));
-        while (scanner.hasNextLine()){
-            String bookData[]=scanner.nextLine().split("\t");
-            String bookName=bookData[0];
-            String bookAuthor=bookData[1];
-            String bookPrise=bookData[2];
-            String bookImageName=bookData[3];
+               }
+           });
+       }
 
-            View view=getLayoutInflater().inflate(R.layout.book, null);
 
-            ImageButton imgBtnBook=(ImageButton) view.findViewById(R.id.imgBtnBook);
-            //R.drawable.bus_books
-            int bookImageID=getResources().getIdentifier(bookImageName,"drawable", getPackageName());
-            imgBtnBook.setImageResource(bookImageID);
-            TextView tvBookName=(TextView) view.findViewById(R.id.tvBookName);
-            tvBookName.setText(bookName);
-            TextView tvBookAuthor=(TextView) view.findViewById(R.id.tvBookAuthor);
-            tvBookAuthor.setText(bookAuthor);
-            TextView tvBookPrise=(TextView) view.findViewById(R.id.tvBookPrise);
-            tvBookPrise.setText(bookPrise);
-            TextView tvKindOfBook=(TextView) findViewById(R.id.tvKindOfBook);
-            tvKindOfBook.setText(categoryDef.get(kindOfBook));
+     //  tvBookAuthor.setText(String.valueOf(authorSurName));
+   }
 
-            gridLayout.addView(view);
-        }
+    private void setImage(List <String> Images, int bookID, View view){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        String bookImage=Images.get(0);
+        StorageReference imageRef = storage.getReference().child(bookImage);
+        log("imageRef"+imageRef);
+
+        ImageButton imgBtnBook=(ImageButton) view.findViewById(R.id.imgBtnBook);
+        imgBtnBook.setId(bookID);
+
+        Glide.with(this /* context */)
+                .using(new FirebaseImageLoader())
+                .load(imageRef)
+                .into(imgBtnBook);
+
     }
-    */
+
 
     public void onShopCartClick(View view) {
         Intent intent=new Intent(this, BasketActivity.class);
@@ -124,6 +157,11 @@ public class BookListActivity extends AppCompatActivity {
 
     public void onBookClick(View view) {
         Intent intent=new Intent(this, BookActivity.class);
+        intent.putExtra("bookID", view.getId());
         startActivity(intent);
+    }
+
+    public void onReturnBackClick(View view) {
+        finish();
     }
 }

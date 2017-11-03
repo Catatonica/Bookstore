@@ -11,13 +11,22 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color1">
+        android:background="@color/color9">
+
+        <Button
+            android:layout_width="25dp"
+            android:layout_height="15dp"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/return_back"
+            android:backgroundTint="@color/bootstrap_brand_secondary_fill"
+            android:onClick="onReturnBackClick" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center"
-            android:layout_marginLeft="30sp"
+            android:layout_marginLeft="60dp"
             android:text="Bookstore"
             android:textColor="@color/color2"
             android:textSize="20sp" />
@@ -27,7 +36,7 @@
             android:layout_width="70dp"
             android:layout_height="45dp"
             android:layout_gravity="right|center"
-            android:backgroundTint="@color/darkBrown"
+            android:backgroundTint="@color/color9"
             android:onClick="onShopCartClick"
             android:padding="5dp"
             android:scaleType="fitCenter"
@@ -54,6 +63,8 @@
         android:layout_margin="8dp"
         android:background="@color/lightBlue"
         android:hint=" Поиск по категории"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:textStyle="italic" />
 
     <ScrollView

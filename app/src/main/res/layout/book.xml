@@ -22,7 +22,8 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="bookName"
-        android:textSize="15dp" />
+        android:textColor="@color/color9"
+        android:textSize="15sp" />
 
     <TextView
         android:gravity="center"
@@ -30,13 +31,16 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="bookAuthor"
-        android:textSize="10dp"/>
+        android:textColor="@color/darkBrown"
+        android:textSize="14sp"/>
     <TextView
         android:gravity="center"
         android:id="@+id/tvBookPrise"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="BookPrise"
-        android:textSize="13dp"/>
+        android:textColor="@color/green"
+        android:textStyle="bold"
+        android:textSize="16sp"/>
 
 </LinearLayout>
