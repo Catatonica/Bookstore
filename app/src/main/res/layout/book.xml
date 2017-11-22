@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="15dp"    >
+    android:clickable="true"
+    android:onClick="onBookClick"
+    android:padding="12dp"
+       >
 
-    <ImageButton
-        android:onClick="onBookClick"
+    <ImageView
         android:id="@+id/imgBtnBook"
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/kid"
-        android:backgroundTint="@color/bezch"
         />
 
     <TextView
@@ -21,7 +21,6 @@
         android:id="@+id/tvBookName"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="bookName"
         android:textColor="@color/color9"
         android:textSize="15sp" />
 
@@ -30,7 +29,6 @@
         android:id="@+id/tvBookAuthor"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="bookAuthor"
         android:textColor="@color/darkBrown"
         android:textSize="14sp"/>
     <TextView
@@ -38,7 +36,6 @@
         android:id="@+id/tvBookPrise"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="BookPrise"
         android:textColor="@color/green"
         android:textStyle="bold"
         android:textSize="16sp"/>

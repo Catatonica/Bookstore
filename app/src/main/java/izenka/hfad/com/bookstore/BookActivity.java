@@ -1,15 +1,19 @@
 package izenka.hfad.com.bookstore;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
@@ -20,24 +24,34 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import mehdi.sakout.fancybuttons.FancyButton;
 import stanford.androidlib.SimpleActivity;
 
 public class BookActivity extends SimpleActivity {
 
     private boolean bool = true;
     private DatabaseReference fb;
+    private int bookID;
+    private SharedPreferences sp;
+    private Animation anim;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
+        anim = AnimationUtils.loadAnimation(this, R.anim.my_alpha);
+        mehdi.sakout.fancybuttons.FancyButton putInBasket=(mehdi.sakout.fancybuttons.FancyButton) findViewById(R.id.putInBasket);
+        putInBasket.setIconResource(R.drawable.basket2);
+        putInBasket.setIconPosition(FancyButton.POSITION_LEFT);
+        putInBasket.getIconImageObject().setLayoutParams(new LinearLayout.LayoutParams(60, 60));
+
         Intent intent=getIntent();
-        int bookID=intent.getIntExtra("bookID",0);
+        bookID=intent.getIntExtra("bookID",0);
 
        fillViews(bookID);
     }
@@ -51,7 +65,7 @@ public class BookActivity extends SimpleActivity {
             public void onDataChange(DataSnapshot data) {
                 final Book book=data.getChildren().iterator().next().getValue(Book.class);
                 $TV(R.id.tvTitle).setText("\""+book.title+"\"");
-                $TV(R.id.tvYear).setText(""+book.publication_year);
+                $TV(R.id.tvYear).setText(String.valueOf(book.publication_year));
 
 
                 List<Integer> Authors=new ArrayList<>();
@@ -59,8 +73,14 @@ public class BookActivity extends SimpleActivity {
                     Authors.add( Integer.parseInt(String.valueOf(authID.getValue())));
                 }
                 setAuthor(Authors);
-               // setImage(book.book_image);
-               // setAuthor(book.book_author_id);
+
+                List <String> Images=new ArrayList<>();
+                for(DataSnapshot imagesID: data.getChildren().iterator().next().child("Images").getChildren()){
+                    Images.add( imagesID.getValue().toString());
+                }
+                setImage(Images, book.book_id);
+
+
                 $TV(R.id.tvPrise).setText(book.price);
                 TextView tvAvailability=$TV(R.id.tvAvailability);
                 if(book.count!=0){
@@ -71,10 +91,12 @@ public class BookActivity extends SimpleActivity {
                 }
                 $TV(R.id.tvAnnot).setText(book.description);
 
-                $B(R.id.btnParameters).setOnClickListener(new View.OnClickListener() {
+                mehdi.sakout.fancybuttons.FancyButton btnParameters=(mehdi.sakout.fancybuttons.FancyButton) findViewById(R.id.btnParameters);
+                btnParameters.setOnClickListener(new View.OnClickListener() {
                     Boolean isClicked=false;
                     @Override
                     public void onClick(View v) {
+                        v.startAnimation(anim);
                         LinearLayout llParameters=(LinearLayout) findViewById(R.id.llParameters);
                         if(isClicked) {
                             llParameters.removeAllViews();
@@ -84,9 +106,9 @@ public class BookActivity extends SimpleActivity {
                         else {
                             final View view = getLayoutInflater().inflate(R.layout.book_parameters, null);
                             TextView tvCount = (TextView) view.findViewById(R.id.tvCount);
-                            tvCount.setText("" + book.count);
+                            tvCount.setText(String.valueOf(book.count));
                             TextView tvPages = (TextView) view.findViewById(R.id.tvPages);
-                            tvPages.setText("" + book.pages_number);
+                            tvPages.setText(String.valueOf(book.pages_number));
                             setPublisher(book.book_publisher_id, view);
                             TextView tvCover = (TextView) view.findViewById(R.id.tvCover);
                             tvCover.setText(book.cover);
@@ -143,6 +165,22 @@ public class BookActivity extends SimpleActivity {
         }
     }
 
+    private void setImage(List <String> Images, int bookID){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        String bookImage=Images.get(0);
+        StorageReference imageRef = storage.getReference().child(bookImage);
+        log("imageRef"+imageRef);
+
+        ImageView imgBtnBook=(ImageView) findViewById(R.id.ivBookImage);
+        imgBtnBook.setId(bookID);
+
+        Glide.with(this /* context */)
+                .using(new FirebaseImageLoader())
+                .load(imageRef)
+                .into(imgBtnBook);
+
+    }
+
 
   /*  public void onParametersClick(View view) {
         View glParameters=getLayoutInflater().inflate(R.layout.book_parameters, null);
@@ -178,6 +216,16 @@ public class BookActivity extends SimpleActivity {
     }
 
     public void onPutInBasketClick(View view) {
+        view.startAnimation(anim);
+
+        sp=getSharedPreferences("myPref", MODE_PRIVATE);
+       // MainMenuActivity.user.getBooksIDs().add(bookID+"");
+      //  MainMenuActivity.booksIDs.add(bookID+"");
+        SharedPreferences.Editor e = sp.edit();
+        MainMenuActivity.stringSet.add(String.valueOf(bookID));
+        e.putStringSet("booksIDs",MainMenuActivity.stringSet);
+        e.apply();
+        Toast.makeText(this,"добавлено",Toast.LENGTH_SHORT).show();
     }
 
     public void onExpandClick(View view) {
@@ -188,14 +236,27 @@ public class BookActivity extends SimpleActivity {
             ibExpand.setBackground(getDrawable(R.drawable.narrow));
             bool = false;
         } else {
-            tvAnnot.setMaxLines(3);
+            tvAnnot.setMaxLines(5);
             bool = true;
             ibExpand.setBackground(getDrawable(R.drawable.expand));
         }
     }
 
     public void onReturnBackClick(View view) {
+        Animation anim3 = AnimationUtils.loadAnimation(this, R.anim.translate);
+        view.startAnimation(anim3);
         finish();
+    }
+
+    public void onShopCartClick(View view) {
+        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        //SharedPreferences.Editor e = sp.edit();
+       // e.putStringSet("booksIDs",MainMenuActivity.stringSet);
+        //e.apply();
+      //  e.commit();
+        view.startAnimation(anim2);
+        Intent intent=new Intent(this, BasketActivity.class);
+        startActivity(intent);
     }
 }
 

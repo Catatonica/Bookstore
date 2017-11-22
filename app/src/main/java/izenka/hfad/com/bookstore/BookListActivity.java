@@ -5,6 +5,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
@@ -38,20 +41,37 @@ public class BookListActivity extends SimpleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
+        fb= FirebaseDatabase.getInstance().getReference();
+
         Intent intent=getIntent();
-        String categoryName=intent.getStringExtra("categoryName");
-        TextView tvKindOfBook=$TV(R.id.tvKindOfBook);
-        tvKindOfBook.setText(categoryName);
-        tvKindOfBook.setTypeface(Typeface.createFromAsset(
-         getAssets(), "fonts/5.ttf"));
-        tvKindOfBook.setTextSize(42);
         int categoryID=intent.getIntExtra("categoryID", 0);
+
+        setCategoryName(categoryID);
         getBooksInCategory(categoryID);
+    }
+
+    private void setCategoryName(int categoryID){
+        DatabaseReference catRef=fb.child("bookstore/category/"+categoryID+"/category_name");
+        catRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String categoryName=dataSnapshot.getValue().toString();
+                TextView tvKindOfBook=$TV(R.id.tvKindOfBook);
+                tvKindOfBook.setText(categoryName);
+                tvKindOfBook.setTypeface(Typeface.createFromAsset(
+                        getAssets(), "fonts/5.ttf"));
+                tvKindOfBook.setTextSize(42);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
    private void getBooksInCategory(final int categoryID){
 
-       fb= FirebaseDatabase.getInstance().getReference();
        final DatabaseReference bookRef=fb.child("bookstore/book");
        final Query queryBook=bookRef.orderByChild("book_id");
        queryBook.addValueEventListener(new ValueEventListener() {
@@ -65,6 +85,7 @@ public class BookListActivity extends SimpleActivity {
                                    Log.d("book", book.toString());
                                    final View view = getLayoutInflater().inflate(R.layout.book, null);
 
+
                                    String title = book.title;
                                    String price = book.price;
 
@@ -73,13 +94,15 @@ public class BookListActivity extends SimpleActivity {
                                        Authors.add( Integer.parseInt(String.valueOf(authID.getValue())));
                                    }
                                    setAuthor(Authors, view);
-                                   List <String> Images=new ArrayList<String>();
+
+                                   List <String> Images=new ArrayList<>();
                                    for(DataSnapshot imagesID: bookData.child("Images").getChildren()){
                                        Images.add( imagesID.getValue().toString());
                                    }
                                    int bookID = book.book_id;
                                            setImage(Images, bookID, view);
 
+                                   view.setId(bookID);
 
                                    TextView tvBookPrise = (TextView) view.findViewById(R.id.tvBookPrise);
                                    tvBookPrise.setText(price);
@@ -139,7 +162,7 @@ public class BookListActivity extends SimpleActivity {
         StorageReference imageRef = storage.getReference().child(bookImage);
         log("imageRef"+imageRef);
 
-        ImageButton imgBtnBook=(ImageButton) view.findViewById(R.id.imgBtnBook);
+        ImageView imgBtnBook=(ImageView) view.findViewById(R.id.imgBtnBook);
         imgBtnBook.setId(bookID);
 
         Glide.with(this /* context */)
@@ -151,11 +174,15 @@ public class BookListActivity extends SimpleActivity {
 
 
     public void onShopCartClick(View view) {
+        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        view.startAnimation(anim2);
         Intent intent=new Intent(this, BasketActivity.class);
         startActivity(intent);
     }
 
     public void onBookClick(View view) {
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.my_alpha);
+        view.startAnimation(anim);
         Intent intent=new Intent(this, BookActivity.class);
         intent.putExtra("bookID", view.getId());
         startActivity(intent);
@@ -164,4 +191,6 @@ public class BookListActivity extends SimpleActivity {
     public void onReturnBackClick(View view) {
         finish();
     }
+
+
 }

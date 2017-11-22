@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bezch2"
     android:orientation="vertical"
-    android:background="@color/bezch"
     tools:context="izenka.hfad.com.bookstore.BookListActivity">
 
     <FrameLayout
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center"
             android:layout_marginLeft="60dp"
-            android:text="Bookstore"
+            android:text="@string/bookstore"
             android:textColor="@color/color2"
             android:textSize="20sp" />
 
@@ -48,40 +48,43 @@
         android:id="@+id/tvKindOfBook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:gravity="center"
         android:layout_marginTop="10dp"
-        android:textColor="@color/darkBrown"/>
+        android:gravity="center"
+        android:textColor="@color/darkBrown"
+        android:textSize="20sp" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
-        app:roundedCorners="true"
-        android:drawableLeft="@drawable/search3"
-        android:drawablePadding="10dp"
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="8dp"
         android:background="@color/lightBlue"
-        android:hint=" Поиск по категории"
+        android:drawableLeft="@drawable/search3"
+        android:drawablePadding="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:textStyle="italic" />
+        android:hint="@string/searchInCategory"
+        android:textStyle="italic"
+        app:roundedCorners="true" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="@drawable/boarders"
         >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:gravity="center"
+            >
+
             <GridLayout
                 android:id="@+id/gridLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnCount="2"
-                >
-            </GridLayout>
+                android:columnCount="2"></GridLayout>
         </LinearLayout>
 
     </ScrollView>
