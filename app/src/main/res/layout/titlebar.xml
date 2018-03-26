@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="47dp"
+    android:background="@color/color9">
+
+    <!--Button
+        android:id="@+id/btnGoBack"
+        android:layout_width="25dp"
+        android:layout_height="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="left|center"
+        android:layout_marginLeft="10dp"
+        android:onClick="onReturnBackClick"
+        android:background="@drawable/return_back"
+        android:backgroundTint="@color/bootstrap_brand_secondary_fill"
+        /!-->
+
+    <ImageView
+        android:id="@+id/btnGoBack"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_gravity="left|center"
+        android:onClick="onReturnBackClick"
+        android:padding="10dp"
+        android:src="@drawable/return_back"
+        android:tint="@color/white" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_alignRight="@+id/btnGoBack"
+        android:background="#90909090" />
+
+    <ImageButton
+        android:id="@+id/imgBtnOrders"
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/btnGoBack"
+        android:backgroundTint="@color/color9"
+        android:elevation="5dp"
+        android:onClick="onOrdersClick"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/car" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_alignRight="@+id/imgBtnOrders"
+        android:background="#90909090" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/bookstore"
+        android:textColor="@color/color2"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/imgBtnShopCart"
+        android:background="#90909090" />
+
+    <ImageButton
+        android:id="@+id/imgBtnShopCart"
+        android:layout_width="70dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:backgroundTint="@color/color9"
+        android:elevation="5dp"
+        android:onClick="onShopCartClick"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/basket" />
+
+</RelativeLayout>

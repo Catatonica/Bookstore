@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color20"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/color9"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/company_name"
+            android:textColor="@color/biruz"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Юридический адрес: 223012, г. Минск, пр. Независисмости 113а, д.12, каб. 33"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Время работы: с 9:00 до 20:00 с понедельника по пятницу"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Свидетельство №345234654 от 07.12.2017. Зарегистрировано Минским райисполкомом."
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Директор: Гавина Е.А."
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <!--mehdi.sakout.fancybuttons.FancyButton
+            android:layout_marginBottom="10dp"
+            android:layout_width="70dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="onBtnOKClick"
+            fancy:fb_borderColor="@color/darkBrown"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="@color/color8"
+            fancy:fb_radius="15dp"
+            fancy:fb_text="OK"
+            fancy:fb_textColor="@color/white" /!-->
+
+    </LinearLayout>
+
+</LinearLayout>
