@@ -7,34 +7,59 @@
     android:layout_gravity="center"
     android:background="@color/bezch"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.MainMenuActivity">
+    tools:context="izenka.hfad.com.bookstore.controller.MainMenuActivity">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/color9">
+
+        <ImageButton
+            android:id="@+id/imgBtnOrders"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="left|center"
+            android:backgroundTint="@color/color9"
+            android:onClick="onOrdersClick"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/car" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_alignRight="@+id/imgBtnOrders"
+            android:background="#90909090" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="60dp"
+            android:layout_centerInParent="true"
             android:text="@string/bookstore"
             android:textColor="@color/color2"
             android:textSize="20sp" />
 
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/imgBtnShopCart"
+            android:background="#90909090" />
+
         <ImageButton
             android:id="@+id/imgBtnShopCart"
             android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:layout_gravity="right|center"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
             android:backgroundTint="@color/color9"
             android:onClick="onShopCartClick"
             android:padding="5dp"
             android:scaleType="fitCenter"
             android:src="@drawable/basket" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
         android:id="@+id/etSearch"
@@ -45,145 +70,196 @@
         android:background="@color/lightBlue"
         android:drawableLeft="@drawable/search3"
         android:drawablePadding="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:hint="@string/search"
+        android:imeOptions="flagNoEnterAction"
+        android:onClick="onSearchClick"
         android:padding="4dp"
-        android:textSize="20sp"
         android:textStyle="italic"
+        app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
-
-    <TableLayout
+    <TextView
+        android:id="@+id/tvRunningLine"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/boarders3"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="5dp"
+        android:scrollHorizontally="true"
+        android:scrollbarFadeDuration="80"
+        android:singleLine="true"
+        android:text="Добро пожаловать в Bookstore! Порадуйте себя возможностью окунуться в мир книг :)"
+        android:textSize="18sp"
+        android:textStyle="italic" />
 
-        <TableRow
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp">
 
-            <!--Button
-                android:id="@+id/btnForeign"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="2.5dp"
-                android:background="@drawable/foreign"
-                android:backgroundTint="@color/color6"
-                android:backgroundTintMode="src_over"
-                android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" /!-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/btnForeign"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="2.5dp"
-                android:background="@drawable/foreign"
-                android:backgroundTint="@color/color6"
-                android:backgroundTintMode="src_over"
-                android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace"
-                />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btnKid"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="2.5dp"
-                android:background="@drawable/kid"
-                android:backgroundTint="@color/color3"
-                android:backgroundTintMode="src_over"
-                android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
-        </TableRow>
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-        <TableRow
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="5dp">
 
-            <Button
-                android:id="@+id/btnBusieness"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="2.5dp"
-                android:background="@drawable/busieness"
-                android:backgroundTint="@color/lightYellow"
-                android:backgroundTintMode="src_over"
-                android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
+                    <!--Button
+                        android:id="@+id/btnForeign"
+                        android:layout_width="170dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="2.5dp"
+                        android:background="@drawable/foreign"
+                        android:backgroundTint="@color/color6"
+                        android:backgroundTintMode="src_over"
+                        android:fontFamily="casual"
+                        android:onClick="onKindOfBookClick"
+                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:textStyle="bold|italic"
+                        android:typeface="monospace" /!-->
 
-            <Button
-                android:id="@+id/btnFiction"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="2.5dp"
-                android:background="@drawable/fiction"
-                android:backgroundTint="@color/color4"
-                android:backgroundTintMode="src_over"
-                android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
-        </TableRow>
+                    <Button
+                        android:id="@+id/btnForeign"
+                        android:layout_width="170dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="2.5dp"
+                        android:background="@drawable/foreign_back"
+                        android:fontFamily="casual"
+                        android:onClick="onKindOfBookClick"
+                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold|italic"
+                        android:typeface="monospace" />
 
-        <TableRow android:gravity="center_horizontal">
+                    <Button
+                        android:id="@+id/btnKid"
+                        android:layout_width="170dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2.5dp"
+                        android:background="@drawable/kid_back"
+                        android:fontFamily="casual"
+                        android:onClick="onKindOfBookClick"
+                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold|italic"
+                        android:typeface="monospace" />
+                </TableRow>
 
-            <Button
-                android:id="@+id/btnStudy"
+                <TableRow
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="5dp">
 
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="2.5dp"
-                android:background="@drawable/study"
-                android:backgroundTint="@color/color7"
-                android:backgroundTintMode="src_over"
-                android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
+                    <Button
+                        android:id="@+id/btnBusieness"
+                        android:layout_width="170dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="2.5dp"
+                        android:background="@drawable/business_back"
+                        android:fontFamily="casual"
+                        android:onClick="onKindOfBookClick"
+                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold|italic"
+                        android:typeface="monospace" />
 
-            <Button
-                android:id="@+id/btnNonfiction"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="2.5dp"
-                android:background="@drawable/nonfiction"
-                android:backgroundTint="@color/lightYellow"
-                android:backgroundTintMode="src_over"
-                android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
-        </TableRow>
-    </TableLayout>
+                    <Button
+                        android:id="@+id/btnFiction"
+                        android:layout_width="170dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2.5dp"
+                        android:background="@drawable/fiction_back"
+                        android:fontFamily="casual"
+                        android:onClick="onKindOfBookClick"
+                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold|italic"
+                        android:typeface="monospace" />
+                </TableRow>
+
+                <TableRow android:gravity="center_horizontal">
+
+                    <Button
+                        android:id="@+id/btnStudy"
+
+                        android:layout_width="170dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="2.5dp"
+                        android:background="@drawable/study_back"
+                        android:fontFamily="casual"
+                        android:onClick="onKindOfBookClick"
+                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold|italic"
+                        android:typeface="monospace" />
+
+                    <Button
+                        android:id="@+id/btnNonfiction"
+                        android:layout_width="170dp"
+                        android:layout_height="135dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="2.5dp"
+                        android:background="@drawable/nonfiction_back"
+                        android:fontFamily="casual"
+                        android:onClick="onKindOfBookClick"
+                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold|italic"
+                        android:typeface="monospace" />
+                </TableRow>
+            </TableLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:onClick="onShowInfoAboutCompany"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <Button
+                    android:id="@+id/btnScan"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/qrcode"
+                    android:onClick="onBtnScanClick" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/info2" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </LinearLayout>

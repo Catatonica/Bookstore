@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="izenka.hfad.com.bookstore">
-
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/book_icon"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@drawable/book_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainMenuActivity"
+            android:name=".controller.MainMenuActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,17 +23,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BookListActivity"
+            android:name=".controller.BookListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".BasketActivity"
+            android:name=".controller.BasketActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".BookActivity" />
+        <activity android:name=".controller.BookActivity" />
         <activity
-            android:name=".OrderRegistrationActivity"
+            android:name=".controller.order.OrderRegistrationActivity"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".controller.SearchActivity"
+            android:windowSoftInputMode="adjustPan|stateVisible" />
+        <activity android:name=".controller.order.OrdersActivity" />
+        <activity android:name=".controller.order.OneOrderActivity" />
+        <activity android:name=".controller.QRCodeActivity"></activity>
     </application>
 
 </manifest>

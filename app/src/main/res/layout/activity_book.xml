@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,51 +8,15 @@
     android:background="@color/bezch"
     android:baselineAligned="false"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.BookActivity">
+    tools:context="izenka.hfad.com.bookstore.controller.BookActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color9">
-
-        <Button
-            android:id="@+id/btnBack2"
-            android:layout_width="25dp"
-            android:layout_height="15dp"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/return_back"
-            android:backgroundTint="@color/bootstrap_brand_secondary_fill"
-            android:onClick="onReturnBackClick" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="60dp"
-            android:text="@string/bookstore"
-            android:textColor="@color/color2"
-            android:textSize="20sp" />
-
-        <ImageButton
-            android:id="@+id/imgBtnShopCart"
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:layout_gravity="right|center"
-            android:backgroundTint="@color/color9"
-            android:onClick="onShopCartClick"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/basket" />
-
-    </FrameLayout>
+    <include layout="@layout/titlebar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:background="@drawable/boarders"
-        >
+        android:background="@drawable/boarders">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,11 +40,11 @@
                     android:id="@+id/ivBookImage"
                     android:layout_width="160dp"
                     android:layout_height="250dp"
-                    android:layout_margin="15dp" />
+                    android:layout_margin="10dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="250dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -149,14 +112,15 @@
                     android:id="@+id/putInBasket"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
+                    android:elevation="10dp"
                     android:onClick="onPutInBasketClick"
                     fancy:fb_borderColor="@color/darkBrown"
                     fancy:fb_borderWidth="1dp"
                     fancy:fb_defaultColor="@color/yellow"
                     fancy:fb_radius="5dp"
                     fancy:fb_text="@string/putInBasket"
-                    fancy:fb_textGravity="center"
-                    fancy:fb_textColor="@color/color9" />
+                    fancy:fb_textColor="@color/color9"
+                    fancy:fb_textGravity="center" />
 
                 <!--Button
                     android:layout_width="match_parent"
@@ -173,7 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
                 android:layout_marginRight="17dp"
-                android:background="@color/white1"
+                android:background="@drawable/myrect"
+                android:elevation="10dp"
                 android:maxLines="5"
                 android:padding="7dp"
                 android:text=""
@@ -221,13 +186,13 @@
                 android:gravity="center"
                 android:orientation="vertical" />
 
-            <TextView
+            <!--TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="7dp"
                 android:text="@string/reviews"
                 android:textAlignment="center"
-                android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" />
+                android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" /!-->
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

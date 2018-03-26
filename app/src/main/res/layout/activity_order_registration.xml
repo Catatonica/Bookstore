@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/bezch"
-    tools:context="izenka.hfad.com.bookstore.OrderRegistrationActivity">
+    android:orientation="vertical"
+    tools:context="izenka.hfad.com.bookstore.controller.order.OrderRegistrationActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -35,20 +34,21 @@
     </FrameLayout>
 
     <TextView
-        android:layout_marginTop="15dp"
-        android:textColor="@color/color9"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        android:text="@string/fillForm"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:text="@string/fillForm"
+        android:textColor="@color/color9"
+        android:textSize="20sp" />
+
     <TextView
-        android:layout_marginTop="7dp"
-        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:text="@string/necessaryToFill"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="7dp"
+        android:text="@string/necessaryToFill"
+        android:textSize="17sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -56,88 +56,107 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="70dp"
-            android:layout_height="wrap_content">
+            android:layout_marginTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
+                android:layout_height="70dp"
                 android:background="@color/white1"
-                android:layout_height="70dp">
+                android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/etPhoneNumber"
-                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:hint="@string/phoneNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true" />
+
                 <EditText
                     android:id="@+id/etName"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:hint="@string/name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp" />
+
                 <EditText
                     android:id="@+id/etCity"
-                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp" />
+
                 <EditText
                     android:id="@+id/etStreet"
-                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/street"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp" />
+
                 <EditText
                     android:id="@+id/etHouse"
-                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/house"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:inputType="date"
+                    android:paddingLeft="10dp" />
+
                 <EditText
                     android:id="@+id/etFlatNumber"
-                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/flat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:inputType="number"
+                    android:paddingLeft="10dp" />
+
                 <EditText
                     android:id="@+id/etPorchNumber"
-                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/porch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:inputType="number"
+                    android:paddingLeft="10dp" />
+
                 <EditText
                     android:id="@+id/etFloor"
-                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:hint="@string/floor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:inputType="number"
+                    android:paddingLeft="10dp" />
 
             </LinearLayout>
         </ScrollView>
 
         <mehdi.sakout.fancybuttons.FancyButton
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="@string/endRegistration"
+            android:onClick="onBtnRegisterClick"
 
-            android:onClick="onBtnRegistrateClick"
+            android:text="@string/endRegistration"
             fancy:fb_borderColor="@color/darkBrown"
             fancy:fb_borderWidth="1dp"
             fancy:fb_defaultColor="@color/biruz"

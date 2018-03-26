@@ -34,7 +34,10 @@
     <string name="fictionLit">Художественная литература</string>
     <string name="studyLit">Учебная литература</string>
     <string name="fnonfictionLit">Нехудожественная литература</string>
-    <string-array name="categoriesNames" >
+    <string name="input_search">Введите книгу или автора</string>
+    <string name="orders">Заказы</string>
+    <string name="company_name">OOO "Bookstore"</string>
+    <string-array name="categoriesNames">
         <item>Иностранная литература</item>
         <item>Детская литература</item>
         <item>Бизнес-литература</item>

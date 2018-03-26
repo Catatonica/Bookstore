@@ -6,43 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/bezch2"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.BookListActivity">
+    tools:context="izenka.hfad.com.bookstore.controller.BookListActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color9">
-
-        <Button
-            android:layout_width="25dp"
-            android:layout_height="15dp"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/return_back"
-            android:backgroundTint="@color/bootstrap_brand_secondary_fill"
-            android:onClick="onReturnBackClick" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="60dp"
-            android:text="@string/bookstore"
-            android:textColor="@color/color2"
-            android:textSize="20sp" />
-
-        <ImageButton
-            android:id="@+id/imgBtnShopCart"
-            android:layout_width="70dp"
-            android:layout_height="45dp"
-            android:layout_gravity="right|center"
-            android:backgroundTint="@color/color9"
-            android:onClick="onShopCartClick"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/basket" />
-
-    </FrameLayout>
+    <include layout="@layout/titlebar" />
 
     <TextView
         android:id="@+id/tvKindOfBook"
@@ -54,31 +20,33 @@
         android:textSize="20sp" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
-        android:id="@+id/etSearch"
+        android:id="@+id/bootstrapEditText"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="8dp"
         android:background="@color/lightBlue"
+        android:cursorVisible="true"
         android:drawableLeft="@drawable/search3"
         android:drawablePadding="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:hint="@string/searchInCategory"
+        android:imeOptions="flagNoEnterAction"
+        android:onClick="onSearchClick"
         android:textStyle="italic"
+        app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:background="@drawable/boarders"
-        >
+        android:background="@drawable/boarders">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            >
+            android:gravity="center">
 
             <GridLayout
                 android:id="@+id/gridLayout"
