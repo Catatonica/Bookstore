@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.controller.GetBooksHelper;
+import izenka.hfad.com.bookstore.controller.db_operations.GetBooksHelper;
 import stanford.androidlib.SimpleActivity;
 
 public class OneOrderActivity extends SimpleActivity {

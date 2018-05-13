@@ -99,167 +99,166 @@
         android:textStyle="italic" />
 
 
-    <ScrollView
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical">-->
+
+    <TableLayout
+        android:padding="2dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center">
 
-        <LinearLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
+            <!--Button
+                    android:id="@+id/btnForeign"
+                    android:layout_width="170dp"
+                    android:layout_height="135dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="2.5dp"
+                    android:background="@drawable/foreign"
+                    android:backgroundTint="@color/color6"
+                    android:backgroundTintMode="src_over"
+                    android:fontFamily="casual"
+                    android:onClick="onKindOfBookClick"
+                    android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic"
+                    android:typeface="monospace" /!-->
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="5dp">
+            <Button
+                android:id="@+id/btnForeign"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="2.5dp"
+                android:background="@drawable/foreign_back"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
 
-                    <!--Button
-                        android:id="@+id/btnForeign"
-                        android:layout_width="170dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="2.5dp"
-                        android:background="@drawable/foreign"
-                        android:backgroundTint="@color/color6"
-                        android:backgroundTintMode="src_over"
-                        android:fontFamily="casual"
-                        android:onClick="onKindOfBookClick"
-                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                        android:textColor="@color/colorAccent"
-                        android:textSize="18sp"
-                        android:textStyle="bold|italic"
-                        android:typeface="monospace" /!-->
+            <Button
+                android:id="@+id/btnKid"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2.5dp"
+                android:background="@drawable/kid_back"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+        </TableRow>
 
-                    <Button
-                        android:id="@+id/btnForeign"
-                        android:layout_width="170dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="2.5dp"
-                        android:background="@drawable/foreign_back"
-                        android:fontFamily="casual"
-                        android:onClick="onKindOfBookClick"
-                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold|italic"
-                        android:typeface="monospace" />
+        <TableRow
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:paddingBottom="5dp">
 
-                    <Button
-                        android:id="@+id/btnKid"
-                        android:layout_width="170dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="2.5dp"
-                        android:background="@drawable/kid_back"
-                        android:fontFamily="casual"
-                        android:onClick="onKindOfBookClick"
-                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold|italic"
-                        android:typeface="monospace" />
-                </TableRow>
+            <Button
+                android:id="@+id/btnBusieness"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="2.5dp"
+                android:background="@drawable/business_back"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
 
-                <TableRow
-                    android:gravity="center_horizontal"
-                    android:paddingBottom="5dp">
+            <Button
+                android:id="@+id/btnFiction"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2.5dp"
+                android:background="@drawable/fiction_back"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+        </TableRow>
 
-                    <Button
-                        android:id="@+id/btnBusieness"
-                        android:layout_width="170dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="2.5dp"
-                        android:background="@drawable/business_back"
-                        android:fontFamily="casual"
-                        android:onClick="onKindOfBookClick"
-                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold|italic"
-                        android:typeface="monospace" />
+        <TableRow
+            android:layout_weight="1"
+            android:gravity="center_horizontal">
 
-                    <Button
-                        android:id="@+id/btnFiction"
-                        android:layout_width="170dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="2.5dp"
-                        android:background="@drawable/fiction_back"
-                        android:fontFamily="casual"
-                        android:onClick="onKindOfBookClick"
-                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold|italic"
-                        android:typeface="monospace" />
-                </TableRow>
+            <Button
+                android:id="@+id/btnStudy"
 
-                <TableRow android:gravity="center_horizontal">
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="2.5dp"
+                android:background="@drawable/study_back"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
 
-                    <Button
-                        android:id="@+id/btnStudy"
+            <Button
+                android:id="@+id/btnNonfiction"
+                android:layout_width="170dp"
+                android:layout_height="135dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="2.5dp"
+                android:background="@drawable/nonfiction_back"
+                android:fontFamily="casual"
+                android:onClick="onKindOfBookClick"
+                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+        </TableRow>
+    </TableLayout>
 
-                        android:layout_width="170dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="2.5dp"
-                        android:background="@drawable/study_back"
-                        android:fontFamily="casual"
-                        android:onClick="onKindOfBookClick"
-                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold|italic"
-                        android:typeface="monospace" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/btnNonfiction"
-                        android:layout_width="170dp"
-                        android:layout_height="135dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="2.5dp"
-                        android:background="@drawable/nonfiction_back"
-                        android:fontFamily="casual"
-                        android:onClick="onKindOfBookClick"
-                        android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                        android:textColor="@color/colorAccent"
-                        android:textStyle="bold|italic"
-                        android:typeface="monospace" />
-                </TableRow>
-            </TableLayout>
+        <Button
+            android:id="@+id/btnScan"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/qrcode"
+            android:onClick="onBtnScanClick" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:onClick="onShowInfoAboutCompany"
-                android:orientation="horizontal"
-                android:padding="5dp">
+        <!--<ImageView-->
+            <!--android:onClick="onInfoClick"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:background="@drawable/info2" />-->
 
-                <Button
-                    android:id="@+id/btnScan"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/qrcode"
-                    android:onClick="onBtnScanClick" />
+    </RelativeLayout>
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/info2" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
+    <!--</LinearLayout>-->
 
 
 </LinearLayout>

@@ -37,25 +37,32 @@
         app:bootstrapSize="lg"
         app:roundedCorners="true" />
 
-    <ScrollView
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:background="@drawable/boarders">-->
+
+        <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:gravity="center">&ndash;&gt;-->
+
+            <!--<GridLayout-->
+                <!--android:id="@+id/gridLayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:columnCount="2">-->
+            <!--</GridLayout>-->
+        <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
+
+    <!--</ScrollView>-->
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvBookList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:background="@drawable/boarders">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <GridLayout
-                android:id="@+id/gridLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:columnCount="2"></GridLayout>
-        </LinearLayout>
-
-    </ScrollView>
-
-
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.controller.db_operations.GetBooksHelper;
 import izenka.hfad.com.bookstore.controller.helper.Helper;
 import stanford.androidlib.SimpleActivity;
 
