@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".controller.MainMenuActivity"
+            android:name=".view.main_menu.MainMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden">
@@ -25,24 +25,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.BookListActivity"
+            android:name=".view.book_list.BookListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".controller.BasketActivity"
+            android:name=".BasketActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".controller.BookActivity" />
+        <activity android:name=".BookActivity" />
         <activity
             android:name=".controller.order.OrderRegistrationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".controller.SearchActivity"
+            android:name=".view.search.SearchActivity"
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity android:name=".controller.order.OrdersActivity" />
         <activity android:name=".controller.order.OneOrderActivity" />
-        <activity android:name=".controller.QRCodeActivity" />
-        <activity android:name=".controller.QRCodeActivity2"></activity>
+        <activity android:name=".view.qr_code.QRCodeActivity" />
+        <activity android:name=".QRCodeActivity2"></activity>
     </application>
 
 </manifest>

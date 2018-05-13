@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/bezch2"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.controller.BookListActivity">
+    tools:context="izenka.hfad.com.bookstore.view.book_list.BookListActivity">
 
     <include layout="@layout/titlebar" />
 
     <TextView
-        android:id="@+id/tvKindOfBook"
+        android:id="@+id/tvCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -20,7 +20,7 @@
         android:textSize="20sp" />
 
     <com.beardedhen.androidbootstrap.BootstrapEditText
-        android:id="@+id/bootstrapEditText"
+        android:id="@+id/etCategorySearch"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="8dp"
@@ -32,7 +32,6 @@
         android:focusableInTouchMode="true"
         android:hint="@string/searchInCategory"
         android:imeOptions="flagNoEnterAction"
-        android:onClick="onSearchClick"
         android:textStyle="italic"
         app:bootstrapSize="lg"
         app:roundedCorners="true" />

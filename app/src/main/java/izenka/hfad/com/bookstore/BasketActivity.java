@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.controller;
+package izenka.hfad.com.bookstore;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,10 +32,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.controller.order.OrderRegistrationActivity;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
+import izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity;
 import stanford.androidlib.SimpleActivity;
 
 public class BasketActivity extends SimpleActivity {

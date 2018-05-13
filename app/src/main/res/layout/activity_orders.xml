@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/bezch"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.controller.BasketActivity">
+    tools:context="izenka.hfad.com.bookstore.BasketActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

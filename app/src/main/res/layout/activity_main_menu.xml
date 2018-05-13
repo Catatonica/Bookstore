@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:background="@color/bezch"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.controller.MainMenuActivity">
+    tools:context="izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +22,6 @@
             android:layout_centerInParent="true"
             android:layout_gravity="left|center"
             android:backgroundTint="@color/color9"
-            android:onClick="onOrdersClick"
             android:padding="5dp"
             android:scaleType="fitCenter"
             android:src="@drawable/car" />
@@ -48,13 +47,12 @@
             android:background="#90909090" />
 
         <ImageButton
-            android:id="@+id/imgBtnShopCart"
+            android:id="@+id/imgBtnBasket"
             android:layout_width="70dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:backgroundTint="@color/color9"
-            android:onClick="onShopCartClick"
             android:padding="5dp"
             android:scaleType="fitCenter"
             android:src="@drawable/basket" />
@@ -74,7 +72,6 @@
         android:focusableInTouchMode="true"
         android:hint="@string/search"
         android:imeOptions="flagNoEnterAction"
-        android:onClick="onSearchClick"
         android:padding="4dp"
         android:textStyle="italic"
         app:bootstrapSize="lg"
@@ -143,7 +140,6 @@
                 android:layout_marginRight="2.5dp"
                 android:background="@drawable/foreign_back"
                 android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
                 android:textAppearance="@android:style/TextAppearance.Widget.TextView"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold|italic"
@@ -157,7 +153,6 @@
                 android:layout_marginLeft="2.5dp"
                 android:background="@drawable/kid_back"
                 android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
                 android:textAppearance="@android:style/TextAppearance.Widget.TextView"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold|italic"
@@ -170,14 +165,13 @@
             android:paddingBottom="5dp">
 
             <Button
-                android:id="@+id/btnBusieness"
+                android:id="@+id/btnBusiness"
                 android:layout_width="170dp"
                 android:layout_height="135dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="2.5dp"
                 android:background="@drawable/business_back"
                 android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
                 android:textAppearance="@android:style/TextAppearance.Widget.TextView"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold|italic"
@@ -191,7 +185,6 @@
                 android:layout_marginLeft="2.5dp"
                 android:background="@drawable/fiction_back"
                 android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
                 android:textAppearance="@android:style/TextAppearance.Widget.TextView"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold|italic"
@@ -211,7 +204,6 @@
                 android:layout_marginRight="2.5dp"
                 android:background="@drawable/study_back"
                 android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
                 android:textAppearance="@android:style/TextAppearance.Widget.TextView"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold|italic"
@@ -225,7 +217,6 @@
                 android:layout_marginLeft="2.5dp"
                 android:background="@drawable/nonfiction_back"
                 android:fontFamily="casual"
-                android:onClick="onKindOfBookClick"
                 android:textAppearance="@android:style/TextAppearance.Widget.TextView"
                 android:textColor="@color/colorAccent"
                 android:textStyle="bold|italic"

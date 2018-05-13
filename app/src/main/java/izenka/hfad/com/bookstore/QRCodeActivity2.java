@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.controller;
+package izenka.hfad.com.bookstore;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import izenka.hfad.com.bookstore.R;
 
 public class QRCodeActivity2 extends AppCompatActivity {
 

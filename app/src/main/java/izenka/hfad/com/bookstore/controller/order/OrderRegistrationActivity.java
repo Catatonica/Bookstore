@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.controller.MainMenuActivity;
+import izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity;
 import izenka.hfad.com.bookstore.model.db_classes.Order;
 import stanford.androidlib.SimpleActivity;
 

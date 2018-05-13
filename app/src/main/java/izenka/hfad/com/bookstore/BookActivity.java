@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.controller;
+package izenka.hfad.com.bookstore;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,11 +27,11 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.controller.order.OrdersActivity;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 import izenka.hfad.com.bookstore.model.db_classes.Publisher;
+import izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity;
 import mehdi.sakout.fancybuttons.FancyButton;
 import stanford.androidlib.SimpleActivity;
 
