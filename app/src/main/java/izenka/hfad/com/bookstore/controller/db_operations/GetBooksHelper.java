@@ -1,23 +1,18 @@
-package izenka.hfad.com.bookstore.controller;
+package izenka.hfad.com.bookstore.controller.db_operations;
 
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +24,7 @@ import izenka.hfad.com.bookstore.model.db_classes.Book;
 
 public abstract class GetBooksHelper {
 
-    static void getBooksFromSearch(final Activity activity, final int gridLayoutID, final int categoryID) {
+    public static void getBooksFromSearch(final Activity activity, final int gridLayoutID, final int categoryID) {
 
         final EditText editText = (EditText) activity.findViewById(R.id.etSearch);
         final String inputText = editText.getText().toString().toLowerCase();
@@ -54,14 +49,14 @@ public abstract class GetBooksHelper {
                                 for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
                                     Authors.add((Long) authID.getValue());
                                 }
-                                setAuthor(Authors, view);
+                                SetHelper.setAuthor(Authors, view);
 
                                 List<String> Images = new ArrayList<>();
                                 for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
                                     Images.add(imagesID.getValue().toString());
                                 }
                                 int bookID = book.book_id;
-                                setImage(activity, Images, bookID, view);
+                                SetHelper.setImage(activity, Images, bookID, view);
 
                                 view.setId(bookID);
 
@@ -93,14 +88,14 @@ public abstract class GetBooksHelper {
                                             for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
                                                 Authors.add((Long) authID.getValue());
                                             }
-                                            setAuthor(Authors, view);
+                                            SetHelper.setAuthor(Authors, view);
 
                                             List<String> Images = new ArrayList<>();
                                             for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
                                                 Images.add(imagesID.getValue().toString());
                                             }
                                             int bookID = book.book_id;
-                                            setImage(activity, Images, bookID, view);
+                                            SetHelper.setImage(activity, Images, bookID, view);
 
                                             view.setId(bookID);
 
@@ -146,7 +141,7 @@ public abstract class GetBooksHelper {
                 for (DataSnapshot authID : data.child("Authors").getChildren()) {
                     Authors.add((Long) authID.getValue());
                 }
-                setAuthor(Authors, view);
+                SetHelper.setAuthor(Authors, view);
             }
 
             @Override
@@ -157,7 +152,35 @@ public abstract class GetBooksHelper {
     }
 
 
-    static void getBooksFromCategory(final Activity activity, final int categoryID) {
+    public static void loadAuthors(final List<Long> authorsID, final Book book) {
+        for (long authorID : authorsID) {
+            DatabaseReference authorRef = FirebaseDatabase.getInstance().getReference().child("bookstore/author/" + authorID);
+            authorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Author author = dataSnapshot.getValue(Author.class);
+                    String authorName = author.author_name.substring(0, 1);
+                    String authorSurname = author.author_surname;
+                    book.authors.add(authorSurname + " " + authorName + ".");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private static List<Book> bookList;
+
+    public static List<Book> getBooksList() {
+        return bookList;
+    }
+
+    public static void loadBooksFromCategory(final int categoryID) {
+        bookList = new ArrayList<>();
+
         final DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference().child("bookstore/book");
         final Query queryBook = bookRef.orderByChild("book_id");
         queryBook.addValueEventListener(new ValueEventListener() {
@@ -167,86 +190,98 @@ public abstract class GetBooksHelper {
                     for (DataSnapshot id : bookData.child("Categories").getChildren())
                         if (String.valueOf(id.getValue()).equals(String.valueOf(categoryID))) {
                             {
-                                Book book = bookData.getValue(Book.class);
-                                Log.d("book", book.toString());
-                                final View view = activity.getLayoutInflater().inflate(R.layout.book, null);
-
-                                String title = book.title;
-                                String price = book.price;
-
-                                List<Long> Authors = new ArrayList<>();
-                                for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
-                                    Authors.add((Long) authID.getValue());
-                                }
-                                setAuthor(Authors, view);
-
-                                List<String> Images = new ArrayList<>();
+                                final Book book = bookData.getValue(Book.class);
+                                List<String> imagesPaths = new ArrayList<>();
                                 for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
-                                    Images.add(imagesID.getValue().toString());
+                                    imagesPaths.add(imagesID.getValue().toString());
                                 }
-                                int bookID = book.book_id;
-                                setImage(activity, Images, bookID, view);
+                                book.imagesPaths = imagesPaths;
 
-                                view.setId(bookID);
+                                final List<Long> authorsIDs = new ArrayList<>();
+                                for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
+                                    authorsIDs.add((Long) authID.getValue());
+                                }
 
-                                TextView tvBookPrise = (TextView) view.findViewById(R.id.tvBookPrise);
-                                tvBookPrise.setText(price);
-                                TextView tvBookName = (TextView) view.findViewById(R.id.tvBookName);
-                                tvBookName.setText("\"" + title + "\"");
+                                book.authors = new ArrayList<>();
+                                loadAuthors(authorsIDs, book);
 
-                                GridLayout gridLayout = (GridLayout) activity.findViewById(R.id.gridLayout);
-                                gridLayout.addView(view);
+                                bookList.add(book);
                             }
                         }
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
     }
 
-
-    static void setAuthor(List<Long> authorsID, final View view) {
-        final List<String> authorSurName = new ArrayList<>();
-        DatabaseReference authorRef = FirebaseDatabase.getInstance().getReference().child("bookstore/author");
-        for (long authorID : authorsID) {
-            Log.d("List", authorID + "");
-            Query queryAuthor = authorRef.orderByChild("author_id").equalTo(authorID);
-            queryAuthor.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Author author = dataSnapshot.getChildren().iterator().next().getValue(Author.class);
-                    String authorName = author.author_name.substring(0, 1);
-                    String authorSurname = author.author_surname;
-                    authorSurName.add(authorSurname + " " + authorName + ".");
-                    String auth = authorSurName.toString();
-                    TextView tvBookAuthor = (TextView) view.findViewById(R.id.tvBookAuthor);
-                    tvBookAuthor.setText(auth.substring(1, auth.length() - 1));
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-    }
-
-    static void setImage(Activity activity, List<String> Images, int bookID, View view) {
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        String bookImage = Images.get(0);
-        StorageReference imageRef = storage.getReference().child(bookImage);
-
-        ImageView imgBtnBook = (ImageView) view.findViewById(R.id.imgBtnBook);
-        imgBtnBook.setId(bookID);
-
-        Glide.with(activity /* context */)
-             .using(new FirebaseImageLoader())
-             .load(imageRef)
-             .into(imgBtnBook);
-
-    }
+//    public static List<Long> getBooksIDs() {
+//        return booksIDs;
+//    }
+//
+//    private static List<Long> booksIDs;
+//
+//    public static void findBooksFromCategory(final int categoryID) {
+//        booksIDs = new ArrayList<>();
+//
+//        final DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference().child("bookstore/book");
+//        bookRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot data) {
+//                for (DataSnapshot bookData : data.getChildren())
+//                    for (DataSnapshot id : bookData.child("Categories").getChildren())
+//                        if (String.valueOf(id.getValue()).equals(String.valueOf(categoryID))) {
+//                            {
+//                                booksIDs.add((Long) bookData.child("book_id").getValue());
+//                            }
+//                        }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//
+//        });
+//    }
+//
+//    private static Book loadingBook;
+//
+//    public static Book getBook() {
+//        return loadingBook;
+//    }
+//
+//    public static void loadBook(long bookID) {
+//        final DatabaseReference bookRef = FirebaseDatabase.getInstance().getReference().child("bookstore/book/" + bookID);
+//        bookRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot data) {
+//                final Book book = data.getValue(Book.class);
+//                List<String> imagesPaths = new ArrayList<>();
+//                for (DataSnapshot imagesID : data.child("Images").getChildren()) {
+//                    imagesPaths.add(imagesID.getValue().toString());
+//                }
+//                book.imagesPaths = imagesPaths;
+//
+//                final List<Long> authorsIDs = new ArrayList<>();
+//                for (DataSnapshot authID : data.child("Authors").getChildren()) {
+//                    authorsIDs.add((Long) authID.getValue());
+//                }
+//
+//                book.authors = new ArrayList<>();
+//                loadAuthors(authorsIDs, book);
+//                loadingBook = book;
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//
+//        });
+//    }
 }

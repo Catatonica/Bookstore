@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="izenka.hfad.com.bookstore">
-    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
@@ -39,7 +41,8 @@
             android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity android:name=".controller.order.OrdersActivity" />
         <activity android:name=".controller.order.OneOrderActivity" />
-        <activity android:name=".controller.QRCodeActivity"></activity>
+        <activity android:name=".controller.QRCodeActivity" />
+        <activity android:name=".controller.QRCodeActivity2"></activity>
     </application>
 
 </manifest>
