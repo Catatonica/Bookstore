@@ -8,7 +8,11 @@
     android:background="@color/bezch"
     android:baselineAligned="false"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.controller.BookActivity">
+<<<<<<< HEAD
+    tools:context="izenka.hfad.com.bookstore.view.book.BookActivity">
+=======
+    tools:context="izenka.hfad.com.bookstore.BookActivity">
+>>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 
     <include layout="@layout/titlebar" />
 

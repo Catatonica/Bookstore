@@ -5,7 +5,11 @@
     android:layout_height="match_parent"
     android:background="@color/bezch"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.controller.BasketActivity">
+<<<<<<< HEAD
+    tools:context="izenka.hfad.com.bookstore.view.basket.BasketActivity">
+=======
+    tools:context="izenka.hfad.com.bookstore.BasketActivity">
+>>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +23,6 @@
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_gravity="left|center"
-            android:onClick="onReturnBackClick"
             android:padding="10dp"
             android:src="@drawable/return_back"
             android:tint="@color/white" />

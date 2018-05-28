@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bezch"
+    android:orientation="vertical"
+<<<<<<< HEAD:app/src/main/res/layout/activity_order.xml
+    tools:context="izenka.hfad.com.bookstore.view.basket.BasketActivity">
+=======
+    tools:context="izenka.hfad.com.bookstore.BasketActivity">
+>>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3:app/src/main/res/layout/activity_one_order.xml
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@color/color9">
+
+        <Button
+            android:id="@+id/btnGoBack"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/return_back"
+            android:backgroundTint="@color/bootstrap_brand_secondary_fill" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/btnGoBack"
+            android:background="#90909090" />
+
+        <TextView
+            android:id="@+id/tvHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/btnGoBack"
+            android:text="Заказ 20.12.2017 "
+            android:textColor="@color/biruz"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Общая цена:"
+            android:textColor="@color/color9"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/green"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/svOrders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/boarders2">
+
+        <!--ListView
+            android:layout_gravity="center"
+            android:id="@+id/lvOrders"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView!-->
+        <LinearLayout
+            android:id="@+id/llOrderedBooks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

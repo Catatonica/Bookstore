@@ -1,0 +1,31 @@
+Action bar:
+Place navigation on the far left
+Place any titles to the right of navigation
+Place contextual actions to the right of navigation
+Place an overflow menu (if used) to the far right
+
+A navigation icon is optional. When it appears in an app bar, it’s aligned on the left of the bar.
+
+It can take any of the following forms:
+
+A menu icon, which opens a navigation drawer
+An up arrow, which navigating up an app’s hierarchy
+A back arrow, which returns to the previous screen
+
+Icon placement
+Place most-used actions on the left, progressing towards the least-used actions on the far right.
+ Any remaining actions that don’t fit on the app bar can go into an overflow menu.
+
+ The top app bar disappears upon scrolling up, and appears upon scrolling down.
+ Top app bars can be positioned at the same elevation as content. Upon scroll, they increase elevation and let content scroll behind them.
+
+ Text
+ H6
+
+ Merriweather
+
+ Bold Italic
+
+ 20
+
+ Title case

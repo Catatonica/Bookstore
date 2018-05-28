@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
+    android:id="@+id/llBook"
     android:gravity="center"
-    android:onClick="onBookClick"
     android:orientation="vertical"
     android:padding="12dp">
 

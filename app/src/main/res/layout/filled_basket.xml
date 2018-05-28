@@ -6,7 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.controller.BasketActivity">
+<<<<<<< HEAD
+    tools:context="izenka.hfad.com.bookstore.view.basket.BasketActivity">
+=======
+    tools:context="izenka.hfad.com.bookstore.BasketActivity">
+>>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,13 +18,12 @@
         android:background="@color/color9">
 
         <ImageView
-            android:id="@+id/btnGoBack"
+            android:id="@+id/btnGoBackFromBasket"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
             android:layout_gravity="left|center"
-            android:onClick="onReturnBackClick"
             android:padding="10dp"
             android:src="@drawable/return_back"
             android:tint="@color/white" />
@@ -53,7 +56,6 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:onClick="onChooseEthClick"
             fancy:fb_borderColor="@color/darkBrown"
             fancy:fb_borderWidth="1dp"
             fancy:fb_defaultColor="@color/bezch2"
@@ -142,7 +144,6 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="100dp"
-                android:onClick="onDeleteClick"
                 android:padding="5dp"
                 fancy:fb_borderColor="@color/darkBrown"
                 fancy:fb_borderWidth="1dp"
@@ -161,7 +162,7 @@
                 android:layout_height="wrap_content" /!-->
 
             <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/btnForm"
+                android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
@@ -170,7 +171,6 @@
                 android:layout_marginEnd="27dp"
                 android:layout_marginRight="30dp"
                 android:gravity="center"
-                android:onClick="onRegisterClick"
                 fancy:fb_borderColor="@color/darkBrown"
                 fancy:fb_borderWidth="1dp"
                 fancy:fb_defaultColor="@color/biruz"

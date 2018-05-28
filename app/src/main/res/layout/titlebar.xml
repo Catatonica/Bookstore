@@ -67,11 +67,11 @@
     <View
         android:layout_width="1dp"
         android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/imgBtnShopCart"
+        android:layout_alignLeft="@+id/imgBtnBasket"
         android:background="#90909090" />
 
     <ImageButton
-        android:id="@+id/imgBtnShopCart"
+        android:id="@+id/imgBtnBasket"
         android:layout_width="70dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"

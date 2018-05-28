@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/bezch2"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.controller.BookListActivity">
+    tools:context="izenka.hfad.com.bookstore.view.book_list.BookListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,13 +14,13 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnBack"
             android:layout_width="25dp"
             android:layout_height="15dp"
             android:layout_gravity="left|center"
             android:layout_marginLeft="10dp"
             android:background="@drawable/return_back"
-            android:backgroundTint="@color/bootstrap_brand_secondary_fill"
-            android:onClick="onReturnBackClick" />
+            android:backgroundTint="@color/bootstrap_brand_secondary_fill" />
 
         <EditText
             android:id="@+id/etSearch"
@@ -38,12 +38,12 @@
             android:textStyle="italic" />
 
         <Button
+            android:id="@+id/btnDeleteInput"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/cross"
-            android:backgroundTint="@color/red2"
-            android:onClick="onBtnDeleteInputClick" />
+            android:backgroundTint="@color/red2" />
     </LinearLayout>
 
     <ScrollView

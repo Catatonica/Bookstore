@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bezch"
+    android:orientation="vertical"
+    tools:context="izenka.hfad.com.bookstore.view.registration.RegistrationActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/color9">
+
+        <Button
+            android:id="@+id/btnGoBack"
+            android:layout_width="25dp"
+            android:layout_height="15dp"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/return_back"
+            android:backgroundTint="@color/bootstrap_brand_secondary_fill" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="60dp"
+            android:text="@string/orderRegistration"
+            android:textColor="@color/yellow"
+            android:textSize="20sp" />
+
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:text="@string/fillForm"
+        android:textColor="@color/color9"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="7dp"
+        android:text="@string/necessaryToFill"
+        android:textSize="17sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="70dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/white1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/etPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/phoneNumber"
+                    android:inputType="phone"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp" />
+
+                <EditText
+                    android:id="@+id/etCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/city"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp" />
+
+                <EditText
+                    android:id="@+id/etStreet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/street"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:paddingLeft="10dp" />
+
+                <EditText
+                    android:id="@+id/etHouse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/house"
+                    android:inputType="date"
+                    android:paddingLeft="10dp" />
+
+                <EditText
+                    android:id="@+id/etFlatNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/flat"
+                    android:inputType="number"
+                    android:paddingLeft="10dp" />
+
+                <EditText
+                    android:id="@+id/etPorchNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/porch"
+                    android:inputType="number"
+                    android:paddingLeft="10dp" />
+
+                <EditText
+                    android:id="@+id/etFloor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/floor"
+                    android:inputType="number"
+                    android:paddingLeft="10dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+
+            android:text="@string/endRegistration"
+            fancy:fb_borderColor="@color/darkBrown"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="@color/biruz"
+            fancy:fb_radius="30dp"
+            fancy:fb_text="@string/endRegistration"
+            fancy:fb_textColor="@color/color9"
+            fancy:fb_textSize="20sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

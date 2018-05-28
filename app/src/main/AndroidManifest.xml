@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".controller.MainMenuActivity"
+            android:name=".view.main_menu.MainMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateHidden">
@@ -25,24 +25,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.BookListActivity"
+            android:name=".view.book_list.BookListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".controller.BasketActivity"
+<<<<<<< HEAD
+            android:name=".view.basket.BasketActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".controller.BookActivity" />
+        <activity android:name=".view.book.BookActivity" />
+=======
+            android:name=".BasketActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".BookActivity" />
+>>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
         <activity
-            android:name=".controller.order.OrderRegistrationActivity"
+            android:name=".view.registration.RegistrationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".controller.SearchActivity"
+            android:name=".view.search.SearchActivity"
             android:windowSoftInputMode="adjustPan|stateVisible" />
+<<<<<<< HEAD
+        <activity android:name=".view.orders.OrdersActivity" />
+        <activity android:name=".view.order.OrderActivity" />
+        <activity android:name=".view.qr_code.QRCodeActivity" />
+=======
         <activity android:name=".controller.order.OrdersActivity" />
         <activity android:name=".controller.order.OneOrderActivity" />
-        <activity android:name=".controller.QRCodeActivity" />
-        <activity android:name=".controller.QRCodeActivity2"></activity>
+        <activity android:name=".view.qr_code.QRCodeActivity" />
+        <activity android:name=".QRCodeActivity2"></activity>
+>>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
     </application>
 
 </manifest>
