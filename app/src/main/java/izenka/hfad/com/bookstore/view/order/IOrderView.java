@@ -4,9 +4,9 @@ package izenka.hfad.com.bookstore.view.order;
 public interface IOrderView {
     void initViews();
 
-    void onBackClick();
+//    void onBackClick();
 
-    void setHeading(String heading);
+    //void setHeading(String heading);
 
     void setPrise(String prise);
 

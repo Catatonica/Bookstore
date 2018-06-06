@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_name_profile"
+            android:title="@string/profile">
+            <menu>
+                <item
+                    android:id="@+id/nav_profile"
+                    android:icon="@drawable/ic_account_circle_black_24dp"
+                    android:title="@string/account" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/nav_catalogue"
+            android:checked="true"
+            android:icon="@drawable/ic_view_module_black_24dp"
+            android:title="@string/catalogue" />
+        <item
+            android:id="@+id/nav_basket"
+            android:icon="@drawable/ic_shopping_basket_black_24dp"
+            android:title="@string/basket" />
+        <item
+            android:id="@+id/nav_purchases"
+            android:icon="@drawable/ic_local_shipping_black_24dp"
+            android:title="@string/orders" />
+
+        <item
+            android:id="@+id/nav_name_map"
+            android:title="@string/maps">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_map"
+                    android:icon="@drawable/ic_place_black_24dp"
+                    android:title="@string/shops_map" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/nav_name_info"
+            android:title="@string/nav_info">
+
+            <menu>
+                <item
+                    android:id="@+id/nav_info"
+                    android:icon="@drawable/ic_info_black_24dp"
+                    android:title="@string/shop_info" />
+            </menu>
+        </item>
+    </group>
+</menu>

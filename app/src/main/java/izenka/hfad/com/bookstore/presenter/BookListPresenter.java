@@ -1,14 +1,13 @@
 package izenka.hfad.com.bookstore.presenter;
 
 
-<<<<<<< HEAD
 import android.content.Intent;
 import android.view.View;
 
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import izenka.hfad.com.bookstore.view.basket.BasketActivity;
+import izenka.hfad.com.bookstore.basket.view.BasketActivity;
 import izenka.hfad.com.bookstore.view.book.BookActivity;
 import izenka.hfad.com.bookstore.model.db_operations.ReadBooks;
 import izenka.hfad.com.bookstore.model.repositories.BookListRepository;
@@ -18,42 +17,19 @@ import izenka.hfad.com.bookstore.view.book_list.IBookListView;
 import izenka.hfad.com.bookstore.view.orders.OrdersActivity;
 import izenka.hfad.com.bookstore.view.search.SearchActivity;
 
-public class BookListPresenter implements IPresenter {
+public class BookListPresenter implements IPresenter, IToolbarPresenter {
 
     private int categoryID;
     private IBookListView bookListView;
     private BookListRepository bookListRepository;
-=======
-import android.view.View;
-
-import java.util.List;
-
-import izenka.hfad.com.bookstore.BasketActivity;
-import izenka.hfad.com.bookstore.BookActivity;
-import izenka.hfad.com.bookstore.view.book_list.IBookListView;
-import izenka.hfad.com.bookstore.view.search.SearchActivity;
-import izenka.hfad.com.bookstore.controller.db_operations.GetBooksHelper;
-import izenka.hfad.com.bookstore.controller.order.OrdersActivity;
-import izenka.hfad.com.bookstore.model.db_classes.Book;
-
-public class BookListPresenter {
-
-    private int categoryID;
-    private IBookListView bookListView;
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 
     public BookListPresenter(IBookListView bookListView, int categoryID) {
         this.bookListView = bookListView;
         this.categoryID = categoryID;
-<<<<<<< HEAD
         bookListRepository = new BookListRepository();
     }
 
     @Override
-=======
-    }
-
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
     public void onViewCreated() {
         bookListView.initViews();
         bookListView.setCategoryName(categoryID);
@@ -62,24 +38,15 @@ public class BookListPresenter {
 
     private void showBookList() {
         waitForBooksLoading();
-<<<<<<< HEAD
         bookListRepository.setBookList(ReadBooks.getBooksList());
         bookListView.showBookList(bookListRepository.getBookList());
-=======
-        List<Book> bookList = GetBooksHelper.getBooksList();
-        bookListView.showBookList(bookList);
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
     }
 
     private void waitForBooksLoading() {
         Thread loadingBooksThread = new Thread(new Runnable() {
             @Override
             public void run() {
-<<<<<<< HEAD
                 ReadBooks.loadBooksFromCategory(categoryID);
-=======
-                GetBooksHelper.loadBooksFromCategory(categoryID);
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
             }
         });
         loadingBooksThread.start();
@@ -90,13 +57,16 @@ public class BookListPresenter {
         }
     }
 
-    public void onOrdersClicked(View view) {
-<<<<<<< HEAD
-        bookListView.startActivityWithAnimation(view, OrdersActivity.class);
+    @Override
+    public void onOrdersClicked() {
+        Intent intent = new Intent();
+        bookListView.startActivity(intent, OrdersActivity.class);
     }
 
-    public void onBasketClicked(View view) {
-        bookListView.startActivityWithAnimation(view, BasketActivity.class);
+    @Override
+    public void onBasketClicked() {
+        Intent intent = new Intent();
+        bookListView.startActivity(intent, BasketActivity.class);
     }
 
     public void onBookClicked(View view) {
@@ -134,20 +104,5 @@ public class BookListPresenter {
         String bookImage = book.imagesPaths.get(0);
         StorageReference imageRef = storage.getReference().child(bookImage);
         holder.setImage(imageRef);
-=======
-        bookListView.startActivity(view, OrdersActivity.class);
-    }
-
-    public void onBasketClicked(View view) {
-        bookListView.startActivity(view, BasketActivity.class);
-    }
-
-    public void onBookClicked(View view) {
-        bookListView.startActivity(view, BookActivity.class, "bookID", view.getId());
-    }
-
-    public void onSearchClicked() {
-        bookListView.startActivity(SearchActivity.class, "categoryID", categoryID);
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
     }
 }

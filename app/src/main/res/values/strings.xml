@@ -37,6 +37,15 @@
     <string name="input_search">Введите книгу или автора</string>
     <string name="orders">Заказы</string>
     <string name="company_name">OOO "Bookstore"</string>
+    <string name="hello_message">Добро пожаловать в Bookstore! Порадуйте себя возможностью окунуться в мир книг :)</string>
+    <string name="shops_map">Карта магазинов</string>
+    <string name="shop_info">Информация о магазине</string>
+    <string name="scan_book">Сканировать</string>
+    <string name="catalogue">Каталог</string>
+    <string name="maps">Карты</string>
+    <string name="nav_info">Информация</string>
+    <string name="profile">Профиль</string>
+    <string name="account">Аккаунт</string>
     <string-array name="categoriesNames">
         <item>Иностранная литература</item>
         <item>Детская литература</item>

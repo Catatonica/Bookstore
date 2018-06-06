@@ -23,8 +23,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity;
+import izenka.hfad.com.bookstore.main_menu.view.MainMenuActivity;
 import izenka.hfad.com.bookstore.model.db_classes.Order;
+import izenka.hfad.com.bookstore.view.orders.OrdersActivity;
 import stanford.androidlib.SimpleActivity;
 
 //TODO: make OrdersActivity and layout for it
@@ -40,7 +41,7 @@ public class OrderRegistrationActivity extends SimpleActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_registration);
+        setContentView(R.layout.activity_registration);
 
         Intent intent = getIntent();
         Log.d("idAndCount", intent.getStringArrayListExtra("idAndCount").toString());

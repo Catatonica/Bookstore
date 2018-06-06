@@ -2,6 +2,7 @@ package izenka.hfad.com.bookstore.view.orders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import izenka.hfad.com.bookstore.R;
@@ -18,11 +19,23 @@ public class OrdersActivity extends SimpleActivity implements IOrdersView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
+        setToolbar();
+
         if(presenter == null){
             presenter = new OrdersPresenter(this);
         }
         presenter.onViewCreated();
         presenter.showOrders(getSharedPreferences("ordersPref", MODE_PRIVATE));
+    }
+
+    private void setToolbar(){
+        setSupportActionBar(findViewById(R.id.toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setTitle(R.string.orders);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        }
     }
 
     @Override
@@ -43,7 +56,7 @@ public class OrdersActivity extends SimpleActivity implements IOrdersView {
 
     @Override
     public void initViews() {
-        $IV(R.id.btnGoBack).setOnClickListener(view->presenter.onBackClicked());
+//        $IV(R.id.btnGoBack).setOnClickListener(view->presenter.onBackClicked());
 //        View orderView = LayoutInflater.from(this).inflate(R.layout.order, null, false);
 //        orderView.setOnClickListener(view -> presenter.onOrderClicked(view));
     }
@@ -62,5 +75,11 @@ public class OrdersActivity extends SimpleActivity implements IOrdersView {
 
     public void onOrderClick(View view) {
         presenter.onOrderClicked(view);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
 }

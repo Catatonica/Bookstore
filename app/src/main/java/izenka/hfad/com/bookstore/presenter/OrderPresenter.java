@@ -17,15 +17,15 @@ public class OrderPresenter implements IPresenter {
     @Override
     public void onViewCreated(){
         orderView.initViews();
-        String heading = "Заказ " + intent.getStringExtra("date");
-        orderView.setHeading(heading);
+//        String heading = "Заказ " + intent.getStringExtra("date");
+//        orderView.setHeading(heading);
         String totalPrice = intent.getStringExtra("price");
         orderView.setPrise(totalPrice);
         String orderID = intent.getStringExtra("orderID");
         orderView.setBooksIDAndCount(orderID);
     }
 
-    public void onBackClicked(){
-        orderView.onBackClick();
-    }
+//    public void onBackClicked(){
+//        orderView.onBackClick();
+//    }
 }

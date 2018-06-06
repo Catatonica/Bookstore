@@ -6,43 +6,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-<<<<<<< HEAD
-    tools:context="izenka.hfad.com.bookstore.view.basket.BasketActivity">
-=======
-    tools:context="izenka.hfad.com.bookstore.BasketActivity">
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
+    tools:context="izenka.hfad.com.bookstore.basket.view.BasketActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:background="@color/color9">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="47dp"-->
+        <!--android:background="@color/color9">-->
 
-        <ImageView
-            android:id="@+id/btnGoBackFromBasket"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_gravity="left|center"
-            android:padding="10dp"
-            android:src="@drawable/return_back"
-            android:tint="@color/white" />
+        <!--<ImageView-->
+            <!--android:id="@+id/btnGoBackFromBasket"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_gravity="left|center"-->
+            <!--android:padding="10dp"-->
+            <!--android:src="@drawable/return_back"-->
+            <!--android:tint="@color/white" />-->
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/btnGoBack"
-            android:background="#90909090" />
+        <!--<View-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_toRightOf="@+id/btnGoBack"-->
+            <!--android:background="#90909090" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/basket"
-            android:textColor="@color/yellow"
-            android:textSize="20sp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:text="@string/basket"-->
+            <!--android:textColor="@color/yellow"-->
+            <!--android:textSize="20sp" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"

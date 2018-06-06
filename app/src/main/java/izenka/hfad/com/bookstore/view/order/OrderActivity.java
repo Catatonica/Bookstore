@@ -2,6 +2,7 @@ package izenka.hfad.com.bookstore.view.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.widget.TextView;
 
 import izenka.hfad.com.bookstore.R;
@@ -22,6 +23,7 @@ public class OrderActivity extends SimpleActivity implements IOrderView {
         setContentView(R.layout.activity_order);
 
         Intent intent = getIntent();
+        setToolbar("Заказ "+intent.getStringExtra("date"));
 
         if (presenter == null) {
             presenter = new OrderPresenter(this, intent);
@@ -29,10 +31,20 @@ public class OrderActivity extends SimpleActivity implements IOrderView {
         presenter.onViewCreated();
     }
 
-    @Override
-    public void setHeading(String heading) {
-        tvHeading.setText(heading);
+    private void setToolbar(String title){
+        setSupportActionBar(findViewById(R.id.toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setTitle(title);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        }
     }
+
+//    @Override
+//    public void setHeading(String heading) {
+//        tvHeading.setText(heading);
+//    }
 
     @Override
     public void setPrise(String prise) {
@@ -41,15 +53,21 @@ public class OrderActivity extends SimpleActivity implements IOrderView {
 
     @Override
     public void initViews() {
-        $B(R.id.btnGoBack).setOnClickListener(view -> presenter.onBackClicked());
-        tvHeading = $TV(R.id.tvHeading);
+//        $B(R.id.btnGoBack).setOnClickListener(view -> presenter.onBackClicked());
+//        tvHeading = $TV(R.id.tvHeading);
         tvPrise = $TV(R.id.tvTotalPrice);
     }
 
     @Override
-    public void onBackClick() {
+    public boolean onSupportNavigateUp() {
         onBackPressed();
+        return super.onSupportNavigateUp();
     }
+
+    //    @Override
+//    public void onBackClick() {
+//        onBackPressed();
+//    }
 
     @Override
     public void setBooksIDAndCount(String orderID) {

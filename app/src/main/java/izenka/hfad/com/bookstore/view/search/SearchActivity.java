@@ -1,17 +1,9 @@
 package izenka.hfad.com.bookstore.view.search;
 
-<<<<<<< HEAD
-=======
-import android.app.Activity;
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-<<<<<<< HEAD
-=======
-import android.view.KeyEvent;
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,7 +11,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.GridLayout;
-<<<<<<< HEAD
 
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.model.db_operations.ReadBooks;
@@ -28,18 +19,6 @@ import izenka.hfad.com.bookstore.presenter.SearchPresenter;
 import stanford.androidlib.SimpleActivity;
 
 public class SearchActivity extends SimpleActivity implements ISearchView {
-=======
-import android.widget.TextView;
-
-import izenka.hfad.com.bookstore.BookActivity;
-import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.controller.db_operations.GetBooksHelper;
-import izenka.hfad.com.bookstore.controller.helper.Helper;
-import izenka.hfad.com.bookstore.presenter.SearchPresenter;
-import stanford.androidlib.SimpleActivity;
-
-public class SearchActivity extends SimpleActivity implements SearchView {
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 
     private EditText etSearch;
     private SearchPresenter presenter;
@@ -50,11 +29,7 @@ public class SearchActivity extends SimpleActivity implements SearchView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-<<<<<<< HEAD
         if (presenter == null) {
-=======
-        if(presenter == null){
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
             presenter = new SearchPresenter(this, getIntent().getIntExtra("categoryID", 0));
         }
 
@@ -92,19 +67,13 @@ public class SearchActivity extends SimpleActivity implements SearchView {
             }
             return false;
         });
-<<<<<<< HEAD
         $B(R.id.btnBack).setOnClickListener(view -> presenter.onBackClicked());
         $B(R.id.btnDeleteInput).setOnClickListener(view -> presenter.onDeleteInputClicked());
-=======
-        $B(R.id.btnBack).setOnClickListener(view->presenter.onBackClicked());
-        $B(R.id.btnDeleteInput).setOnClickListener(view->presenter.onDeleteInputClicked());
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
         View bookView = LayoutInflater.from(this).inflate(R.layout.book, null, false);
         bookView.setOnClickListener(view -> presenter.onBookClicked(view));
     }
 
     @Override
-<<<<<<< HEAD
     public void startActivity(Intent intent, Class activity) {
 
     }
@@ -123,8 +92,6 @@ public class SearchActivity extends SimpleActivity implements SearchView {
     }
 
     @Override
-=======
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
     public void onBackClick() {
         Helper.hideKeyboard(this, etSearch);
         finish();
@@ -139,11 +106,7 @@ public class SearchActivity extends SimpleActivity implements SearchView {
 
     @Override
     public void showBooksFromSearch(int categoryID) {
-<<<<<<< HEAD
         ReadBooks.getBooksFromSearch(this, R.id.gridLayoutSearch, categoryID);
-=======
-        GetBooksHelper.getBooksFromSearch(this, R.id.gridLayoutSearch, categoryID);
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
     }
 
     @Override
@@ -152,26 +115,5 @@ public class SearchActivity extends SimpleActivity implements SearchView {
         showBooksFromSearch(categoryID);
     }
 
-<<<<<<< HEAD
 
-=======
-    @Override
-    public void startActivity(View view, Class activity) {
-
-    }
-
-    @Override
-    public void startActivity(Class activity, String extraName, int extra) {
-
-    }
-
-    @Override
-    public void startActivity(View view, Class activity, String extraName, int extra) {
-        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        view.startAnimation(anim);
-        Intent intent = new Intent(this, activity);
-        intent.putExtra(extraName, extra);
-        startActivity(intent);
-    }
->>>>>>> 713af467c300756a5d42d3eca411d50cbcc356d3
 }

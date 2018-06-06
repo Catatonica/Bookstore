@@ -25,16 +25,18 @@ import java.util.List;
 import java.util.Set;
 
 import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.basket.presenter.IBasketPresenter;
+import izenka.hfad.com.bookstore.basket.view.BasketActivity;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
-import izenka.hfad.com.bookstore.presenter.BasketPresenter;
+import izenka.hfad.com.bookstore.basket.presenter.BasketPresenterImpl;
 
 public class ReadBooksForBasket {
     private static DatabaseReference fb = FirebaseDatabase.getInstance().getReference();
     private static final DatabaseReference bookRef = fb.child("bookstore/book");
     private static double priceForSeveral;
 
-    public static void queryBook(Activity activity, String bookID, Set<View> checkedViewSet, BasketPresenter presenter) {
+    public static void queryBook(Activity activity, String bookID, Set<View> checkedViewSet, IBasketPresenter presenter) {
         final Query queryBook = bookRef.orderByChild("book_id").equalTo(Integer.parseInt(bookID));
         queryBook.addValueEventListener(new ValueEventListener() {
             @Override
@@ -108,7 +110,7 @@ public class ReadBooksForBasket {
                 for (DataSnapshot imagesID : data.getChildren().iterator().next().child("Images").getChildren()) {
                     Images.add(imagesID.getValue().toString());
                 }
-                setImage(Images, book.book_id, oneBookInBasketView, presenter);
+                setImage(Images, book.book_id, oneBookInBasketView, (BasketPresenterImpl) presenter);
 
                 presenter.addBookView(oneBookInBasketView);
             }
@@ -146,7 +148,7 @@ public class ReadBooksForBasket {
         }
     }
 
-    private static void setImage(List<String> Images, int bookID, View view, BasketPresenter presenter) {
+    private static void setImage(List<String> Images, int bookID, View view, BasketPresenterImpl presenter) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         String bookImage = Images.get(0);
         StorageReference imageRef = storage.getReference().child(bookImage);

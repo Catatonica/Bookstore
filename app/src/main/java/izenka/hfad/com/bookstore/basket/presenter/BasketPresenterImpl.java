@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.presenter;
+package izenka.hfad.com.bookstore.basket.presenter;
 
 
 import android.content.Intent;
@@ -17,20 +17,34 @@ import java.util.HashSet;
 import java.util.Set;
 
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.view.basket.IBasketView;
-import izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity;
+import izenka.hfad.com.bookstore.basket.view.EmptyBasketFragment;
+import izenka.hfad.com.bookstore.basket.view.FilledBasketFragment;
+import izenka.hfad.com.bookstore.basket.view.IBasketFragmentView;
+import izenka.hfad.com.bookstore.basket.view.IBasketView;
+import izenka.hfad.com.bookstore.basket.view.IFilledBasketFragmentView;
+import izenka.hfad.com.bookstore.main_menu.view.IMainMenuFragmentView;
+import izenka.hfad.com.bookstore.main_menu.view.MainMenuActivity;
+import izenka.hfad.com.bookstore.main_menu.view.MainMenuFragment;
+import izenka.hfad.com.bookstore.presenter.IPresenter;
 import izenka.hfad.com.bookstore.view.registration.RegistrationActivity;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 //TODO: onRegistrationBack
-public class BasketPresenter implements IPresenter{
+public class BasketPresenterImpl implements IBasketPresenter {
     private IBasketView basketView;
     private SharedPreferences sp;
     private Set<View> viewSet = new HashSet<>();
+
+    public Set<View> getCheckedViewSet() {
+        return checkedViewSet;
+    }
+
     private Set<View> checkedViewSet = new HashSet<>();
     private double totalPrice;
 
-    public BasketPresenter(IBasketView basketView, SharedPreferences sp) {
+    private IFilledBasketFragmentView filledFragment;
+
+    public BasketPresenterImpl(IBasketView basketView, SharedPreferences sp) {
         this.basketView = basketView;
         this.sp = sp;
     }
@@ -42,15 +56,21 @@ public class BasketPresenter implements IPresenter{
     @Override
     public void onViewCreated() {
         basketView.initViews();
+        basketView.setToolbar();
         MainMenuActivity.stringSet = sp.getStringSet("booksIDs", null);
-        //if there are no orders in the basket, then show layout of empty_basket, otherwise -- activity_basket
-        if (MainMenuActivity.stringSet.isEmpty()) {
-            basketView.addEmptyBasketView();
-            basketView.initEmptyBasketViews();
+        if (MainMenuActivity.stringSet == null||MainMenuActivity.stringSet.isEmpty()) {
+//            basketView.addEmptyBasketView();
+//            basketView.initEmptyBasketViews();
+            IBasketFragmentView emptyFragment = new EmptyBasketFragment();
+            emptyFragment.setPresenter(this);
+            basketView.setFragment((EmptyBasketFragment)emptyFragment);
         } else {
-            basketView.addFilledBasketView();
-            basketView.initFilledBasketViews();
-            fillTheBasket();
+//            basketView.addFilledBasketView();
+//            basketView.initFilledBasketViews();
+//            fillTheBasket();
+            filledFragment = new FilledBasketFragment();
+            filledFragment.setPresenter(this);
+            basketView.setFragment((FilledBasketFragment)filledFragment);
         }
     }
 
@@ -109,13 +129,13 @@ public class BasketPresenter implements IPresenter{
 
     private void fillTheBasket() {
 
-        if (!MainMenuActivity.stringSet.isEmpty()) {
+//        if (!MainMenuActivity.stringSet.isEmpty()) {
             for (final String bookID : MainMenuActivity.stringSet) {
                 basketView.queryBook(bookID, checkedViewSet);
             }
-        } else {
-            basketView.addEmptyBasketView();
-        }
+//        } else {
+//            basketView.addEmptyBasketView();
+//        }
     }
 
     public void onRegisterClicked(View view) {
@@ -147,7 +167,8 @@ public class BasketPresenter implements IPresenter{
     }
 
     public void addBookView(View oneBookInBasketView) {
-        basketView.addBookView(oneBookInBasketView);
+        filledFragment.addBookView(oneBookInBasketView);
+//        basketView.addBookView(oneBookInBasketView);
         viewSet.add(oneBookInBasketView);
     }
 }

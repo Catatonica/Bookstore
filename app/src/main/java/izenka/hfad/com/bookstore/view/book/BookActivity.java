@@ -3,7 +3,10 @@ package izenka.hfad.com.bookstore.view.book;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,31 +28,40 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.view.basket.BasketActivity;
-import izenka.hfad.com.bookstore.view.orders.OrdersActivity;
+import izenka.hfad.com.bookstore.presenter.BookPresenter;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 import izenka.hfad.com.bookstore.model.db_classes.Publisher;
-import izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity;
+import izenka.hfad.com.bookstore.main_menu.view.MainMenuActivity;
 import mehdi.sakout.fancybuttons.FancyButton;
 import stanford.androidlib.SimpleActivity;
 
-public class BookActivity extends SimpleActivity {
+public class BookActivity extends SimpleActivity implements IBookView{
 
     private boolean bool = true;
     private DatabaseReference fb;
     private int bookID;
     private SharedPreferences sp;
     private Animation anim;
+    private BookPresenter presenter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
+
+        setToolbar();
+
+        if(presenter == null){
+            presenter = new BookPresenter(this);
+        }
+
+        presenter.onViewCreated();
 
         anim = AnimationUtils.loadAnimation(this, R.anim.my_alpha);
         mehdi.sakout.fancybuttons.FancyButton putInBasket = (mehdi.sakout.fancybuttons.FancyButton) findViewById(R.id.putInBasket);
@@ -61,6 +73,15 @@ public class BookActivity extends SimpleActivity {
         bookID = intent.getIntExtra("bookID", 0);
 
         fillViews(bookID);
+    }
+
+    private void setToolbar(){
+        setSupportActionBar(findViewById(R.id.toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        }
     }
 
     private void fillViews(int bookID) {
@@ -227,6 +248,9 @@ public class BookActivity extends SimpleActivity {
         // MainMenuActivity.user.getBooksIDs().add(bookID+"");
         //  MainMenuActivity.booksIDs.add(bookID+"");
         SharedPreferences.Editor e = sp.edit();
+//        if(MainMenuActivity.stringSet == null){
+//            MainMenuActivity.stringSet = new HashSet<>();
+//        }
         MainMenuActivity.stringSet.add(String.valueOf(bookID));
         e.putStringSet("booksIDs", MainMenuActivity.stringSet);
         e.apply();
@@ -247,31 +271,82 @@ public class BookActivity extends SimpleActivity {
         }
     }
 
-    public void onReturnBackClick(View view) {
-        Animation anim3 = AnimationUtils.loadAnimation(this, R.anim.translate);
-        view.startAnimation(anim3);
-        finish();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
-    public void onOrdersClick(View view) {
-        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        view.startAnimation(anim2);
-        Intent intent = new Intent(this, OrdersActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.diagonaltranslate3, R.anim.alpha2);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_basket:
+                presenter.onBasketClicked();
+                return true;
+
+            case R.id.action_orders:
+                presenter.onOrdersClicked();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+//    public void onReturnBackClick(View view) {
+//        Animation anim3 = AnimationUtils.loadAnimation(this, R.anim.translate);
+//        view.startAnimation(anim3);
+//        finish();
+//    }
+//
+//    public void onOrdersClick(View view) {
+//        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+//        view.startAnimation(anim2);
+//        Intent intent = new Intent(this, OrdersActivity.class);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.diagonaltranslate3, R.anim.alpha2);
+//    }
+//
+//    public void onShopCartClick(View view) {
+//        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
+//        //SharedPreferences.Editor e = sp.edit();
+//        // e.putStringSet("booksIDs",MainMenuActivity.stringSet);
+//        //e.apply();
+//        //  e.commit();
+//        view.startAnimation(anim2);
+//        Intent intent = new Intent(this, BasketActivity.class);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.diagonaltranslate, R.anim.alpha2);
+//    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void initViews() {
 
     }
 
-    public void onShopCartClick(View view) {
-        Animation anim2 = AnimationUtils.loadAnimation(this, R.anim.alpha);
-        //SharedPreferences.Editor e = sp.edit();
-        // e.putStringSet("booksIDs",MainMenuActivity.stringSet);
-        //e.apply();
-        //  e.commit();
-        view.startAnimation(anim2);
-        Intent intent = new Intent(this, BasketActivity.class);
+    @Override
+    public void startActivity(Intent intent, Class activity) {
+        intent.setClass(this, activity);
         startActivity(intent);
-        overridePendingTransition(R.anim.diagonaltranslate, R.anim.alpha2);
+    }
+
+    @Override
+    public void startActivityWithAnimation(View view, Class activity) {
+
+    }
+
+    @Override
+    public void startActivityWithAnimation(View view, Intent intent, Class activity) {
+
     }
 }
 

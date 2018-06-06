@@ -1,7 +1,9 @@
-package izenka.hfad.com.bookstore.view.basket;
+package izenka.hfad.com.bookstore.basket.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,9 +21,11 @@ import com.google.firebase.storage.StorageReference;
 import java.util.Set;
 
 import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.basket.presenter.IBasketPresenter;
+import izenka.hfad.com.bookstore.main_menu.view.MainMenuFragment;
 import izenka.hfad.com.bookstore.model.db_operations.ReadBooksForBasket;
-import izenka.hfad.com.bookstore.presenter.BasketPresenter;
-import izenka.hfad.com.bookstore.view.main_menu.MainMenuActivity;
+import izenka.hfad.com.bookstore.basket.presenter.BasketPresenterImpl;
+import izenka.hfad.com.bookstore.main_menu.view.MainMenuActivity;
 import mehdi.sakout.fancybuttons.FancyButton;
 import stanford.androidlib.SimpleActivity;
 
@@ -36,17 +40,40 @@ public class BasketActivity extends SimpleActivity implements IBasketView {
     private LinearLayout activityBasket;
     private TextView tvTotalPrise;
 
-    private BasketPresenter presenter;
+    private IBasketPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basket);
+
         // setContentView(R.layout.empty_basket);
         if (presenter == null) {
-            presenter = new BasketPresenter(this, getSharedPreferences("myPref", MODE_PRIVATE));
+            presenter = new BasketPresenterImpl(this, getSharedPreferences("myPref", MODE_PRIVATE));
         }
         presenter.onViewCreated();
+    }
+
+    @Override
+    public void setToolbar() {
+        setSupportActionBar(findViewById(R.id.toolbar));
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setTitle(R.string.basket);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+        }
+    }
+
+    @Override
+    public void setFragment(Fragment fragment){
+        Fragment basketFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+        if (basketFragment == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, fragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -54,17 +81,20 @@ public class BasketActivity extends SimpleActivity implements IBasketView {
         activityBasket = (LinearLayout) findViewById(R.id.activityBasket);
     }
 
-    @Override
-    public void addEmptyBasketView() {
-        emptyBasket = getLayoutInflater().inflate(R.layout.empty_basket, null);
-        activityBasket.addView(emptyBasket);
-    }
-
-    @Override
-    public void addFilledBasketView() {
-        filledBasket = getLayoutInflater().inflate(R.layout.filled_basket, null);
-        activityBasket.addView(filledBasket);
-    }
+//    @Override
+//    public void addEmptyBasketView() {
+//        emptyBasket = getLayoutInflater().inflate(R.layout.empty_basket, null);
+//        activityBasket.addView(emptyBasket);
+//    }
+//
+//    @Override
+//    public void addFilledBasketView() {
+////        setSupportActionBar(findViewById(R.id.toolbar));
+////        getSupportActionBar().setDisplayShowHomeEnabled(true);
+////        getSupportActionBar().setTitle(R.string.basket);
+//        filledBasket = getLayoutInflater().inflate(R.layout.filled_basket, null);
+//        activityBasket.addView(filledBasket);
+//    }
 
     @Override
     public void onBackClick() {
@@ -82,10 +112,10 @@ public class BasketActivity extends SimpleActivity implements IBasketView {
         view.startAnimation(anim);
     }
 
-    @Override
-    public void initEmptyBasketViews() {
-        findViewById(R.id.btnReturnFromBasket).setOnClickListener(view -> presenter.onBackClicked());
-    }
+//    @Override
+//    public void initEmptyBasketViews() {
+//        findViewById(R.id.btnReturnFromBasket).setOnClickListener(view -> presenter.onBackClicked());
+//    }
 
     @Override
     public void removeBook(int id) {
@@ -104,22 +134,22 @@ public class BasketActivity extends SimpleActivity implements IBasketView {
             emptyBasket = getLayoutInflater().inflate(R.layout.empty_basket, null);
             activityBasket.removeView(filledBasket);
             activityBasket.addView(emptyBasket);
-            initEmptyBasketViews();
+//            initEmptyBasketViews();
             // setContentView(R.layout.empty_basket);
         }
     }
 
-    @Override
-    public void initFilledBasketViews() {
-        llBasket = (LinearLayout) findViewById(R.id.llBasket);
-        llBooks = (LinearLayout) llBasket.findViewById(R.id.llBooks);
-        $IV(R.id.btnGoBackFromBasket).setOnClickListener(view -> presenter.onBackClicked());
-        llBasket.findViewById(R.id.btnChooseEth).setOnClickListener(view -> presenter.onChooseEthClicked((FancyButton) view));
-        rlAction = (RelativeLayout) llBasket.findViewById(R.id.rlAction);
-        rlAction.findViewById(R.id.btnDelete).setOnClickListener(view -> presenter.onDeleteClicked(view));
-        rlAction.findViewById(R.id.btnRegister).setOnClickListener(view -> presenter.onRegisterClicked(view));
-        tvTotalPrise = (TextView) llBasket.findViewById(R.id.tvTotalPriceForAll);
-    }
+//    @Override
+//    public void initFilledBasketViews() {
+//        llBasket = (LinearLayout) findViewById(R.id.llBasket);
+//        llBooks = (LinearLayout) llBasket.findViewById(R.id.llBooks);
+////        $IV(R.id.btnGoBackFromBasket).setOnClickListener(view -> presenter.onBackClicked());
+//        llBasket.findViewById(R.id.btnChooseEth).setOnClickListener(view -> presenter.onChooseEthClicked((FancyButton) view));
+//        rlAction = (RelativeLayout) llBasket.findViewById(R.id.rlAction);
+//        rlAction.findViewById(R.id.btnDelete).setOnClickListener(view -> presenter.onDeleteClicked(view));
+//        rlAction.findViewById(R.id.btnRegister).setOnClickListener(view -> presenter.onRegisterClicked(view));
+//        tvTotalPrise = (TextView) llBasket.findViewById(R.id.tvTotalPriceForAll);
+//    }
 
     @Override
     public void loadImage(StorageReference imageRef, ImageView imgBtnBook) {
@@ -156,8 +186,15 @@ public class BasketActivity extends SimpleActivity implements IBasketView {
         Toast.makeText(this, message, duration).show();
     }
 
+//    @Override
+//    public void addBookView(View oneBookInBasketView) {
+//        llBooks.addView(oneBookInBasketView);
+//    }
+
     @Override
-    public void addBookView(View oneBookInBasketView) {
-        llBooks.addView(oneBookInBasketView);
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
     }
+
 }
