@@ -17,7 +17,7 @@ import java.util.Locale;
 
 import izenka.hfad.com.bookstore.model.db_operations.WriteOrder;
 import izenka.hfad.com.bookstore.model.db_classes.Order;
-import izenka.hfad.com.bookstore.main_menu.view.MainMenuActivity;
+import izenka.hfad.com.bookstore.main.MainMenuActivity;
 import izenka.hfad.com.bookstore.view.orders.OrdersActivity;
 import izenka.hfad.com.bookstore.view.registration.IRegistrationView;
 

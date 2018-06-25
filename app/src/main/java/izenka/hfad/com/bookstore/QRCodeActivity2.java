@@ -11,7 +11,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import izenka.hfad.com.bookstore.view.book.BookActivity;
+import izenka.hfad.com.bookstore.book.BookActivity;
 
 public class QRCodeActivity2 extends AppCompatActivity {
 

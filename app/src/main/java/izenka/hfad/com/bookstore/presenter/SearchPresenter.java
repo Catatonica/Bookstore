@@ -4,7 +4,7 @@ package izenka.hfad.com.bookstore.presenter;
 import android.content.Intent;
 import android.view.View;
 
-import izenka.hfad.com.bookstore.view.book.BookActivity;
+import izenka.hfad.com.bookstore.book.BookActivity;
 import izenka.hfad.com.bookstore.view.search.ISearchView;
 
 public class SearchPresenter implements IPresenter {

@@ -18,12 +18,15 @@
     <color name="darkBrown">#533b38</color>
     <color name="biruz">#0cf1ea</color>
     <color name="bezch">#7df9eac3</color>
+    <color name="bezch4">#dcfff3d4</color>
+    <color name="bezch3">#fff9e5</color>
     <color name="darkBrown1">#89533b38</color>
     <color name="yellow">#ffeb3b</color>
     <color name="yellow2">#5bf9a825</color>
     <color name="green">#558b2f</color>
     <color name="color8">#59d1f9ff</color>
     <color name="color9">#37474f</color>
+    <color name="color9_1">#bb02273b</color>
     <color name="color10">#CC584C</color>
     <color name="color11">#95a79a79</color>
     <color name="grey1">#f0eeeeee</color>
@@ -32,7 +35,7 @@
     <color name="bezch2">#a7f9eac3</color>
     <color name="yellow3">#eefff9c4</color>
     <color name="yellow4">#bcfff491</color>
-    <color name="red">#80d8ff</color>
+    <color name="red">#7e0344</color>
     <color name="red2">#f44336</color>
     <color name="color20">#78020202</color>
     <color name="color21">#bb000000</color>

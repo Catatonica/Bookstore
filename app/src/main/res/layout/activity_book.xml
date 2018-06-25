@@ -5,207 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bezch"
     android:baselineAligned="false"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.view.book.BookActivity">
+    tools:context="izenka.hfad.com.bookstore.book.BookActivity">
 
     <include layout="@layout/toolbar" />
 
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar_book"-->
+    <!--<fragment-->
+        <!--android:id="@+id/bookFragment"-->
+        <!--android:name="izenka.hfad.com.bookstore.book.BookFragment"-->
         <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:background="@color/color9"-->
-        <!--android:elevation="4dp"-->
-        <!--app:title="@string/bookstore"-->
-        <!--app:titleTextAppearance="@style/AppTheme"-->
-        <!--app:titleTextColor="@color/color2"-->
-        <!--android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
-        <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
-
-    <ScrollView
+        <!--android:layout_height="match_parent"/>-->
+    <FrameLayout
+        android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:background="@drawable/boarders">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <!--ImageSwitcher
-                    android:id="@+id/ivBookImage"
-                    android:layout_width="160dp"
-                    android:layout_height="250dp"
-                    android:layout_margin="15dp">
-
-                </ImageSwitcher-->
-
-                <ImageView
-                    android:id="@+id/ivBookImage"
-                    android:layout_width="160dp"
-                    android:layout_height="250dp"
-                    android:layout_margin="10dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textColor="@color/darkBrown"
-                        android:textSize="20sp"
-                        android:textStyle="bold|italic" />
-
-                    <TextView
-                        android:id="@+id/tvAuthor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="@color/color9"
-                        android:textSize="17sp"
-                        android:textStyle="italic" />
-
-                    <TextView
-                        android:id="@+id/tvYear"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="@color/color9"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@color/yellow4"
-                android:elevation="50dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvPrise"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text=""
-                    android:textAppearance="@android:style/TextAppearance.Material.Widget.TextView"
-                    android:textColor="@color/green"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvAvailability"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:text=""
-                    android:textAppearance="@android:style/TextAppearance.Material.Widget.TextView"
-                    android:textColor="@color/color9" />
-
-
-                <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/putInBasket"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:elevation="10dp"
-                    android:onClick="onPutInBasketClick"
-                    fancy:fb_borderColor="@color/darkBrown"
-                    fancy:fb_borderWidth="1dp"
-                    fancy:fb_defaultColor="@color/yellow"
-                    fancy:fb_radius="5dp"
-                    fancy:fb_text="@string/putInBasket"
-                    fancy:fb_textColor="@color/color9"
-                    fancy:fb_textGravity="center" />
-
-                <!--Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/yellow"
-                    android:onClick="onPutInBasketClick"
-                    android:text="@string/putInBasket"
-                    android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" /!-->
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvAnnot"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:layout_marginRight="17dp"
-                android:background="@drawable/myrect"
-                android:elevation="10dp"
-                android:maxLines="5"
-                android:padding="7dp"
-                android:text=""
-                android:textColor="@color/color9"
-                android:textSize="17sp" />
-
-            <ImageButton
-                android:id="@+id/ibExpand"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_gravity="right"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="17dp"
-                android:background="@drawable/expand"
-                android:backgroundTint="@color/color11"
-                android:onClick="onExpandClick" />
-
-            <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/btnParameters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:onClick="onParametersClick"
-                fancy:fb_borderColor="@color/darkBrown"
-                fancy:fb_borderWidth="1dp"
-                fancy:fb_defaultColor="@color/bezch2"
-                fancy:fb_radius="5dp"
-                fancy:fb_text="@string/bookParameters"
-                fancy:fb_textColor="@color/color9" />
-            <!--Button
-                android:id="@+id/btnParameters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:backgroundTint="@color/color11"
-                android:onClick="onParametersClick"
-                android:text="@string/bookParameters"
-                android:textAlignment="center"
-                android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" /!-->
-
-            <LinearLayout
-                android:id="@+id/llParameters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical" />
-
-            <!--TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="7dp"
-                android:text="@string/reviews"
-                android:textAlignment="center"
-                android:textAppearance="@android:style/TextAppearance.Material.Widget.Button" /!-->
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent">
+    </FrameLayout>
 </LinearLayout>

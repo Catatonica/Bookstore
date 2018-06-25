@@ -22,4 +22,13 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--buttons color-->
+        <item name="colorAccent">@color/darkBrown</item>
+        <!--title and message color-->
+        <item name="android:textColorPrimary">@color/blue</item>
+        <!--dialog background-->
+        <!--<item name="android:windowBackground">@drawable/succed_message</item>-->
+    </style>
+
 </resources>

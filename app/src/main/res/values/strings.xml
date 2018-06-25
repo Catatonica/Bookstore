@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Bookstore</string>
-    <string name="chooseEth">выбрать все</string>
+    <string name="uncheckAll">Снять выделение</string>
+    <string name="checkAll">Выбрать все</string>
     <string name="basket">Корзина</string>
-    <string name="delete">удалить</string>
-    <string name="toRegistration">к оформлению</string>
+    <string name="delete">Удалить</string>
+    <string name="toRegistration">ОФОРМИТЬ ЗАКАЗ</string>
     <string name="publisher">Издательство:</string>
     <string name="countInWarehouse">Число на складе:</string>
     <string name="pagesNumber">Количество страниц:</string>
@@ -14,6 +15,8 @@
     <string name="putInBasket">ПОЛОЖИТЬ В КОРЗИНУ</string>
     <string name="searchInCategory">Поиск по категории</string>
     <string name="search">Поиск</string>
+    <string name="registration">Заказ успешно оформлен!</string>
+    <string name="to_orders">Посмотреть</string>
     <string name="orderRegistration">Регистрация заказа</string>
     <string name="fillForm">Заполните форму :</string>
     <string name="phoneNumber">№ телефона*</string>
@@ -25,7 +28,7 @@
     <string name="porch">№ подъезда</string>
     <string name="floor">Этаж</string>
     <string name="endRegistration">Закончить</string>
-    <string name="back">вернуться</string>
+    <string name="back">Вернуться</string>
     <string name="house">Дом*</string>
     <string name="price">Цена(1/n):</string>
     <string name="foreignLit">Иностранная литература</string>
@@ -46,6 +49,15 @@
     <string name="nav_info">Информация</string>
     <string name="profile">Профиль</string>
     <string name="account">Аккаунт</string>
+    <string name="succeed_message">Ожидайте получение заказа в течение недели. Для уточнения информации звоните по телефону: +375297770707</string>
+    <string name="email">Email:</string>
+    <string name="password">Пароль:</string>
+    <string name="create_account">Создать аккаунт</string>
+    <string name="sign_in">Войти</string>
+    <string name="sign_out">Выйти</string>
+    <string name="init_price">0.0</string>
+    <string name="rub">р.</string>
+    <string name="user_email">Email*</string>
     <string-array name="categoriesNames">
         <item>Иностранная литература</item>
         <item>Детская литература</item>

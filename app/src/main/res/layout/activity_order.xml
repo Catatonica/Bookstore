@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/bezch"
     android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.basket.view.BasketActivity">
+    tools:context="izenka.hfad.com.bookstore.basket.BasketActivity">
 
     <include layout="@layout/toolbar"/>
     <!--<RelativeLayout-->

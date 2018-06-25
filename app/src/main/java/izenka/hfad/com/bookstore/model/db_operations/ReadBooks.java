@@ -161,7 +161,7 @@ public abstract class ReadBooks {
                     Author author = dataSnapshot.getValue(Author.class);
                     String authorName = author.author_name.substring(0, 1);
                     String authorSurname = author.author_surname;
-                    book.authors.add(authorSurname + " " + authorName + ".");
+                    book.authorList.add(authorSurname + " " + authorName + ".");
                 }
 
                 @Override
