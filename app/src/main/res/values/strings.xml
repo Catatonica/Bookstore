@@ -39,6 +39,7 @@
     <string name="fnonfictionLit">Нехудожественная литература</string>
     <string name="input_search">Введите книгу или автора</string>
     <string name="orders">Заказы</string>
+    <string name="order">Заказ</string>
     <string name="company_name">OOO "Bookstore"</string>
     <string name="hello_message">Добро пожаловать в Bookstore! Порадуйте себя возможностью окунуться в мир книг :)</string>
     <string name="shops_map">Карта магазинов</string>
@@ -58,6 +59,11 @@
     <string name="init_price">0.0</string>
     <string name="rub">р.</string>
     <string name="user_email">Email*</string>
+    <string name="date">Дата:</string>
+    <string name="sum">Сумма:</string>
+    <string name="status">Статус:</string>
+    <string name="empty_orders">Список заказов пуст.</string>
+    <string name="multiply">*</string>
     <string-array name="categoriesNames">
         <item>Иностранная литература</item>
         <item>Детская литература</item>
@@ -66,4 +72,5 @@
         <item>Учебная литература</item>
         <item>Нехудожественная литература</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 </resources>

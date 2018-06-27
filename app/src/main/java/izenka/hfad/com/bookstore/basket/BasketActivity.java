@@ -45,7 +45,7 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
             if (bookList == null || bookList.isEmpty()) {
                 setInitialFragment(new EmptyBasketFragment());
             } else {
-                setInitialFragment(new FilledBasketFragment());
+                setInitialFragment(new BookInBasketListFragment());
             }
         });
     }
@@ -110,7 +110,7 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
             if (bookList == null || bookList.isEmpty()) {
                 setFragment(new EmptyBasketFragment());
             } else {
-                setFragment(new FilledBasketFragment());
+                setFragment(new BookInBasketListFragment());
             }
         });
     }

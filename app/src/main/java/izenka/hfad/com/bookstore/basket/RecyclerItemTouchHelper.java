@@ -19,7 +19,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
 //        super.onSelectedChanged(viewHolder, actionState);
         if (viewHolder != null) {
-            final View foregroundView = ((FilledBasketAdapter.BookViewHolder) viewHolder).rlForeground;
+            final View foregroundView = ((BookInBasketListAdapter.BookViewHolder) viewHolder).rlForeground;
             getDefaultUIUtil().onSelected(foregroundView);
         }
     }
@@ -27,21 +27,21 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 //        super.onChildDrawOver(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        final View foregroundView = ((FilledBasketAdapter.BookViewHolder) viewHolder).rlForeground;
+        final View foregroundView = ((BookInBasketListAdapter.BookViewHolder) viewHolder).rlForeground;
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
 //        super.clearView(recyclerView, viewHolder);
-        final View foregroundView = ((FilledBasketAdapter.BookViewHolder) viewHolder).rlForeground;
+        final View foregroundView = ((BookInBasketListAdapter.BookViewHolder) viewHolder).rlForeground;
         getDefaultUIUtil().clearView(foregroundView);
     }
 
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 //        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        final View foregroundView = ((FilledBasketAdapter.BookViewHolder) viewHolder).rlForeground;
+        final View foregroundView = ((BookInBasketListAdapter.BookViewHolder) viewHolder).rlForeground;
 
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
     }

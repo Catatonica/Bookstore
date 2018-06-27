@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +25,7 @@ import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.account.AccountActivity;
 import izenka.hfad.com.bookstore.basket.BasketActivity;
 import izenka.hfad.com.bookstore.category.CategoryActivity;
+import izenka.hfad.com.bookstore.store_map.MapsActivity;
 import izenka.hfad.com.bookstore.model.FirebaseManager;
 import izenka.hfad.com.bookstore.orders.OrdersActivity;
 import izenka.hfad.com.bookstore.view.qr_code.QRCodeActivity;
@@ -53,6 +56,9 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
 
 //        firebaseManager = new FirebaseManager();
 //        firebaseManager.connectToFirebase();
+
+
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         viewModel = ViewModelProviders.of(this).get(MainMenuViewModel.class);
         viewModel.setNavigator(this);
@@ -105,26 +111,61 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
                 switch (item.getItemId()) {
                     case R.id.nav_basket:
                         openScreen(BasketActivity.class);
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_catalogue:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_info:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_map:
+                        Intent mapIntent = new Intent(MainMenuActivity.this, MapsActivity.class);
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+                            @Override
+                            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+                            }
+
+                            @Override
+                            public void onDrawerOpened(@NonNull View drawerView) {
+
+                            }
+
+                            @Override
+                            public void onDrawerClosed(@NonNull View drawerView) {
+                                startActivity(mapIntent);
+                            }
+
+                            @Override
+                            public void onDrawerStateChanged(int newState) {
+
+                            }
+                        });
                         break;
                     case R.id.nav_profile:
                         //TODO: switch if user is registered or not
-                        Intent intent = new Intent(MainMenuActivity.this, AccountActivity.class);
-                        startActivityForResult(intent, PICK_USER_REQUEST);
+                        Intent profileIntent = new Intent(MainMenuActivity.this, AccountActivity.class);
+                        startActivityForResult(profileIntent, PICK_USER_REQUEST);
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_purchases:
                         openScreen(OrdersActivity.class);
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
                         break;
                     default:
+                        mDrawerLayout.closeDrawers();
                         break;
                 }
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
+//                item.setChecked(true);
+//                mDrawerLayout.closeDrawers();
                 return true;
             }
         });

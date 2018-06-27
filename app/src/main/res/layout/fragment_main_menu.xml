@@ -1,128 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.main.MainMenuActivity">
+    android:gravity="center">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <TableRow
         android:layout_weight="1"
-        android:gravity="center"
-        android:padding="2dp">
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp">
+        <Button
+            android:id="@+id/btnForeign"
+            android:layout_width="170dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="2.5dp"
+            android:background="@drawable/foreign_back"
+            android:fontFamily="@font/alice"
+            android:text="Иностранная\nлитература"
+            android:textAllCaps="false"
+            android:textAppearance="@android:style/TextAppearance.Material.Button" />
 
-            <Button
-                android:id="@+id/btnForeign"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="2.5dp"
-                android:background="@drawable/foreign_back"
-                android:fontFamily="casual"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
+        <Button
+            android:id="@+id/btnKid"
+            android:layout_width="170dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="2.5dp"
+            android:background="@drawable/kid_back"
+            android:fontFamily="@font/alice"
+            android:text="Детская\nлитература"
+            android:textAllCaps="false"
+            android:textAppearance="@android:style/TextAppearance.Material.Button" />
+    </TableRow>
 
-            <Button
-                android:id="@+id/btnKid"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="2.5dp"
-                android:background="@drawable/kid_back"
-                android:fontFamily="casual"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
-        </TableRow>
+    <TableRow
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:paddingBottom="5dp">
 
-        <TableRow
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp">
+        <Button
+            android:id="@+id/btnBusiness"
+            android:layout_width="170dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="2.5dp"
+            android:background="@drawable/business_back"
+            android:fontFamily="@font/alice"
+            android:text="Бизнес-\nлитература"
+            android:textAllCaps="false"
+            android:textAppearance="@android:style/TextAppearance.Material.Button" />
 
-            <Button
-                android:id="@+id/btnBusiness"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="2.5dp"
-                android:background="@drawable/business_back"
-                android:fontFamily="casual"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
+        <Button
+            android:id="@+id/btnFiction"
+            android:layout_width="170dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="2.5dp"
+            android:background="@drawable/fiction_back"
+            android:fontFamily="@font/alice"
+            android:text="Художественная\nлитература"
+            android:textAllCaps="false"
+            android:textAppearance="@android:style/TextAppearance.Material.Button" />
+    </TableRow>
 
-            <Button
-                android:id="@+id/btnFiction"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="2.5dp"
-                android:background="@drawable/fiction_back"
-                android:fontFamily="casual"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
-        </TableRow>
+    <TableRow
+        android:layout_weight="1"
+        android:gravity="center_horizontal">
 
-        <TableRow
-            android:layout_weight="1"
-            android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/btnStudy"
+            android:layout_width="170dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="2.5dp"
+            android:background="@drawable/study_back"
+            android:fontFamily="@font/alice"
+            android:text="Учебная\nлитература"
+            android:textAllCaps="false"
+            android:textAppearance="@android:style/TextAppearance.Material.Button" />
 
-            <Button
-                android:id="@+id/btnStudy"
+        <Button
+            android:id="@+id/btnNonfiction"
+            android:layout_width="170dp"
+            android:layout_height="135dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="2.5dp"
+            android:background="@drawable/nonfiction_back"
+            android:fontFamily="@font/alice"
+            android:text="Нехудожественная\nлитература"
+            android:textAllCaps="false"
+            android:textAppearance="@android:style/TextAppearance.Material.Button" />
+    </TableRow>
+</TableLayout>
 
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="2.5dp"
-                android:background="@drawable/study_back"
-                android:fontFamily="@font/philosopher"
-                android:text="Художественная literature 1997"
-                android:textAppearance="@android:style/TextAppearance.Material.Button" />
-
-            <Button
-                android:id="@+id/btnNonfiction"
-                android:layout_width="170dp"
-                android:layout_height="135dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="2.5dp"
-                android:background="@drawable/nonfiction_back"
-                android:fontFamily="casual"
-                android:textAppearance="@android:style/TextAppearance.Widget.TextView"
-                android:textColor="@color/colorAccent"
-                android:textStyle="bold|italic"
-                android:typeface="monospace" />
-        </TableRow>
-    </TableLayout>
-
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="60dp"-->
-        <!--android:layout_margin="5dp"-->
-        <!--android:orientation="horizontal">-->
-
-        <!--<Button-->
-            <!--android:id="@+id/btnScan"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:background="@drawable/qrcode" />-->
-    <!--</RelativeLayout>-->
-</LinearLayout>

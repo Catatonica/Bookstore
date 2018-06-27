@@ -3,14 +3,9 @@ package izenka.hfad.com.bookstore.order_registration;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,16 +16,16 @@ import java.util.Map;
 
 public class OrderRegistrationViewModel extends ViewModel{
 
-    private MutableLiveData<OrderModel> orderLiveData;
+    private MutableLiveData<OrderRegistrationModel> orderLiveData;
 
-    public MutableLiveData<OrderModel> getOrderLiveData(){
+    public MutableLiveData<OrderRegistrationModel> getOrderLiveData(){
         if(orderLiveData == null){
             orderLiveData = new MutableLiveData<>();
         }
         return orderLiveData;
     }
 
-    public void writeNewOrder(OrderModel orderModel){
+    public void writeNewOrder(OrderRegistrationModel orderModel){
         DatabaseReference db =  FirebaseDatabase.getInstance().getReference("/bookstore");
         String key = db.child("orders").push().getKey();
         Map<String, Object> newOrder = orderModel.toMap();
@@ -41,13 +36,13 @@ public class OrderRegistrationViewModel extends ViewModel{
         });
     }
 
-    private void cleanBasket(DatabaseReference db, OrderModel orderModel, String userID) {
+    private void cleanBasket(DatabaseReference db, OrderRegistrationModel orderModel, String userID) {
         for(String bookID: orderModel.Books.keySet()){
             db.child("users").child(userID).child("Basket").child(bookID).removeValue();
         }
     }
 
-    private void subtractBookCount(DatabaseReference db, OrderModel orderModel){
+    private void subtractBookCount(DatabaseReference db, OrderRegistrationModel orderModel){
         for(Map.Entry<String, Integer> bookIDAndCount: orderModel.Books.entrySet()){
             Log.d("new Count ", " bookID = "+bookIDAndCount.getKey());
             db.child("book").child(bookIDAndCount.getKey()).child("count").addListenerForSingleValueEvent(new ValueEventListener() {

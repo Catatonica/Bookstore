@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.basket.BasketActivity;
-import izenka.hfad.com.bookstore.view.orders.OrdersActivity;
+import izenka.hfad.com.bookstore.orders.OrdersActivity;
 import izenka.hfad.com.bookstore.view.qr_code.QRCodeActivity;
 
 public class BookActivity extends AppCompatActivity implements BookNavigator {

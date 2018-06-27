@@ -1,17 +1,20 @@
 package izenka.hfad.com.bookstore.order_registration;
 
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,8 +30,6 @@ import java.util.Map;
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.account.AccountViewModel;
 import izenka.hfad.com.bookstore.basket.BookIdAndCountModel;
-import izenka.hfad.com.bookstore.main.MainMenuActivity;
-import izenka.hfad.com.bookstore.model.db_classes.Order;
 import izenka.hfad.com.bookstore.orders.OrdersActivity;
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -42,6 +43,9 @@ public class OrderRegistrationActivity extends AppCompatActivity {
     //private Map<String, String> idAndCountMap;
     private ArrayList<String> idAndCountList;
 
+    private static final int PLACE_PICKER_REQUEST = 1;
+
+
     private EditText etPhoneNumber;
     private EditText etName;
     private EditText etCity;
@@ -50,8 +54,10 @@ public class OrderRegistrationActivity extends AppCompatActivity {
     private EditText etPorchNumber;
     private EditText etFlatNumber;
     private EditText etFloor;
+    private EditText etAddress;
     private FancyButton btnRegister;
     private EditText etEmail;
+    private Button btnAddLocation;
 
     private float totalPrice;
     private AccountViewModel accountViewModel;
@@ -112,10 +118,49 @@ public class OrderRegistrationActivity extends AppCompatActivity {
         etFlatNumber = findViewById(R.id.etFlatNumber);
         etFloor = findViewById(R.id.etFloor);
         etEmail = findViewById(R.id.etEmail);
+        etAddress = findViewById(R.id.etAddress);
+        btnAddLocation = findViewById(R.id.btnAddLocation);
+        btnAddLocation.setOnClickListener(btn -> addLocation());
         btnRegister = findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(btn -> {
             register();
         });
+    }
+
+    private void addLocation() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            Log.d("place", "GooglePlayServicesRepairableException");
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            Log.d("place", "GooglePlayServicesNotAvailableException");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("place", "result code = "+resultCode);
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(this, data);
+                etAddress.setText(place.getAddress());
+                etCity.setText("");
+                etCity.setHint("");
+                etStreet.setText("");
+                etStreet.setHint("");
+                etHouse.setText("");
+                etHouse.setHint("");
+                etFlatNumber.setText("");
+                etPorchNumber.setText("");
+                etFloor.setText("");
+//                String toastMsg = String.format("Place: %s", place.getName());
+//                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void setToolbar() {
@@ -160,7 +205,7 @@ public class OrderRegistrationActivity extends AppCompatActivity {
 
             Map<String, Object> addressMap = new HashMap<>();
             addressMap.put("city", city);
-            addressMap.put("street",street);
+            addressMap.put("street", street);
             addressMap.put("house", house);
             addressMap.put("flat", flat);
             addressMap.put("porch", porch);
@@ -168,15 +213,16 @@ public class OrderRegistrationActivity extends AppCompatActivity {
 
             String fullAddress = String.format("%s, %s, %s", city, street, house);
 
-            OrderModel order = new OrderModel(date,
-                                              totalPrice,
-                                              name,
-                                              phoneNumber,
-                                              accountViewModel.getUser().getUid(),
-                                              email,
-                                              fullAddress,
-                                              ordersMap,
-                                              addressMap
+            OrderRegistrationModel order = new OrderRegistrationModel(date,
+                                                                      totalPrice,
+                                                                      name,
+                                                                      phoneNumber,
+                                                                      accountViewModel.getUser().getUid(),
+                                                                      email,
+                                                                      fullAddress,
+                                                                      ordersMap,
+                                                                      addressMap,
+                                                                      "выполняется"
             );
             OrderRegistrationViewModel orderViewModel = ViewModelProviders.of(this).get(OrderRegistrationViewModel.class);
             orderViewModel.writeNewOrder(order);

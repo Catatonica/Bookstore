@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.model.db_operations.ReadBooks;
 import izenka.hfad.com.bookstore.Helper;
 import izenka.hfad.com.bookstore.presenter.SearchPresenter;
 import stanford.androidlib.SimpleActivity;
@@ -106,7 +105,7 @@ public class SearchActivity extends SimpleActivity implements ISearchView {
 
     @Override
     public void showBooksFromSearch(int categoryID) {
-        ReadBooks.getBooksFromSearch(this, R.id.gridLayoutSearch, categoryID);
+//        ReadBooks.getBooksFromSearch(this, R.id.gridLayoutSearch, categoryID);
     }
 
     @Override

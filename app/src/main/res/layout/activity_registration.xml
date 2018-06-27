@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bezch"
-    android:orientation="vertical"
-    tools:context="izenka.hfad.com.bookstore.view.registration.RegistrationActivity">
+    android:background="@color/bezch3"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
 
@@ -24,13 +22,13 @@
 
 
         <ScrollView
-            android:background="@drawable/boarders6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="75dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/boarders6"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:layout_marginTop="15dp">
+            android:paddingRight="15dp">
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -42,13 +40,13 @@
                     <TextView android:text="Email: " />
 
                     <EditText
-                        android:layout_span="2"
                         android:id="@+id/etEmail"
+                        android:layout_span="6"
                         android:hint="*"
                         android:inputType="text"
                         android:lines="1"
-                        android:paddingStart="15dp"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -56,14 +54,14 @@
                     <TextView android:text="Телефон: " />
 
                     <EditText
-                        android:layout_span="2"
-
                         android:id="@+id/etPhoneNumber"
+
+                        android:layout_span="6"
                         android:hint="*"
                         android:inputType="phone"
                         android:lines="1"
-                        android:paddingStart="15dp"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -71,13 +69,13 @@
                     <TextView android:text="Имя: " />
 
                     <EditText
-                        android:layout_span="2"
                         android:id="@+id/etName"
+                        android:layout_span="6"
                         android:hint="*"
                         android:inputType="text"
                         android:lines="1"
-                        android:paddingStart="15dp"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <!--<TableRow>-->
@@ -90,15 +88,20 @@
                     <TextView android:text="Адрес: " />
 
                     <EditText
+                        android:layout_span="5"
                         android:id="@+id/etAddress"
                         android:inputType="text"
                         android:lines="1"
-                        android:paddingStart="15dp"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
 
-                    <ImageButton
-                        android:id="@+id/btnSelectOnMap"
-                        android:background="@drawable/ic_add_location_black_24dp"/>
+                    <Button
+                        android:layout_span="1"
+                        android:id="@+id/btnAddLocation"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:background="@drawable/ic_add_location_black_24dp"
+                        android:paddingTop="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -106,13 +109,13 @@
                     <TextView android:text="Город: " />
 
                     <EditText
-                        android:layout_span="2"
+                        android:layout_span="6"
                         android:id="@+id/etCity"
                         android:hint="*"
-                        android:paddingStart="15dp"
                         android:inputType="text"
                         android:lines="1"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -120,13 +123,13 @@
                     <TextView android:text="Улица: " />
 
                     <EditText
-                        android:layout_span="2"
+                        android:layout_span="6"
                         android:id="@+id/etStreet"
                         android:hint="*"
-                        android:paddingStart="15dp"
                         android:inputType="text"
                         android:lines="1"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -134,12 +137,11 @@
                     <TextView android:text="Дом: " />
 
                     <EditText
-                        android:layout_span="2"
                         android:id="@+id/etHouse"
+                        android:layout_span="6"
                         android:hint="*"
-                        android:paddingStart="15dp"
-                        android:inputType="number"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -147,11 +149,10 @@
                     <TextView android:text="Квартира: " />
 
                     <EditText
-                        android:paddingStart="15dp"
-                        android:layout_span="2"
                         android:id="@+id/etFlatNumber"
-                        android:inputType="number"
-                        android:maxLines="1" />
+                        android:layout_span="6"
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -159,11 +160,11 @@
                     <TextView android:text="Подъезд: " />
 
                     <EditText
-                        android:paddingStart="15dp"
-                        android:layout_span="2"
                         android:id="@+id/etPorchNumber"
+                        android:layout_span="6"
                         android:inputType="number"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
 
                 <TableRow>
@@ -171,11 +172,11 @@
                     <TextView android:text="Этаж:" />
 
                     <EditText
-                        android:paddingStart="15dp"
-                        android:layout_span="2"
                         android:id="@+id/etFloor"
+                        android:layout_span="6"
                         android:inputType="number"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingStart="15dp" />
                 </TableRow>
             </TableLayout>
         </ScrollView>

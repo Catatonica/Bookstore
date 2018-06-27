@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import izenka.hfad.com.bookstore.R;
@@ -29,6 +30,8 @@ public class UserProfileFragment extends Fragment {
     private EditText etPhone;
     private EditText etStreet;
     private Button btnSaveChanges;
+
+    private ProgressBar pbLoadingProgress;
 
     @Nullable
     @Override
@@ -50,6 +53,8 @@ public class UserProfileFragment extends Fragment {
         etPhone = view.findViewById(R.id.etPhone);
         etCity = view.findViewById(R.id.etCity);
         etStreet = view.findViewById(R.id.etStreet);
+        pbLoadingProgress = view.findViewById(R.id.pbLoadingProgress);
+        pbLoadingProgress.setVisibility(View.VISIBLE);
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -59,6 +64,7 @@ public class UserProfileFragment extends Fragment {
         AccountViewModel viewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
 //        viewModel.loadUser();
         viewModel.getUserLiveData().observe(this , user->{
+            pbLoadingProgress.setVisibility(View.GONE);
             Log.d("userInfo", "observeUserLiveData, user = "+user);
             if (user != null) {
                 etName.setText(user.name);

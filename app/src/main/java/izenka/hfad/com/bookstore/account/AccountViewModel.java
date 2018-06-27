@@ -18,8 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import izenka.hfad.com.bookstore.order_registration.OrderModel;
-
 public class AccountViewModel extends ViewModel {
 
     private FirebaseAuth mAuth;
