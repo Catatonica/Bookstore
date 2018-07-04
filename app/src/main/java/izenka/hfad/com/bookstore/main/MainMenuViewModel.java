@@ -8,9 +8,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainMenuViewModel extends ViewModel {
 
-    CategoriesNavigator navigator;
+    MainMenuNavigator navigator;
 
-    public void setNavigator(CategoriesNavigator navigator) {
+    public void setNavigator(MainMenuNavigator navigator) {
         this.navigator = navigator;
     }
 
@@ -28,5 +28,9 @@ public class MainMenuViewModel extends ViewModel {
 
     public FirebaseUser getUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+    public void onSearchClicked() {
+        navigator.onSearchClicked();
     }
 }

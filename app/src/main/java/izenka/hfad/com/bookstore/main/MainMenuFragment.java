@@ -14,7 +14,7 @@ import android.widget.Button;
 
 import izenka.hfad.com.bookstore.R;
 
-public class CategoriesFragment extends Fragment /*implements IMainMenuFragmentView*/ {
+public class MainMenuFragment extends Fragment /*implements IMainMenuFragmentView*/ {
 
     private MainMenuViewModel viewModel;
 
@@ -22,7 +22,7 @@ public class CategoriesFragment extends Fragment /*implements IMainMenuFragmentV
 //    public void onAttach(Context context) {
 //        super.onAttach(context);
 //        if(context!=null){
-//            listener = (CategoriesNavigator) context;
+//            listener = (MainMenuNavigator) context;
 //        }
 //    }
 
@@ -45,6 +45,7 @@ public class CategoriesFragment extends Fragment /*implements IMainMenuFragmentV
         view.findViewById(R.id.btnFiction).setOnClickListener(view1 -> viewModel.onCategoryClicked(3));
         view.findViewById(R.id.btnStudy).setOnClickListener(view1 -> viewModel.onCategoryClicked(4));
         view.findViewById(R.id.btnNonfiction).setOnClickListener(view1 -> viewModel.onCategoryClicked(5));
+        view.findViewById(R.id.etSearch).setOnClickListener(view1 -> viewModel.onSearchClicked());
     }
 
 //    private void showCategoriesNames(@NonNull View view) {

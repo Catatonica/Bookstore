@@ -14,6 +14,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
+import izenka.hfad.com.bookstore.DatabaseSingleton;
+
 public class OrderRegistrationViewModel extends ViewModel{
 
     private MutableLiveData<OrderRegistrationModel> orderLiveData;
@@ -26,39 +28,40 @@ public class OrderRegistrationViewModel extends ViewModel{
     }
 
     public void writeNewOrder(OrderRegistrationModel orderModel){
-        DatabaseReference db =  FirebaseDatabase.getInstance().getReference("/bookstore");
-        String key = db.child("orders").push().getKey();
-        Map<String, Object> newOrder = orderModel.toMap();
-        db.child("order").child(key).setValue(newOrder).addOnSuccessListener(aVoid -> subtractBookCount(db, orderModel));
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        db.child("users").child(userID).child("Orders").child(orderModel.date).setValue(key).addOnSuccessListener(aVoid ->{
-          cleanBasket(db, orderModel, userID);
-        });
+        DatabaseSingleton.getInstance().writeNewOrder(orderModel);
+//        DatabaseReference db =  FirebaseDatabase.getInstance().getReference("/bookstore");
+//        String key = db.child("orders").push().getKey();
+//        Map<String, Object> newOrder = orderModel.toMap();
+//        db.child("order").child(key).setValue(newOrder).addOnSuccessListener(aVoid -> subtractBookCount(db, orderModel));
+//        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        db.child("users").child(userID).child("Orders").child(orderModel.date).setValue(key).addOnSuccessListener(aVoid ->{
+//          cleanBasket(db, orderModel, userID);
+//        });
     }
 
-    private void cleanBasket(DatabaseReference db, OrderRegistrationModel orderModel, String userID) {
-        for(String bookID: orderModel.Books.keySet()){
-            db.child("users").child(userID).child("Basket").child(bookID).removeValue();
-        }
-    }
-
-    private void subtractBookCount(DatabaseReference db, OrderRegistrationModel orderModel){
-        for(Map.Entry<String, Integer> bookIDAndCount: orderModel.Books.entrySet()){
-            Log.d("new Count ", " bookID = "+bookIDAndCount.getKey());
-            db.child("book").child(bookIDAndCount.getKey()).child("count").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    long oldCount = (long) dataSnapshot.getValue();
-                    long newCount = oldCount-bookIDAndCount.getValue();
-                    Log.d("newCount", String.valueOf(newCount)+"bookID = "+bookIDAndCount.getKey());
-                    db.child("book").child(bookIDAndCount.getKey()).child("count").setValue(newCount);
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
+//    private void cleanBasket(DatabaseReference db, OrderRegistrationModel orderModel, String userID) {
+//        for(String bookID: orderModel.Books.keySet()){
+//            db.child("users").child(userID).child("Basket").child(bookID).removeValue();
+//        }
+//    }
+//
+//    private void subtractBookCount(DatabaseReference db, OrderRegistrationModel orderModel){
+//        for(Map.Entry<String, Integer> bookIDAndCount: orderModel.Books.entrySet()){
+//            Log.d("new Count ", " bookID = "+bookIDAndCount.getKey());
+//            db.child("book").child(bookIDAndCount.getKey()).child("count").addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    long oldCount = (long) dataSnapshot.getValue();
+//                    long newCount = oldCount-bookIDAndCount.getValue();
+//                    Log.d("newCount", String.valueOf(newCount)+"bookID = "+bookIDAndCount.getKey());
+//                    db.child("book").child(bookIDAndCount.getKey()).child("count").setValue(newCount);
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//
+//                }
+//            });
+//        }
+//    }
 }

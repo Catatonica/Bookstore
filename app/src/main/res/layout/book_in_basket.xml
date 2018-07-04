@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="140dp">
 
     <RelativeLayout
         android:id="@+id/rlBackground"
@@ -11,24 +11,24 @@
         android:background="@color/red">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginEnd="20dp"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ic_delete_sweep_white_24dp"/>
+                android:background="@drawable/ic_delete_sweep_white_24dp" />
 
             <TextView
-                android:textColor="@color/white"
-                android:text="@string/delete"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -98,16 +98,16 @@
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content" />-->
 
+                    <TextView
+                        android:id="@+id/tvBooksPrise"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tvBooksPrise"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/price" />
 
                         <TextView
                             android:id="@+id/tvPriseForOne"
@@ -124,16 +124,13 @@
                             android:textColor="@color/green"
                             android:textSize="15sp"
                             android:textStyle="bold" />
-
                     </LinearLayout>
-
-
                 </LinearLayout>
 
                 <NumberPicker
                     android:id="@+id/npBooksCount"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="120dp"
                     android:layout_marginEnd="15dp"
                     android:layout_weight="1"
                     android:focusable="false">

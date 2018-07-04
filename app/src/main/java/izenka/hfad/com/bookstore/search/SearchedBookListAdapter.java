@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.category;
+package izenka.hfad.com.bookstore.search;
 
 
 import android.support.annotation.NonNull;
@@ -16,17 +16,27 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+import izenka.hfad.com.bookstore.DatabaseSingleton;
 import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.callbacks.AuthorListCallback;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 
-public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
+public class SearchedBookListAdapter extends RecyclerView.Adapter<SearchedBookListAdapter.BookViewHolder> {
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
 
     private List<Book> bookList;
-    private BookListViewModel viewModel;
+    private SearchViewModel viewModel;
     private static boolean shouldBeScaled;
 
-     BookListAdapter(List<Book> bookList, BookListViewModel viewModel, boolean itemShouldBeScaled) {
+    SearchedBookListAdapter(List<Book> bookList, SearchViewModel viewModel, boolean itemShouldBeScaled) {
         this.bookList = bookList;
         this.viewModel = viewModel;
         shouldBeScaled = itemShouldBeScaled;
@@ -38,12 +48,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         TextView tvBookAuthor;
         TextView tvBookPrise;
 
-         BookViewHolder(View itemView) {
+        BookViewHolder(View itemView) {
             super(itemView);
-             if(shouldBeScaled){
-                 itemView.setScaleX(0.8f);
-                 itemView.setScaleY(0.8f);
-             }
+            if (shouldBeScaled) {
+                itemView.setScaleX(0.8f);
+                itemView.setScaleY(0.8f);
+            }
             imgBtnBook = itemView.findViewById(R.id.imgBtnBook);
             tvBookName = itemView.findViewById(R.id.tvBookName);
             tvBookAuthor = itemView.findViewById(R.id.tvBookAuthor);
@@ -53,7 +63,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
 
     @NonNull
     @Override
-    public BookViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View bookView = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.book, parent, false);
@@ -61,18 +71,25 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     }
 
     @Override
-    public void onBindViewHolder(BookViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = bookList.get(position);
         holder.itemView.setId(book.book_id);
         holder.tvBookName.setText(book.title);
         holder.tvBookPrise.setText(book.price);
-        StringBuilder bookAuthors = new StringBuilder();
-        for (Author author : book.authors) {
-            String authorName = author.author_name.substring(0, 1);
-            String authorSurname = author.author_surname;
-            bookAuthors.append(authorSurname).append(" ").append(authorName).append("., ");
-        }
-        holder.tvBookAuthor.setText(bookAuthors.substring(0, bookAuthors.length() - 2));
+        AuthorListCallback authorListCallback = authorList -> {
+            StringBuilder authorsStringBuilder = new StringBuilder();
+            for (Author author : authorList) {
+                authorsStringBuilder.append(author.author_surname)
+                                    .append(" ")
+                                    .append(author.author_name.substring(0, 1))
+                                    .append("., ")
+                                    .append('\n');
+            }
+            authorsStringBuilder.delete(authorsStringBuilder.length() - 3, authorsStringBuilder.length());
+            holder.tvBookAuthor.setText(authorsStringBuilder);
+        };
+        DatabaseSingleton.getInstance().getAuthorList(book.authorsIDs, authorListCallback);
+
         holder.imgBtnBook.setId(book.book_id);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -83,14 +100,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
              .load(imageRef)
              .into(holder.imgBtnBook);
         holder.itemView.setOnClickListener(view -> {
-//            viewModel.setBook(book);
             viewModel.onBookClicked(book);
         });
+
     }
 
     @Override
     public int getItemCount() {
         return bookList.size();
     }
-
 }

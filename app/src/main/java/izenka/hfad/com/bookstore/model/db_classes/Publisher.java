@@ -8,9 +8,4 @@ public class Publisher implements Serializable {
 
     public Publisher() {
     }
-
-    public String toString() {
-        return "Publisher={ publisher_id=" + publisher_id + ", publisher_name=" +
-                publisher_name + "}";
-    }
 }

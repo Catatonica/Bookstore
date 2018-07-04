@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.store_map;
+package izenka.hfad.com.bookstore.stores_map;
 
 
 

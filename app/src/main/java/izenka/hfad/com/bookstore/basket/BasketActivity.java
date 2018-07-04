@@ -27,8 +27,6 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("BasketActivity: ", "onCreate()");
-
         setContentView(R.layout.activity_basket);
 
         setToolbar();
@@ -37,11 +35,12 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
         viewModel.setNavigator(this);
 
         pbLoadingProgress = findViewById(R.id.pbLoadingProgress);
-        if(viewModel.getBookListLiveData().getValue() == null){
-            pbLoadingProgress.setVisibility(View.VISIBLE);
-        }
+//        if(viewModel.getBookListLiveData().getValue() == null){
+//            pbLoadingProgress.setVisibility(View.VISIBLE);
+//        }
 
         viewModel.getBookListLiveData().observe(this, bookList -> {
+            pbLoadingProgress.setVisibility(View.GONE);
             if (bookList == null || bookList.isEmpty()) {
                 setInitialFragment(new EmptyBasketFragment());
             } else {
@@ -83,6 +82,7 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
         Intent intent = new Intent(this, OrderRegistrationActivity.class);
         intent.putParcelableArrayListExtra("bookIDsAndCount", (ArrayList<? extends Parcelable>) BookIdAndCountModelList);
         intent.putExtra("totalPrice", totalPrice);
+        intent.putExtra("bookID", getIntent().getIntExtra("bookID", 0));
         startActivity(intent);
     }
 
@@ -98,11 +98,6 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
     }
 
     @Override
-    public void loadingFinished() {
-        pbLoadingProgress.setVisibility(View.GONE);
-    }
-
-    @Override
     protected void onRestart() {
         super.onRestart();
         Log.d("BasketActivity: ", "onRestart()");
@@ -113,23 +108,5 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
                 setFragment(new BookInBasketListFragment());
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("BasketActivity: ", "onResume()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("BasketActivity: ", "onDestroy()");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("BasketActivity: ", "onStop()");
     }
 }

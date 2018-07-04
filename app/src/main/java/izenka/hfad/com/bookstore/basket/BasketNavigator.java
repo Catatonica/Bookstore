@@ -11,6 +11,4 @@ public interface BasketNavigator {
     void onRegisterClicked(List<BookIdAndCountModel> BookIdAndCountModelList, float totalPrice);
 
     void onBackClicked();
-
-    void loadingFinished();
 }

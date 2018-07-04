@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/pbLoadingProgress"
             android:layout_gravity="center"
             android:layout_width="wrap_content"

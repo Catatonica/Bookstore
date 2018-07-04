@@ -17,8 +17,8 @@ public class Book implements Serializable {
     public int rating;
     public int discount;
 //    public List<Long> authorsIDs;
-    public List<String> authorList;
-    public List<String> imagesPaths;
+    public List<String> authorsIDs = new ArrayList<>();
+    public List<String> imagesPaths = new ArrayList<>();
     public List<Author> authors;
 
 

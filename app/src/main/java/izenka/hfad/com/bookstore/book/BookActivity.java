@@ -20,31 +20,30 @@ import izenka.hfad.com.bookstore.view.qr_code.QRCodeActivity;
 
 public class BookActivity extends AppCompatActivity implements BookNavigator {
 
-    private int bookID;
-//    private SharedPreferences sp;
-//    private Animation anim;
+    private int bookID ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
-//        setToolbar();
-
-//        anim = AnimationUtils.loadAnimation(this, R.anim.my_alpha);
         Intent intent = getIntent();
+
         bookID = intent.getIntExtra("bookID", 0);
 
         BookViewModel viewModel = ViewModelProviders.of(this).get(BookViewModel.class);
         viewModel.setBookID(bookID);
         viewModel.setNavigator(this);
         viewModel.getBookLiveData().observe(this, book -> {
-            assert book != null;
-            setToolbar(book.title);
+            if(book!=null){
+                setToolbar(book.title);
+            }
         });
 
         setFragment(new BookFragment());
     }
+
+
 
     private void setToolbar(String title) {
         setSupportActionBar(findViewById(R.id.toolbar));
@@ -66,39 +65,8 @@ public class BookActivity extends AppCompatActivity implements BookNavigator {
         }
     }
 
-//    private void setPublisher(int publisherID, final View view) {
-//        DatabaseReference publRef = fb.child("bookstore/publisher");
-//        Query query = publRef.orderByChild("publisher_id").equalTo(publisherID);
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot data) {
-//                Publisher publisher = data.getChildren().iterator().next().getValue(Publisher.class);
-//
-//                TextView tvPublisher = (TextView) view.findViewById(R.id.tvPublisher);
-//                tvPublisher.setText(publisher.publisher_name);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-
     @Override
     public void onPutInBasketClicked() {
-//        view.startAnimation(anim);
-
-//        sp = getSharedPreferences("myPref", MODE_PRIVATE);
-//        // MainMenuActivity.user.getBooksIDs().add(bookID+"");
-//        //  MainMenuActivity.booksIDs.add(bookID+"");
-//        SharedPreferences.Editor e = sp.edit();
-////        if(MainMenuActivity.stringSet == null){
-////            MainMenuActivity.stringSet = new HashSet<>();
-////        }
-//        MainMenuActivity.stringSet.add(String.valueOf(bookID));
-//        e.putStringSet("booksIDs", MainMenuActivity.stringSet);
-//        e.apply();
         Toast.makeText(this, "добавлено", Toast.LENGTH_SHORT).show();
     }
 
@@ -144,6 +112,7 @@ public class BookActivity extends AppCompatActivity implements BookNavigator {
         switch (item.getItemId()) {
             case R.id.action_basket:
                 intent.setClass(this, BasketActivity.class);
+                intent.putExtra("bookID", bookID);
                 startActivity(intent);
                 break;
 
@@ -158,10 +127,7 @@ public class BookActivity extends AppCompatActivity implements BookNavigator {
                 break;
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
         return true;
     }

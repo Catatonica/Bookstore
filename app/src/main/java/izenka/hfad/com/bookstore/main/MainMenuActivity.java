@@ -16,8 +16,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,15 +23,15 @@ import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.account.AccountActivity;
 import izenka.hfad.com.bookstore.basket.BasketActivity;
 import izenka.hfad.com.bookstore.category.CategoryActivity;
-import izenka.hfad.com.bookstore.store_map.MapsActivity;
 import izenka.hfad.com.bookstore.model.FirebaseManager;
 import izenka.hfad.com.bookstore.orders.OrdersActivity;
+import izenka.hfad.com.bookstore.search.SearchActivity;
+import izenka.hfad.com.bookstore.stores_map.MapsActivity;
 import izenka.hfad.com.bookstore.view.qr_code.QRCodeActivity;
-import izenka.hfad.com.bookstore.view.search.SearchActivity;
 
 
 //TODO: create Firebase singletones
-public class MainMenuActivity extends AppCompatActivity implements CategoriesNavigator {
+public class MainMenuActivity extends AppCompatActivity implements MainMenuNavigator {
 
     public static Set<String> stringSet = new HashSet<>();
     public static Set<String> ordersSet = new HashSet<>();
@@ -57,13 +55,14 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
 //        firebaseManager = new FirebaseManager();
 //        firebaseManager.connectToFirebase();
 
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+//        DatabaseSingleton.getInstance().enabledPersistence();
 
         viewModel = ViewModelProviders.of(this).get(MainMenuViewModel.class);
         viewModel.setNavigator(this);
 
-        initViews();
+        findViewById(R.id.tvRunningLine).setSelected(true);
         setToolbar();
 
 //        stringSet =  getSharedPreferences("myPref", MODE_PRIVATE).getStringSet("booksIDs", null);
@@ -71,7 +70,7 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
 //            stringSet  = new HashSet<>();
 //        }
         setNavigationDrawer();
-        setFragment(new CategoriesFragment());
+        setFragment(new MainMenuFragment());
 //
 //        if (presenter == null) {
 //            presenter = new MainMenuPresenterImpl(this);
@@ -79,86 +78,44 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
 //        presenter.onViewCreated();
     }
 
-    private void initViews() {
-        findViewById(R.id.etSearch).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.putExtra("categoryID", -1);
-                intent.setClass(MainMenuActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
-        findViewById(R.id.tvRunningLine).setSelected(true);
-    }
 
     private void setNavigationDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setCheckedItem(R.id.nav_catalogue);
-        if(viewModel.getUser()!=null){
+        if (viewModel.getUser() != null) {
             setUserHeader();
         }
-        navigationView.getHeaderView(0).findViewById(R.id.ibAddNewUser).setOnClickListener(btn->{
-            Intent intent = new Intent(MainMenuActivity.this, AccountActivity.class);
-            startActivityForResult(intent, PICK_USER_REQUEST);
-        });
+//        navigationView.getHeaderView(0).findViewById(R.id.ibAddNewUser).setOnClickListener(btn -> {
+//            Intent intent = new Intent(MainMenuActivity.this, AccountActivity.class);
+//            startActivityForResult(intent, PICK_USER_REQUEST);
+//        });
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 // Add code here to update the UI based on the item selected
                 // For example, swap UI fragments here
                 switch (item.getItemId()) {
-                    case R.id.nav_basket:
-                        openScreen(BasketActivity.class);
-                        item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        break;
                     case R.id.nav_catalogue:
                         item.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_info:
                         item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
+//                        mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_map:
                         Intent mapIntent = new Intent(MainMenuActivity.this, MapsActivity.class);
                         item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-                            @Override
-                            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-                            }
-
-                            @Override
-                            public void onDrawerOpened(@NonNull View drawerView) {
-
-                            }
-
-                            @Override
-                            public void onDrawerClosed(@NonNull View drawerView) {
-                                startActivity(mapIntent);
-                            }
-
-                            @Override
-                            public void onDrawerStateChanged(int newState) {
-
-                            }
-                        });
+                        openScreen(mapIntent);
                         break;
                     case R.id.nav_profile:
                         //TODO: switch if user is registered or not
                         Intent profileIntent = new Intent(MainMenuActivity.this, AccountActivity.class);
-                        startActivityForResult(profileIntent, PICK_USER_REQUEST);
                         item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case R.id.nav_purchases:
-                        openScreen(OrdersActivity.class);
-                        item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
+                        openScreen(profileIntent);
+//                        startActivityForResult(profileIntent, PICK_USER_REQUEST);
+//                        mDrawerLayout.closeDrawers();
                         break;
                     default:
                         mDrawerLayout.closeDrawers();
@@ -171,27 +128,53 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("Lifecycle", "onActivityResult");
-        if (requestCode == PICK_USER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-                Log.d("Lifecycle", "resultOK");
-                boolean userIsSigned = data.getBooleanExtra("signedIn", false);
-                if (userIsSigned) {
-                    setUserHeader();
-                } else {
-                    setNewUserHeader();
-                }
+    private void openScreen(Intent intent){
+        mDrawerLayout.closeDrawers();
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
             }
-        }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                startActivity(intent);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
     }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Log.d("Lifecycle", "onActivityResult");
+//        if (requestCode == PICK_USER_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                Log.d("Lifecycle", "resultOK");
+//                boolean userIsSigned = data.getBooleanExtra("signedIn", false);
+//                if (userIsSigned) {
+//                    setUserHeader();
+//                } else {
+//                    setNewUserHeader();
+//                }
+//            }
+//        }
+//    }
 
     private void setToolbar() {
         setSupportActionBar(findViewById(R.id.toolbar));
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setTitle(R.string.bookstore);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         }
@@ -210,7 +193,12 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
     private void setNewUserHeader() {
         Log.d("Lifecycle", "newUserHeader");
         View headerView = navigationView.getHeaderView(0);
-        headerView.findViewById(R.id.ibAddNewUser).setVisibility(View.VISIBLE);
+        ImageButton ibAddNewUser = headerView.findViewById(R.id.ibAddNewUser);
+        ibAddNewUser.setVisibility(View.VISIBLE);
+        ibAddNewUser.setOnClickListener(btn->{
+            Intent intent = new Intent(MainMenuActivity.this, AccountActivity.class);
+            startActivity(intent);
+        });
         headerView.findViewById(R.id.ivUserPhoto).setVisibility(View.GONE);
         headerView.findViewById(R.id.rlUserEmailAndExit).setVisibility(View.GONE);
     }
@@ -224,13 +212,22 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
         TextView tvUserEmail = headerView.findViewById(R.id.tvUserEmail);
         tvUserEmail.setText(viewModel.getUserEmail());
         ImageButton btnSignOut = headerView.findViewById(R.id.ibSignOut);
-        btnSignOut.setOnClickListener(btn->{ viewModel.signOut(); setNewUserHeader();});
+        btnSignOut.setOnClickListener(btn -> {
+            viewModel.signOut();
+            setNewUserHeader();
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.actionbar_menu, menu);
+
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+//        if (searchManager != null) {
+//            searchView.setSearchableInfo(searchManager.getSearchableInfo( new ComponentName(this, SearchActivity.class)));
+//        }
         return true;
     }
 
@@ -250,6 +247,11 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
 //                startActivity(intent);
                 break;
 
+            case R.id.action_search:
+                openScreen(SearchActivity.class);
+//                intent.setClass(this, OrdersActivity.class);
+//                startActivity(intent);
+                break;
             case R.id.action_qrcode:
                 openScreen(QRCodeActivity.class);
 //                intent.setClass(this, QRCodeActivity.class);
@@ -283,6 +285,13 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
         intent.setClass(this, CategoryActivity.class);
         startActivity(intent);
 //        startActivityWithAnimation(view, intent, CategoryActivity.class);
+    }
+
+    @Override
+    public void onSearchClicked() {
+        Intent intent = new Intent();
+        intent.setClass(this, SearchActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -333,4 +342,5 @@ public class MainMenuActivity extends AppCompatActivity implements CategoriesNav
         super.onRestoreInstanceState(savedInstanceState);
         Log.d("Lifecycle", "MainActivity: onRestoreInstanceState()");
     }
+
 }

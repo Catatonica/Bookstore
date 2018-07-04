@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import izenka.hfad.com.bookstore.R;
 
 public class UserProfileFragment extends Fragment {
@@ -46,13 +49,21 @@ public class UserProfileFragment extends Fragment {
         btnSaveChanges = view.findViewById(R.id.btnSaveChanges);
         btnSignOut = view.findViewById(R.id.btnSignOut);
         tvEmail = view.findViewById(R.id.tvEmail);
+//        tvEmail.setText("");
         etName = view.findViewById(R.id.etName);
+//        etName.setText("");
         etSurname = view.findViewById(R.id.etSurname);
+//        etSurname.setText("");
         etHouse = view.findViewById(R.id.etHouse);
+//        etHouse.setText("");
         etFlat = view.findViewById(R.id.etFlat);
+//        etFlat.setText("");
         etPhone = view.findViewById(R.id.etPhone);
+//        etPhone.setText("");
         etCity = view.findViewById(R.id.etCity);
+//        etCity.setText("");
         etStreet = view.findViewById(R.id.etStreet);
+//        etStreet.setText("");
         pbLoadingProgress = view.findViewById(R.id.pbLoadingProgress);
         pbLoadingProgress.setVisibility(View.VISIBLE);
         super.onViewCreated(view, savedInstanceState);
@@ -61,11 +72,10 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        AccountViewModel viewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
-//        viewModel.loadUser();
-        viewModel.getUserLiveData().observe(this , user->{
+        AccountViewModel viewModel = ViewModelProviders.of(requireActivity()).get(AccountViewModel.class);
+        viewModel.getUserLiveData().observe(this, user -> {
             pbLoadingProgress.setVisibility(View.GONE);
-            Log.d("userInfo", "observeUserLiveData, user = "+user);
+            Log.d("userInfo", "observeUserLiveData, user = " + user);
             if (user != null) {
                 etName.setText(user.name);
                 etSurname.setText(user.surname);
@@ -76,19 +86,21 @@ public class UserProfileFragment extends Fragment {
                     etHouse.setText((String) user.Address.get("house"));
                     etFlat.setText((String) user.Address.get("flat"));
                 }
-            }
-        });
-        tvEmail.setText(viewModel.getUser().getEmail());
-        btnSaveChanges.setOnClickListener(btn -> {
-            viewModel.saveChanges(etName.getText().toString(),
-                                  etSurname.getText().toString(),
-                                  etPhone.getText().toString(),
-                                  etCity.getText().toString(),
-                                  etStreet.getText().toString(),
-                                  etHouse.getText().toString(),
-                                  etFlat.getText().toString()
 
-            );
+                tvEmail.setText(user.email);
+                btnSaveChanges.setOnClickListener(btn -> {
+                    user.name = etName.getText().toString();
+                    user.surname = etSurname.getText().toString();
+                    user.phone = etPhone.getText().toString();
+                    Map<String, Object> Address = new HashMap<>();
+                    Address.put("city", etCity.getText().toString());
+                    Address.put("street", etStreet.getText().toString());
+                    Address.put("house", etHouse.getText().toString());
+                    Address.put("flat", etFlat.getText().toString());
+                    user.Address = Address;
+                    viewModel.saveChanges(user.toMap());
+                });
+            }
         });
         btnSignOut.setOnClickListener(btn -> {
             viewModel.signOut();

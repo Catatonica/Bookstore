@@ -12,6 +12,6 @@ public class OrderModel {
     public String date;
     public float price;
     public String status;
-    public List<BookInOrderModel> bookList = new ArrayList<>();
+//    public List<BookInOrderModel> bookList = new ArrayList<>();
 //    public Map<Book, Integer> booksMap = new HashMap<>();
 }

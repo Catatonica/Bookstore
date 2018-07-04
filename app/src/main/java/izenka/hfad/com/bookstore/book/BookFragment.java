@@ -19,8 +19,6 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.List;
-
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
@@ -37,12 +35,13 @@ public class BookFragment extends Fragment {
     private TextView tvAuthor;
     private TextView tvPublisher;
     private TextView tvDescription;
-    private mehdi.sakout.fancybuttons.FancyButton btnParameters;
     private mehdi.sakout.fancybuttons.FancyButton btnPutInBasket;
     private ImageView ivBookImage;
     private ImageButton ibExpand;
-    private LinearLayout llParameters;
     private FancyButton btnNotify;
+    private TextView tvCount;
+    private TextView tvPages;
+    private TextView tvCover;
 
     @Nullable
     @Override
@@ -68,13 +67,14 @@ public class BookFragment extends Fragment {
         tvYear = view.findViewById(R.id.tvYear);
         tvAvailability = view.findViewById(R.id.tvAvailability);
         tvPrise = view.findViewById(R.id.tvPrise);
-        btnParameters = (mehdi.sakout.fancybuttons.FancyButton) view.findViewById(R.id.btnParameters);
+        tvCount = view.findViewById(R.id.tvCount);
+        tvPages = view.findViewById(R.id.tvPages);
+        tvCover = view.findViewById(R.id.tvCover);
         tvAuthor = view.findViewById(R.id.tvAuthor);
         ivBookImage = view.findViewById(R.id.ivBookImage);
         tvPublisher = view.findViewById(R.id.tvPublisher);
         ibExpand = view.findViewById(R.id.ibExpand);
         tvDescription = view.findViewById(R.id.tvDescription);
-        llParameters = view.findViewById(R.id.llParameters);
 
         final boolean[] isExpanded = {false};
         ibExpand.setOnClickListener(btn -> {
@@ -99,7 +99,7 @@ public class BookFragment extends Fragment {
                 setBookInfo(book);
             }
         });
-        btnNotify.setOnClickListener(btn->{
+        btnNotify.setOnClickListener(btn -> {
             viewModel.notifyOfBookAppearance();
         });
         btnPutInBasket.setOnClickListener(btn -> {
@@ -108,6 +108,9 @@ public class BookFragment extends Fragment {
     }
 
     private void setBookInfo(Book book) {
+        tvCount.setText(String.valueOf(book.count));
+        tvPages.setText(String.valueOf(book.pages_number));
+        tvCover.setText(book.cover);
         tvTitle.setText(String.format("\"%s\"", book.title));
         tvYear.setText(String.valueOf(book.publication_year));
         tvPrise.setText(book.price);
@@ -123,52 +126,37 @@ public class BookFragment extends Fragment {
         }
         tvDescription.setText(book.description);
 
-        setBookAuthors(book.authors);
-        setImage(book);
-        setOnParametersClickListener(book);
-    }
+        viewModel.getPublisherLiveData(String.valueOf(book.book_publisher_id)).observe(this, publisher -> {
+            if (publisher != null) {
+                tvPublisher.setText(publisher.publisher_name);
+            }
+        });
 
-    private void setBookAuthors(List<Author> authors) {
-        StringBuilder bookAuthors = new StringBuilder();
-        for (Author author : authors) {
-            String authorName = author.author_name.substring(0, 1);
-            String authorSurname = author.author_surname;
-            bookAuthors.append(authorSurname).append(" ").append(authorName).append("., ");
-        }
-        tvAuthor.setText(bookAuthors.substring(0, bookAuthors.length() - 2));
+        viewModel.getAuthorListLiveData(book.authorsIDs).observe(this, authorList -> {
+            if (authorList != null) {
+                StringBuilder authorsStringBuilder = new StringBuilder();
+                for (Author author : authorList) {
+                    authorsStringBuilder.append(author.author_surname)
+                                        .append(" ")
+                                        .append(author.author_name.substring(0, 1))
+                                        .append("., ")
+                                        .append('\n');
+                }
+                authorsStringBuilder.delete(authorsStringBuilder.length() - 3, authorsStringBuilder.length());
+                tvAuthor.setText(authorsStringBuilder);
+            }
+        });
+        setImage(book);
     }
 
     private void setImage(Book book) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         String bookImage = book.imagesPaths.get(0);
         StorageReference imageRef = storage.getReference().child(bookImage);
-//        ivBookImage.setId(bookID);
 
-        Glide.with(this /* context */)
+        Glide.with(this)
              .using(new FirebaseImageLoader())
              .load(imageRef)
              .into(ivBookImage);
-    }
-
-    private void setOnParametersClickListener(Book book) {
-        final boolean[] isClicked = {false};
-        btnParameters.setOnClickListener(btn -> {
-            if (isClicked[0]) {
-                llParameters.removeAllViews();
-                isClicked[0] = false;
-            } else {
-                final View view = getLayoutInflater().inflate(R.layout.book_parameters, null);
-                TextView tvCount = (TextView) view.findViewById(R.id.tvCount);
-                tvCount.setText(String.valueOf(book.count));
-                TextView tvPages = (TextView) view.findViewById(R.id.tvPages);
-                tvPages.setText(String.valueOf(book.pages_number));
-//                setPublisher(book.book_publisher_id, view);
-                TextView tvCover = (TextView) view.findViewById(R.id.tvCover);
-                tvCover.setText(book.cover);
-
-                llParameters.addView(view);
-                isClicked[0] = true;
-            }
-        });
     }
 }

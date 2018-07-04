@@ -1,7 +1,6 @@
 package izenka.hfad.com.bookstore.basket;
 
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,21 +21,25 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+import izenka.hfad.com.bookstore.DatabaseSingleton;
 import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.callbacks.AuthorListCallback;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 
 public class BookInBasketListAdapter extends RecyclerView.Adapter<BookInBasketListAdapter.BookViewHolder> {
 
-    private LifecycleOwner owner;
     private BasketViewModel viewModel;
     private List<BookInBasketModel> bookInBasketModelList;
     private boolean isChecked = false;
     private int checkedNum = 0;
 
-    BookInBasketListAdapter(LifecycleOwner owner, BasketViewModel viewModel, List<BookInBasketModel> bookInBasketModelList) {
-        this.owner = owner;
+    BookInBasketListAdapter(BasketViewModel viewModel, List<BookInBasketModel> bookInBasketModelList) {
         this.viewModel = viewModel;
+        this.bookInBasketModelList = bookInBasketModelList;
+    }
+
+    public void setList(List<BookInBasketModel> bookInBasketModelList) {
         this.bookInBasketModelList = bookInBasketModelList;
     }
 
@@ -110,11 +113,11 @@ public class BookInBasketListAdapter extends RecyclerView.Adapter<BookInBasketLi
                 float priceForSeveral = Float.valueOf(book.price.substring(0, book.price.length() - 3)) * i1;
                 Log.d("priceForSeveral", String.valueOf(priceForSeveral));
                 holder.tvPriseForSeveral.setText(" / " + String.valueOf(priceForSeveral) + " р.");
-                if(holder.checkBox.isChecked()){
-                    if(i<i1){
-                        viewModel.addToTotalPrice(Math.abs(Float.valueOf(book.price.substring(0, book.price.length() - 3))*i-priceForSeveral));
-                    } else{
-                        viewModel.subtractFromTotalPrice(Math.abs(Float.valueOf(book.price.substring(0, book.price.length() - 3))*i-priceForSeveral));
+                if (holder.checkBox.isChecked()) {
+                    if (i < i1) {
+                        viewModel.addToTotalPrice(Math.abs(Float.valueOf(book.price.substring(0, book.price.length() - 3)) * i - priceForSeveral));
+                    } else {
+                        viewModel.subtractFromTotalPrice(Math.abs(Float.valueOf(book.price.substring(0, book.price.length() - 3)) * i - priceForSeveral));
                     }
                 }
             }
@@ -128,7 +131,7 @@ public class BookInBasketListAdapter extends RecyclerView.Adapter<BookInBasketLi
                     viewModel.addBookInBasketModel(bookIdAndCountModel);
 //                    String priseForSeveral = holder.tvPriseForSeveral.getText().toString();
 //                    if(priseForSeveral.isEmpty()){
-                        viewModel.addToTotalPrice(Float.valueOf(book.price.substring(0, book.price.length() - 3))*holder.npBooksCount.getValue());
+                    viewModel.addToTotalPrice(Float.valueOf(book.price.substring(0, book.price.length() - 3)) * holder.npBooksCount.getValue());
 //                    } else {
 //                        viewModel.addToTotalPrice(Float.valueOf(priseForSeveral.substring(3, priseForSeveral.length() - 3)));
 //                    }
@@ -137,7 +140,7 @@ public class BookInBasketListAdapter extends RecyclerView.Adapter<BookInBasketLi
                     viewModel.removeBookInBasketModel(bookIdAndCountModel);
 //                    String priseForSeveral = holder.tvPriseForSeveral.getText().toString();
 //                    if(priseForSeveral.isEmpty()){
-                        viewModel.subtractFromTotalPrice(Float.valueOf(book.price.substring(0, book.price.length() - 3))*holder.npBooksCount.getValue());
+                    viewModel.subtractFromTotalPrice(Float.valueOf(book.price.substring(0, book.price.length() - 3)) * holder.npBooksCount.getValue());
 //                    } else{
 //                        viewModel.subtractFromTotalPrice(Float.valueOf(priseForSeveral.substring(3, priseForSeveral.length() - 3))*holder.npBooksCount.getValue());
 //                    }
@@ -151,14 +154,20 @@ public class BookInBasketListAdapter extends RecyclerView.Adapter<BookInBasketLi
         });
         holder.checkBox.setChecked(isChecked);
 
-//        holder.tvPublicationYear.setText(String.valueOf(book.publication_year));
-        StringBuilder bookAuthors = new StringBuilder();
-        for (Author author : book.authors) {
-            String authorName = author.author_name.substring(0, 1);
-            String authorSurname = author.author_surname;
-            bookAuthors.append(authorSurname).append(" ").append(authorName).append("., ");
-        }
-        holder.tvAuthor.setText(bookAuthors.substring(0, bookAuthors.length() - 2));
+        AuthorListCallback authorListCallback = authorList -> {
+            StringBuilder authorsStringBuilder = new StringBuilder();
+            for (Author author : authorList) {
+                authorsStringBuilder.append(author.author_surname)
+                                    .append(" ")
+                                    .append(author.author_name.substring(0, 1))
+                                    .append("., ")
+                                    .append('\n');
+            }
+            authorsStringBuilder.delete(authorsStringBuilder.length() - 3, authorsStringBuilder.length() );
+            holder.tvAuthor.setText(authorsStringBuilder);
+        };
+        DatabaseSingleton.getInstance().getAuthorList(book.authorsIDs, authorListCallback);
+
         FirebaseStorage storage = FirebaseStorage.getInstance();
         String bookImage = book.imagesPaths.get(0);
         StorageReference imageRef = storage.getReference().child(bookImage);
@@ -186,11 +195,11 @@ public class BookInBasketListAdapter extends RecyclerView.Adapter<BookInBasketLi
         int position = viewHolder.getAdapterPosition();
         viewModel.deleteBookFromBasket(bookInBasketModelList.get(position).book.book_id);
         bookInBasketModelList.remove(position);
-        ((CheckBox)viewHolder.itemView.findViewById(R.id.checkBox)).setChecked(false);
+        ((CheckBox) viewHolder.itemView.findViewById(R.id.checkBox)).setChecked(false);
         // notify the item removed by position
         // to perform recycler view delete animations
         // NOTE: don't call notifyDataSetChanged()
-        if(bookInBasketModelList.isEmpty()){
+        if (bookInBasketModelList.isEmpty()) {
             viewModel.setEmptyBasket();
         }
         notifyItemRemoved(position);

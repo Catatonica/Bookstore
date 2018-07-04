@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.store_map;
+package izenka.hfad.com.bookstore.stores_map;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -29,9 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import izenka.hfad.com.bookstore.AccountListener;
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.account.AccountActivity;
-import izenka.hfad.com.bookstore.basket.BasketActivity;
 import izenka.hfad.com.bookstore.main.MainMenuActivity;
-import izenka.hfad.com.bookstore.orders.OrdersActivity;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, AccountListener {
 
@@ -48,7 +46,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
 
         setToolbar();
-        init();
+        setNavigationDrawer();
 
         pbLoadingProgress = findViewById(R.id.pbLoadingProgress);
         pbLoadingProgress.setVisibility(View.VISIBLE);
@@ -58,7 +56,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
     }
 
-    private void init() {
+    private void setNavigationDrawer() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setCheckedItem(R.id.nav_map);
@@ -70,41 +68,69 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // Add code here to update the UI based on the item selected
-                // For example, swap UI fragments here
                 switch (item.getItemId()) {
-                    case R.id.nav_basket:
-                        openScreen(BasketActivity.class);
-                        break;
                     case R.id.nav_catalogue:
-                        openScreen(MainMenuActivity.class);
+                        Intent catalogueIntent = new Intent(MapsActivity.this, MainMenuActivity.class);
+                        item.setChecked(true);
+                        openScreen(catalogueIntent);
                         break;
                     case R.id.nav_info:
+                        item.setChecked(true);
+//                        mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_map:
+                        item.setChecked(true);
+                        mDrawerLayout.closeDrawers();
                         break;
                     case R.id.nav_profile:
-                        openScreen(AccountActivity.class);
-                        //TODO: switch if user is registered or not
-//                        Intent profileIntent = new Intent(MainMenuActivity.this, AccountActivity.class);
-//                        startActivityForResult(profileIntent, PICK_USER_REQUEST);
-                        break;
-                    case R.id.nav_purchases:
-                        openScreen(OrdersActivity.class);
+                        Intent profileIntent = new Intent(MapsActivity.this, AccountActivity.class);
+                        item.setChecked(true);
+                        openScreen(profileIntent);
                         break;
                     default:
+                        mDrawerLayout.closeDrawers();
                         break;
                 }
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
+//                item.setChecked(true);
+//                mDrawerLayout.closeDrawers();
                 return true;
+            }
+        });
+    }
+
+    private void openScreen(Intent intent){
+        mDrawerLayout.closeDrawers();
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                startActivity(intent);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
             }
         });
     }
 
     private void setNewUserHeader() {
         View headerView = mNavigationView.getHeaderView(0);
-        headerView.findViewById(R.id.ibAddNewUser).setVisibility(View.VISIBLE);
+        ImageButton ibAddNewUser = headerView.findViewById(R.id.ibAddNewUser);
+        ibAddNewUser.setVisibility(View.VISIBLE);
+        ibAddNewUser.setOnClickListener(btn->{
+            Intent intent = new Intent(MapsActivity.this, AccountActivity.class);
+            startActivity(intent);
+        });
         headerView.findViewById(R.id.ivUserPhoto).setVisibility(View.GONE);
         headerView.findViewById(R.id.rlUserEmailAndExit).setVisibility(View.GONE);
     }

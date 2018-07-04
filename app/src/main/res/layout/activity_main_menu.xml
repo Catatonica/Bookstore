@@ -16,28 +16,12 @@
 
         <include layout="@layout/toolbar" />
         <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-        <com.beardedhen.androidbootstrap.BootstrapEditText
-            android:id="@+id/etSearch"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:background="@color/lightBlue"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/search3"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:hint="@string/search"
-            android:imeOptions="flagNoEnterAction"
-            android:padding="4dp"
-            android:textStyle="italic"
-            app:bootstrapSize="lg"
-            app:roundedCorners="true" />
 
         <TextView
             android:id="@+id/tvRunningLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/boarders3"
             android:ellipsize="marquee"

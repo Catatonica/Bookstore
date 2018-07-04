@@ -11,13 +11,15 @@ import android.widget.TextView;
 import java.util.List;
 
 import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.model.db_classes.Order;
+import izenka.hfad.com.bookstore.order_registration.OrderRegistrationModel;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderViewHolder> {
 
-    private List<OrderModel> orderList;
+    private List<OrderRegistrationModel> orderList;
     private OrdersViewModel viewModel;
 
-    public OrderListAdapter(List<OrderModel> orderList, OrdersViewModel viewModel) {
+    public OrderListAdapter(List<OrderRegistrationModel> orderList, OrdersViewModel viewModel) {
         this.orderList = orderList;
         this.viewModel = viewModel;
     }
@@ -31,7 +33,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        OrderModel order = orderList.get(position);
+        OrderRegistrationModel order = orderList.get(position);
         holder.tvDate.setText(order.date);
         holder.tvStatus.setText(order.status);
         holder.tvPrice.setText(String.format("%.1f р.", order.price));

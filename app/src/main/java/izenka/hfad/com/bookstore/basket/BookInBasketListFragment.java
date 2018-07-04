@@ -21,16 +21,11 @@ import izenka.hfad.com.bookstore.R;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 public class BookInBasketListFragment extends Fragment implements ButtonsClickListener, RecyclerItemTouchHelperListener {
-//    private IBasketPresenter presenter;
 
-    //    private LinearLayout llBooks;
-//    private LinearLayout llAction;
-//    private TextView tvTotalPrise;
     private BasketViewModel viewModel;
 
     private RecyclerView rvBookList;
     private FancyButton btnRegister;
-    private FancyButton btnDelete;
     private FancyButton btnChooseEth;
     private TextView tvTotalPrise;
 
@@ -65,36 +60,21 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
                 checkAll = true;
             }
         });
-//        btnDelete = view.findViewById(R.id.btnDelete);
         btnRegister = view.findViewById(R.id.btnRegister);
         btnRegister.setEnabled(false);
 
-//        llBooks = (LinearLayout) view.findViewById(R.id.llBooks);
-//        llAction = view.findViewById(R.id.llAction);
         tvTotalPrise = view.findViewById(R.id.tvTotalPriceForAll);
-//        fillTheBasket();
     }
-
-//    private void fillTheBasket() {
-//////        if (!MainMenuActivity.stringSet.isEmpty()) {
-////        for (final String bookID : MainMenuActivity.stringSet) {
-////            ReadBooksForBasket.queryBook(getActivity(), bookID, presenter.getCheckedViewSet(), presenter);
-////        }
-//////        } else {
-//////            basketView.addEmptyBasketView();
-//////        }
-//    }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(BasketViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(BasketViewModel.class);
+        List<BookInBasketModel> bookList = new ArrayList<>();
+        BookInBasketListAdapter adapter = new BookInBasketListAdapter(viewModel, bookList);
         viewModel.setButtonsClickListener(this);
-        //TODO: книги должны динамически изменяться
-        viewModel.getBookListLiveData().observe(this, bookInBasketModelList -> {
-            rvBookList.setAdapter(new BookInBasketListAdapter(this, viewModel, bookInBasketModelList));
-        });
+        viewModel.getBookListLiveData().observe(this, adapter::setList);
+        rvBookList.setAdapter(adapter);
         btnChooseEth.setOnClickListener(btn -> {
             ((BookInBasketListAdapter) rvBookList.getAdapter()).checkAll();
         });
@@ -121,6 +101,11 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void addToTotalPrice(float value) {
         float oldPrice = Float.valueOf(tvTotalPrise.getText().toString());
         float newPrice = oldPrice + value;
@@ -137,68 +122,8 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof BookInBasketListAdapter.BookViewHolder) {
-//            // get the removed item name to display it in snack bar
-//            String name = bookInBasketModelList.get(viewHolder.getAdapterPosition()).bogetName();
-//
-//            // backup of removed item for undo purpose
-//            final BookIdAndCountModel deletedItem = bookInBasketModelList.get(viewHolder.getAdapterPosition());
-//            final int deletedIndex = viewHolder.getAdapterPosition();
-
-            // remove the item from recycler view
             ((BookInBasketListAdapter) rvBookList.getAdapter()).removeItem(viewHolder);
-
-//            // showing snack bar with Undo option
-//            Snackbar snackbar = Snackbar.make(coordinatorLayout, "Item removed from cart!", Snackbar.LENGTH_LONG);
-//            snackbar.setAction("UNDO", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    // undo is selected, restore the deleted item
-//                    ((BookInBasketListAdapter)rvBookList.getAdapter()).restoreItem(deletedItem, deletedIndex);
-//                }
-//            });
-//            snackbar.setActionTextColor(Color.YELLOW);
-//            snackbar.show();
         }
     }
 
-
-//    @Override
-//    public void addBookView(View oneBookInBasketView) {
-//        llBooks.addView(oneBookInBasketView);
-//    }
-//
-//    @Override
-//    public void removeBook(int id) {
-//        llBooks.post(new Runnable() {
-//            public void run() {
-//                llBooks.removeView(llBooks.findViewById(id));
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public void onDeleteClick() {
-//        llAction.setVisibility(View.INVISIBLE);
-//
-////        if (MainMenuActivity.stringSet.isEmpty()) {
-////            emptyBasket = getLayoutInflater().inflate(R.layout.empty_basket, null);
-////            activityBasket.removeView(filledBasket);
-////            activityBasket.addView(emptyBasket);
-//////            initEmptyBasketViews();
-////            // setContentView(R.layout.empty_basket);
-////        }
-//    }
-//
-//    @Override
-//    public void setTotalPrise(String prise) {
-//        tvTotalPrise.setText(prise);
-//    }
-//
-//    @Override
-//    public void loadImage(StorageReference imageRef, ImageView imgBtnBook) {
-//        Glide.with(this /* context */)
-//             .using(new FirebaseImageLoader())
-//             .load(imageRef)
-//             .into(imgBtnBook);
-//    }
 }

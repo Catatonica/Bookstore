@@ -21,7 +21,6 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
     private FrameLayout flOrderList;
     private FrameLayout flOrder;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,5 +184,30 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
         }
 
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment detailsFragmentPortrait = getSupportFragmentManager().findFragmentByTag("details");
+        Fragment detailsFragmentLand = getSupportFragmentManager().findFragmentById(R.id.flOrder);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && detailsFragmentPortrait != null) {
+            getSupportActionBar().setTitle(R.string.orders);
+            if(detailsFragmentLand == null){
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(detailsFragmentPortrait)
+                        .replace(R.id.flBase, new OrderListFragment(), "list")
+                        .commit();
+            } else{
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .remove(detailsFragmentPortrait)
+                        .remove(detailsFragmentLand)
+                        .replace(R.id.flBase, new OrderListFragment(), "list")
+                        .commit();
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 }

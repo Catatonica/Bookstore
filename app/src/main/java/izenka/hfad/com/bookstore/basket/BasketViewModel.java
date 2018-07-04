@@ -2,6 +2,7 @@ package izenka.hfad.com.bookstore.basket;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.arch.paging.PagedList;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -13,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import izenka.hfad.com.bookstore.DatabaseSingleton;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 
@@ -29,52 +31,60 @@ public class BasketViewModel extends ViewModel {
     public MutableLiveData<List<BookInBasketModel>> getBookListLiveData() {
         if (bookInBasketLiveData == null) {
             bookInBasketLiveData = new MutableLiveData<>();
-            loadBookList();
+            DatabaseSingleton.getInstance().getUser(user -> {
+                if(user.Basket.isEmpty()){
+                    bookInBasketLiveData.postValue(null);
+                } else{
+                    DatabaseSingleton.getInstance().getBooksFromBasket(user.Basket, bookList -> {
+                        bookInBasketLiveData.postValue(bookList);
+                    });
+                }
+            });
         }
         return bookInBasketLiveData;
     }
 
-    private void loadBookList() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        database.child("bookstore").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<BookInBasketModel> bookInBasketModelList = new ArrayList<>();
-                DataSnapshot basketDataSnapshot = dataSnapshot.child("users").child(userID).child("Basket");
-                for (DataSnapshot data : basketDataSnapshot.getChildren()) {
-                    BookInBasketModel bookInBasketModel = new BookInBasketModel();
-                    String bookID = data.getKey();
-                    Integer booksCount = Integer.valueOf(data.getValue().toString());
-
-                    Book book = dataSnapshot.child("book").child(bookID).getValue(Book.class);
-                    book.imagesPaths = new ArrayList<>();
-                    for (DataSnapshot imagesID : dataSnapshot.child("book").child(bookID).child("Images").getChildren()) {
-                        book.imagesPaths.add(imagesID.getValue().toString());
-                    }
-                    final List<Integer> authorsIDs = new ArrayList<>();
-                    for (DataSnapshot authID : dataSnapshot.child("book").child(bookID).child("Authors").getChildren()) {
-                        authorsIDs.add(Integer.parseInt(String.valueOf(authID.getValue())));
-                    }
-                    book.authors = new ArrayList<>();
-                    for (int authorID : authorsIDs) {
-                        book.authors.add(dataSnapshot.child("author/" + authorID).getValue(Author.class));
-                    }
-
-                    bookInBasketModel.count = booksCount;
-                    bookInBasketModel.book = book;
-                    bookInBasketModelList.add(bookInBasketModel);
-                }
-                bookInBasketLiveData.postValue(bookInBasketModelList);
-                navigator.loadingFinished();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    private void loadBookList() {
+//        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+//        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        database.child("bookstore").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                List<BookInBasketModel> bookInBasketModelList = new ArrayList<>();
+//                DataSnapshot basketDataSnapshot = dataSnapshot.child("users").child(userID).child("Basket");
+//                for (DataSnapshot data : basketDataSnapshot.getChildren()) {
+//                    BookInBasketModel bookInBasketModel = new BookInBasketModel();
+//                    String bookID = data.getKey();
+//                    Integer booksCount = Integer.valueOf(data.getValue().toString());
+//
+//                    Book book = dataSnapshot.child("book").child(bookID).getValue(Book.class);
+//                    book.imagesPaths = new ArrayList<>();
+//                    for (DataSnapshot imagesID : dataSnapshot.child("book").child(bookID).child("Images").getChildren()) {
+//                        book.imagesPaths.add(imagesID.getValue().toString());
+//                    }
+//                    final List<Integer> authorsIDs = new ArrayList<>();
+//                    for (DataSnapshot authID : dataSnapshot.child("book").child(bookID).child("Authors").getChildren()) {
+//                        authorsIDs.add(Integer.parseInt(String.valueOf(authID.getValue())));
+//                    }
+//                    book.authors = new ArrayList<>();
+//                    for (int authorID : authorsIDs) {
+//                        book.authors.add(dataSnapshot.child("author/" + authorID).getValue(Author.class));
+//                    }
+//
+//                    bookInBasketModel.count = booksCount;
+//                    bookInBasketModel.book = book;
+//                    bookInBasketModelList.add(bookInBasketModel);
+//                }
+//                bookInBasketLiveData.postValue(bookInBasketModelList);
+//                navigator.loadingFinished();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
     private ButtonsClickListener buttonsClickListener;
 
@@ -98,10 +108,8 @@ public class BasketViewModel extends ViewModel {
         buttonsClickListener.removeBookInBasketModel(bookIdAndCountModel);
     }
 
-    public void deleteBookFromBasket(int book_id) {
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.child("bookstore/users/" + userID).child("Basket").child(String.valueOf(book_id)).removeValue();
+    public void deleteBookFromBasket(int bookID) {
+        DatabaseSingleton.getInstance().deleteBookFromBasket(String.valueOf(bookID));
     }
 
     public void addToTotalPrice(float value){

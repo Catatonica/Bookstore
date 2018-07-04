@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,16 +28,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import izenka.hfad.com.bookstore.AccountListener;
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.account.AccountViewModel;
 import izenka.hfad.com.bookstore.basket.BookIdAndCountModel;
+import izenka.hfad.com.bookstore.book.BookActivity;
 import izenka.hfad.com.bookstore.orders.OrdersActivity;
 import mehdi.sakout.fancybuttons.FancyButton;
 
 //TODO: make OrdersActivity and layout for it
 //where user can view all orders and delete if necessary
 
-public class OrderRegistrationActivity extends AppCompatActivity {
+public class OrderRegistrationActivity extends AppCompatActivity implements AccountListener{
 
     private DatabaseReference db;
     //    private double totalPrice;
@@ -88,6 +91,7 @@ public class OrderRegistrationActivity extends AppCompatActivity {
         accountViewModel.getUserLiveData().observe(this, user -> {
             Log.d("userInfo", "observeUserLiveData, user = " + user);
             if (user != null) {
+                etEmail.setText(user.email);
                 etName.setText(String.format("%s %s", user.name, user.surname));
                 etPhoneNumber.setText(user.phone);
                 if (user.Address != null) {
@@ -98,7 +102,7 @@ public class OrderRegistrationActivity extends AppCompatActivity {
                 }
             }
         });
-        etEmail.setText(accountViewModel.getUser().getEmail());
+//        etEmail.setText(accountViewModel.getUser().getEmail());
 
         // idAndCountMap=new HashMap<>();
         // for(int i=0; i<idAndCountList.size();i++){
@@ -217,7 +221,7 @@ public class OrderRegistrationActivity extends AppCompatActivity {
                                                                       totalPrice,
                                                                       name,
                                                                       phoneNumber,
-                                                                      accountViewModel.getUser().getUid(),
+                                                                      getUser().getUid(),
                                                                       email,
                                                                       fullAddress,
                                                                       ordersMap,
@@ -376,7 +380,10 @@ public class OrderRegistrationActivity extends AppCompatActivity {
 //        SharedPreferences.Editor editor = sp.edit();
 //        editor.putStringSet("booksIDs", MainMenuActivity.stringSet);
 //        editor.apply();
-        finish();
+        Intent intent = new Intent(getApplicationContext(), BookActivity.class);
+        intent.putExtra("bookID", getIntent().getIntExtra("bookID", 0));
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private void onBtnToOrdersClicked() {

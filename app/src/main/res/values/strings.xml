@@ -63,7 +63,7 @@
     <string name="sum">Сумма:</string>
     <string name="status">Статус:</string>
     <string name="empty_orders">Список заказов пуст.</string>
-    <string name="multiply">*</string>
+    <string name="multiply"> * </string>
     <string-array name="categoriesNames">
         <item>Иностранная литература</item>
         <item>Детская литература</item>
@@ -73,4 +73,6 @@
         <item>Нехудожественная литература</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="search_title">Поиск</string>
+    <string name="title_book_parameters">Параметры книги:</string>
 </resources>

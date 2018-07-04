@@ -21,6 +21,10 @@ public class BookListAdapter extends BaseAdapter {
         this.bookList = bookList;
     }
 
+    public void setBookInOrderList(List<BookInOrderModel> bookList){
+        this.bookList = bookList;
+    }
+
     @Override
     public int getCount() {
         return bookList.size();

@@ -1,104 +1,69 @@
 package izenka.hfad.com.bookstore.book;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.DatabaseSingleton;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
+import izenka.hfad.com.bookstore.model.db_classes.Publisher;
 
 public class BookViewModel extends ViewModel {
 
     private int bookID;
     private MutableLiveData<Book> bookLiveData;
+    private MutableLiveData<List<Author>> authorListLiveData;
+    private MutableLiveData<Publisher> publisherLiveData;
     private BookNavigator navigator;
 
-    public void setBookID(int bookID){
+    public void setBookID(int bookID) {
         this.bookID = bookID;
     }
+
     public void setNavigator(BookNavigator navigator) {
         this.navigator = navigator;
     }
 
-    public void setBookLiveData() {
-        FirebaseDatabase.getInstance()
-                        .getReference("bookstore/")
-                        .addValueEventListener(new ValueEventListener() { // TODO: or SingleEventListener?
-                            @Override
-                            public void onDataChange(DataSnapshot data) {
-//                                    final Book book = data.getChildren().iterator().next().getValue(Book.class);
-                                Book book = data.child("book/" + bookID).getValue(Book.class);
-
-                                List<String> imagePathList = new ArrayList<>();
-                                for (DataSnapshot imagesID : data.child("book/" + bookID + "/Images").getChildren()) {
-                                    imagePathList.add(imagesID.getValue().toString());
-                                }
-                                book.imagesPaths = imagePathList;
-
-                                List<Integer> authorsIDs = new ArrayList<>();
-                                for (DataSnapshot authID : data.child("book/" + bookID + "/Authors").getChildren()) {
-                                    authorsIDs.add(Integer.parseInt(String.valueOf(authID.getValue())));
-                                }
-
-                                book.authors = new ArrayList<>();
-                                for (int authorID : authorsIDs) {
-                                    book.authors.add(data.child("author/" + authorID).getValue(Author.class));
-                                }
-
-                                bookLiveData.postValue(book);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-    }
-
-    public MutableLiveData<Book> getBookLiveData() {
+    MutableLiveData<Book> getBookLiveData() {
         if (bookLiveData == null) {
             bookLiveData = new MutableLiveData<>();
-            setBookLiveData();
+            DatabaseSingleton.getInstance().getBook(String.valueOf(bookID),
+                                                    book -> bookLiveData.postValue(book));
         }
         return bookLiveData;
     }
 
-    public void onPutInBasketClicked() {
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.child("bookstore/users/" + userID).child("Basket").child(String.valueOf(bookID)).setValue(bookID);
-//        database.child("bookstore/users/" + userID).child("Basket").child(String.valueOf(bookID)).child("count").setValue(1);
+    MutableLiveData<List<Author>> getAuthorListLiveData(List<String> authorIDs) {
+        if (authorListLiveData == null) {
+            authorListLiveData = new MutableLiveData<>();
+            DatabaseSingleton.getInstance().getAuthorList(authorIDs, authorList -> {
+                authorListLiveData.postValue(authorList);
+            });
+        }
+        return authorListLiveData;
+    }
+
+    MutableLiveData<Publisher> getPublisherLiveData(String publisherID) {
+        if (publisherLiveData == null) {
+            publisherLiveData = new MutableLiveData<>();
+            DatabaseSingleton.getInstance().getBookPublisher(publisherID, publisher -> {
+                publisherLiveData.postValue(publisher);
+            });
+        }
+        return publisherLiveData;
+    }
+
+    void onPutInBasketClicked() {
+        DatabaseSingleton.getInstance().addBookToUserBasket(bookID);
         navigator.onPutInBasketClicked();
     }
 
-    public void notifyOfBookAppearance() {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference("/bookstore");
-        database.child("book").child(String.valueOf(bookID)).child("count").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long count = (long) dataSnapshot.getValue();
-                if(count>0){
-                    navigator.notifyUser(bookLiveData.getValue().title);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+    void notifyOfBookAppearance() {
+        DatabaseSingleton.getInstance().getBookCount(String.valueOf(bookID), count -> {
+            if (count > 0) {
+                navigator.notifyUser(bookLiveData.getValue().title);
             }
         });
     }
@@ -119,4 +84,5 @@ public class BookViewModel extends ViewModel {
 //            notificationManager.createNotificationChannel(channel);
 //        }
 //    }
+
 }

@@ -11,6 +11,10 @@
         android:icon="@drawable/ic_local_shipping_purple_24dp"
         android:title="@string/orders"
         app:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_search"
+        android:title="@string/search_title"
+        android:icon="@drawable/ic_search_black_24dp"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_qrcode"
         android:icon="@drawable/ic_iconmonstr_qr_code_2"

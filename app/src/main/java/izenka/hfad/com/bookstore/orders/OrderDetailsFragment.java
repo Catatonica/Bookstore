@@ -9,8 +9,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import izenka.hfad.com.bookstore.R;
 
@@ -36,8 +37,8 @@ public class OrderDetailsFragment extends Fragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         OrdersViewModel viewModel = ViewModelProviders.of(requireActivity()).get(OrdersViewModel.class);
-        viewModel.getOrderLiveData().observe(this, order->{
-            lvBookList.setAdapter(new BookListAdapter(order.bookList));
-        });
+        BookListAdapter adapter = new BookListAdapter(new ArrayList<>());
+        viewModel.getBookAndCountListLiveData().observe(this, adapter::setBookInOrderList);
+        lvBookList.setAdapter(adapter);
     }
 }
