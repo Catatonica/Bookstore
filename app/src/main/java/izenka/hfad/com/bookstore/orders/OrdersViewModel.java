@@ -7,21 +7,29 @@ import android.arch.lifecycle.ViewModel;
 import java.util.List;
 
 import izenka.hfad.com.bookstore.DatabaseSingleton;
-import izenka.hfad.com.bookstore.model.db_classes.Order;
 import izenka.hfad.com.bookstore.order_registration.OrderRegistrationModel;
 
 public class OrdersViewModel extends ViewModel {
 
     private MutableLiveData<List<OrderRegistrationModel>> orderListLiveData;
 
-    MutableLiveData<List<BookInOrderModel>> getBookAndCountListLiveData(OrderRegistrationModel order) {
+    MutableLiveData<List<BookInOrderModel>> getBookAndCountListLiveData(/*OrderRegistrationModel order*/) {
+//        if(bookAndCountListLiveData == null){
+//            bookAndCountListLiveData = new MutableLiveData<>();
+//        }
+//        DatabaseSingleton.getInstance().getBookAndCountList(order.getBooks(), bookAndCountList -> {
+//            bookAndCountListLiveData.postValue(bookAndCountList);
+//        });
+        return bookAndCountListLiveData;
+    }
+
+    private void setBookIDAndCountList(OrderRegistrationModel order){
         if(bookAndCountListLiveData == null){
             bookAndCountListLiveData = new MutableLiveData<>();
         }
         DatabaseSingleton.getInstance().getBookAndCountList(order.getBooks(), bookAndCountList -> {
             bookAndCountListLiveData.postValue(bookAndCountList);
         });
-        return bookAndCountListLiveData;
     }
 
     private MutableLiveData<List<BookInOrderModel>> bookAndCountListLiveData;
@@ -49,6 +57,7 @@ public class OrdersViewModel extends ViewModel {
     }
 
     void openDetailsScreen(OrderRegistrationModel order) {
+        setBookIDAndCountList(order);
         navigator.openDetailsScreen(order);
     }
 }

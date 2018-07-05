@@ -17,6 +17,7 @@ import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.basket.BasketActivity;
 import izenka.hfad.com.bookstore.orders.OrdersActivity;
 import izenka.hfad.com.bookstore.qr_code.QRCodeActivity;
+import izenka.hfad.com.bookstore.search.SearchActivity;
 
 public class BookActivity extends AppCompatActivity implements BookNavigator {
 

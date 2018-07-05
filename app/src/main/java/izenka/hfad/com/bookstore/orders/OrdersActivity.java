@@ -102,7 +102,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
     @Override
     public void openDetailsScreen(OrderRegistrationModel order) {
         OrderDetailsFragment fragment = new OrderDetailsFragment();
-        fragment.setOrder(order);
+//        fragment.setOrder(order);
         switch (getResources().getConfiguration().orientation) {
             case Configuration.ORIENTATION_LANDSCAPE:
                 findViewById(R.id.flBase).setVisibility(View.GONE);

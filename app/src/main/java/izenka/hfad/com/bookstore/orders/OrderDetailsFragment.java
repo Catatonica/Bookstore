@@ -46,7 +46,7 @@ public class OrderDetailsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         OrdersViewModel viewModel = ViewModelProviders.of(requireActivity()).get(OrdersViewModel.class);
         BookListAdapter adapter = new BookListAdapter(new ArrayList<>());
-        viewModel.getBookAndCountListLiveData(order).observe(this, adapter::setBookInOrderList);
+        viewModel.getBookAndCountListLiveData(/*order*/).observe(this, adapter::setBookInOrderList);
         rvBookList.setAdapter(adapter);
     }
 }

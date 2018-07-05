@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -31,6 +32,12 @@ public class CategoryActivity extends AppCompatActivity implements CategoryNavig
         viewModel.setCategoryID(categoryID);
         setToolbar();
         setFragment(new CategoryFragment());
+    }
+
+    private void openScreen(Class activityClass) {
+        Intent intent = new Intent();
+        intent.setClass(this, activityClass);
+        startActivity(intent);
     }
 
     private void setToolbar() {

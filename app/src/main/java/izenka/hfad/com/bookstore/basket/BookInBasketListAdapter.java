@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
 import izenka.hfad.com.bookstore.DatabaseCallback;
 import izenka.hfad.com.bookstore.DatabaseSingleton;
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.callbacks.AuthorListCallback;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 
