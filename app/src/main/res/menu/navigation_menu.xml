@@ -14,10 +14,5 @@
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_place_black_24dp"
             android:title="@string/shops_map" />
-
-        <item
-            android:id="@+id/nav_info"
-            android:icon="@drawable/ic_info_black_24dp"
-            android:title="@string/shop_info" />
     </group>
 </menu>

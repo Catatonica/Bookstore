@@ -5,5 +5,5 @@ import android.support.v4.app.Fragment;
 
 public interface AccountActivityNavigator {
     void setFragment(Fragment fragment);
-    void showMessage(String message);
+    void showMessage();
 }

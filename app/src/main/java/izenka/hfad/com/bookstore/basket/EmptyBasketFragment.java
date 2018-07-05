@@ -12,13 +12,7 @@ import android.view.ViewGroup;
 
 import izenka.hfad.com.bookstore.R;
 
-public class EmptyBasketFragment extends Fragment /*implements IBasketFragmentView */{
-//    private IBasketPresenter presenter;
-
-//    @Override
-//    public void setPresenter(@NonNull IBasketPresenter presenter) {
-//        this.presenter = presenter;
-//    }
+public class EmptyBasketFragment extends Fragment {
 
     @Nullable
     @Override
@@ -31,7 +25,7 @@ public class EmptyBasketFragment extends Fragment /*implements IBasketFragmentVi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        BasketViewModel viewModel = ViewModelProviders.of(getActivity()).get(BasketViewModel.class);
-        view.findViewById(R.id.btnReturnFromBasket).setOnClickListener(btn->viewModel.onBackClicked());
+        BasketViewModel viewModel = ViewModelProviders.of(requireActivity()).get(BasketViewModel.class);
+        view.findViewById(R.id.btnReturnFromBasket).setOnClickListener(btn -> viewModel.onBackClicked());
     }
 }

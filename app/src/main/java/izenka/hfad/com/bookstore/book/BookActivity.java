@@ -16,11 +16,11 @@ import android.widget.Toast;
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.basket.BasketActivity;
 import izenka.hfad.com.bookstore.orders.OrdersActivity;
-import izenka.hfad.com.bookstore.view.qr_code.QRCodeActivity;
+import izenka.hfad.com.bookstore.qr_code.QRCodeActivity;
 
 public class BookActivity extends AppCompatActivity implements BookNavigator {
 
-    private int bookID ;
+    private int bookID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +35,13 @@ public class BookActivity extends AppCompatActivity implements BookNavigator {
         viewModel.setBookID(bookID);
         viewModel.setNavigator(this);
         viewModel.getBookLiveData().observe(this, book -> {
-            if(book!=null){
-                setToolbar(book.title);
+            if (book != null) {
+                setToolbar(book.getTitle());
             }
         });
 
         setFragment(new BookFragment());
     }
-
-
 
     private void setToolbar(String title) {
         setSupportActionBar(findViewById(R.id.toolbar));

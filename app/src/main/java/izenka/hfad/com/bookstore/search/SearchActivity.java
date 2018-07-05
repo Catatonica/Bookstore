@@ -18,7 +18,6 @@ import izenka.hfad.com.bookstore.book.BookActivity;
 public class SearchActivity extends AppCompatActivity implements SearchNavigator {
 
     private int categoryID = -1;
-    private RecyclerView rvBookList;
     private SearchViewModel viewModel;
     private SearchedBookListAdapter adapter;
 
@@ -34,7 +33,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNavigator
         viewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         viewModel.setNavigator(this);
 
-        rvBookList = findViewById(R.id.rvBookList);
+        RecyclerView rvBookList = findViewById(R.id.rvBookList);
         GridLayoutManager manager = new GridLayoutManager(this, 2);
         rvBookList.setLayoutManager(manager);
         adapter = (new SearchedBookListAdapter(new ArrayList<>(), viewModel, false));
@@ -54,12 +53,11 @@ public class SearchActivity extends AppCompatActivity implements SearchNavigator
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-//        menu.findItem(R.id.search).expandActionView();
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setIconifiedByDefault(true);
         searchView.setIconified(false);
         searchView.requestFocus();
-        //TODO: create ContentProvider for suggections
+        //TODO: create ContentProvider for suggestions
         searchView.setQueryHint("Название книги / автор");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -70,31 +68,31 @@ public class SearchActivity extends AppCompatActivity implements SearchNavigator
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText.isEmpty()) {
-                    int size = adapter.getBookList().size();
-                    adapter.getBookList().clear();
-                    adapter.notifyItemRangeRemoved(0, size);
-                } else {
-                    if(categoryID == -1){
-                        viewModel.getBookListLiveData(newText).observe(SearchActivity.this, bookList -> {
-                            adapter.setBookList(bookList);
-                            adapter.notifyDataSetChanged();
-                        });
-                    } else{
-                        viewModel.getBookListLiveData(String.valueOf(categoryID), newText).observe(SearchActivity.this, bookList -> {
-                            adapter.setBookList(bookList);
-                            adapter.notifyDataSetChanged();
-                        });
-                    }
-                }
+                onQueryTextChanged(newText);
                 return true;
             }
         });
-
-
-////        searchView.setIconified(false);
-//        searchView.setIconified(true);
         return true;
+    }
+
+    private void onQueryTextChanged(String newText) {
+        if (newText.isEmpty()) {
+            int size = adapter.getBookList().size();
+            adapter.getBookList().clear();
+            adapter.notifyItemRangeRemoved(0, size);
+        } else {
+            if (categoryID == -1) {
+                viewModel.getBookListLiveData(newText).observe(SearchActivity.this, bookList -> {
+                    adapter.setBookList(bookList);
+                    adapter.notifyDataSetChanged();
+                });
+            } else {
+                viewModel.getBookListLiveData(String.valueOf(categoryID), newText).observe(SearchActivity.this, bookList -> {
+                    adapter.setBookList(bookList);
+                    adapter.notifyDataSetChanged();
+                });
+            }
+        }
     }
 
     @Override

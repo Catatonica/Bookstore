@@ -11,7 +11,7 @@ public class MainThreadExecutor implements Executor {
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Override
-    public void execute(Runnable command) {
+    public void execute(@NonNull Runnable command) {
         mHandler.post(command);
     }
 }

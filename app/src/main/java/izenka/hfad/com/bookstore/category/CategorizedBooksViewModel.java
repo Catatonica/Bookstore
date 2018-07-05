@@ -7,8 +7,8 @@ import android.arch.paging.PagedList;
 
 import java.util.concurrent.Executors;
 
-import izenka.hfad.com.bookstore.model.db_classes.Book;
 import izenka.hfad.com.bookstore.MainThreadExecutor;
+import izenka.hfad.com.bookstore.model.db_classes.Book;
 
 public class CategorizedBooksViewModel extends ViewModel {
 
@@ -25,14 +25,14 @@ public class CategorizedBooksViewModel extends ViewModel {
     }
 
     public void onBookClicked(Book book) {
-        navigator.onBookClicked(book.book_id);
+        navigator.onBookClicked(book.getBook_id());
     }
 
-    public void onSearchInCategoryClicked() {
+    void onSearchInCategoryClicked() {
         navigator.onSearchInCategoryClicked();
     }
 
-    public MutableLiveData<PagedList<Book>> getBookListLiveData() {
+    MutableLiveData<PagedList<Book>> getBookListLiveData() {
         if (bookPagedListLiveData == null) {
             bookPagedListLiveData = new MutableLiveData<>();
 

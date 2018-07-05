@@ -10,7 +10,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +22,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import izenka.hfad.com.bookstore.AccountListener;
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.account.AccountActivity;
@@ -35,70 +35,58 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
 
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mNavigationView;
-
-    private ProgressBar pbLoadingProgress;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view) NavigationView mNavigationView;
+    @BindView(R.id.pbLoadingProgress) ProgressBar pbLoadingProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        ButterKnife.bind(this);
+
         setToolbar();
         setNavigationDrawer();
 
-        pbLoadingProgress = findViewById(R.id.pbLoadingProgress);
         pbLoadingProgress.setVisibility(View.VISIBLE);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
     private void setNavigationDrawer() {
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setCheckedItem(R.id.nav_map);
         if (getUser() != null) {
             setUserHeader();
         } else {
             setNewUserHeader();
         }
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_catalogue:
-                        Intent catalogueIntent = new Intent(MapsActivity.this, MainMenuActivity.class);
-                        item.setChecked(true);
-                        openScreen(catalogueIntent);
-                        break;
-                    case R.id.nav_info:
-                        item.setChecked(true);
-//                        mDrawerLayout.closeDrawers();
-                        break;
-                    case R.id.nav_map:
-                        item.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        break;
-                    case R.id.nav_profile:
-                        Intent profileIntent = new Intent(MapsActivity.this, AccountActivity.class);
-                        item.setChecked(true);
-                        openScreen(profileIntent);
-                        break;
-                    default:
-                        mDrawerLayout.closeDrawers();
-                        break;
-                }
-//                item.setChecked(true);
-//                mDrawerLayout.closeDrawers();
-                return true;
+        mNavigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_catalogue:
+                    Intent catalogueIntent = new Intent(MapsActivity.this, MainMenuActivity.class);
+                    item.setChecked(true);
+                    openScreen(catalogueIntent);
+                    break;
+                case R.id.nav_map:
+                    item.setChecked(true);
+                    mDrawerLayout.closeDrawers();
+                    break;
+                case R.id.nav_profile:
+                    Intent profileIntent = new Intent(MapsActivity.this, AccountActivity.class);
+                    item.setChecked(true);
+                    openScreen(profileIntent);
+                    break;
+                default:
+                    mDrawerLayout.closeDrawers();
+                    break;
             }
+            return true;
         });
     }
 
-    private void openScreen(Intent intent){
+    private void openScreen(Intent intent) {
         mDrawerLayout.closeDrawers();
         mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -127,7 +115,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         View headerView = mNavigationView.getHeaderView(0);
         ImageButton ibAddNewUser = headerView.findViewById(R.id.ibAddNewUser);
         ibAddNewUser.setVisibility(View.VISIBLE);
-        ibAddNewUser.setOnClickListener(btn->{
+        ibAddNewUser.setOnClickListener(btn -> {
             Intent intent = new Intent(MapsActivity.this, AccountActivity.class);
             startActivity(intent);
         });
@@ -147,12 +135,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             signOut();
             setNewUserHeader();
         });
-    }
-
-    private void openScreen(Class activityClass) {
-        Intent intent = new Intent();
-        intent.setClass(this, activityClass);
-        startActivity(intent);
     }
 
     private void setToolbar() {
@@ -178,47 +160,27 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
         addMarkers();
         LatLng center = new LatLng(48, 12);
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                Log.d("marker", "position = " + marker.getPosition());
-//                CameraPosition position = new CameraPosition.Builder().target(marker.getPosition())
-//                                                                      .zoom(15.5f)
-//                                                                      .bearing(0)
-//                                                                      .tilt(25)
-//                                                                      .build();
-
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f));
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                Button btnBack = findViewById(R.id.btnBack);
-                FloatingActionButton fab = findViewById(R.id.fab);
-                fab.setOnClickListener(btn -> dialWithStore(marker.getSnippet().replace("Тел. ", "")));
-                fab.setVisibility(View.VISIBLE);
-                btnBack.setVisibility(View.VISIBLE);
-                btnBack.setOnClickListener(btn -> {
-                    btn.setVisibility(View.GONE);
-                    fab.setVisibility(View.GONE);
-//                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 15f), 2000, null);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 4.5f));
-                    mMap.animateCamera(CameraUpdateFactory.zoomOut());
-                });
-                return false;
-            }
+        mMap.setOnMarkerClickListener(marker -> {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15f));
+            mMap.animateCamera(CameraUpdateFactory.zoomIn());
+            Button btnBack = findViewById(R.id.btnBack);
+            FloatingActionButton fab = findViewById(R.id.fab);
+            fab.setOnClickListener(btn -> dialWithStore(marker.getSnippet().replace("Тел. ", "")));
+            fab.setVisibility(View.VISIBLE);
+            btnBack.setVisibility(View.VISIBLE);
+            btnBack.setOnClickListener(btn -> {
+                btn.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 4.5f));
+                mMap.animateCamera(CameraUpdateFactory.zoomOut());
+            });
+            return false;
         });
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 3.5f));
@@ -236,29 +198,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (storeList != null) {
                 for (StoreModel store : storeList) {
                     mMap.addMarker(new MarkerOptions()
-                                           .position(new LatLng(store.geolocation.get("latitude"), store.geolocation.get("longitude")))
-                                           .title(store.address)
-                                           .snippet("Тел. " + store.phone));
+                                           .position(new LatLng(store.getGeolocation().get("latitude"),
+                                                                store.getGeolocation().get("longitude")))
+                                           .title(store.getAddress())
+                                           .snippet("Тел. " + store.getPhone()));
                 }
             }
             pbLoadingProgress.setVisibility(View.GONE);
         });
-//        mMap.addMarker(new MarkerOptions()
-//                               .position(new LatLng(53.931264, 27.646241))
-//                               .title("просп. Независимости, 116")
-//                               .snippet("Тел. 267-03-88"));
-//        mMap.addMarker(new MarkerOptions()
-//                               .position(new LatLng(51.523745, -0.158508))
-//                               .title("Baker Street, 221B")
-//                               .snippet("Тел. 267-03-88"));
-//        mMap.addMarker(new MarkerOptions()
-//                               .position(new LatLng(41.902276, 12.453362))
-//                               .title("Viale Vaticano")
-//                               .snippet("Тел. 267-03-88"));
-//                               .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_shop)));
-
-//                               .icon(BitmapDescriptorFactory.fromBitmap(((BitmapDrawable)getDrawable(R.drawable.ic_shop)).getBitmap())));
-
-
     }
 }

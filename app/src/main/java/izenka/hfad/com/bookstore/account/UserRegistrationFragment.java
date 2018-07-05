@@ -14,18 +14,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import izenka.hfad.com.bookstore.R;
 
 public class UserRegistrationFragment extends Fragment implements RegistrationFragmentNavigator {
 
-    private EditText etUserEmail;
-    private EditText etUserPassword;
-
-    private Button btnCreateAccount;
-    private Button btnSignIn;
-
-    private TextView tvRegistrationInfo;
-
+    @BindView(R.id.etUserEmail) EditText etUserEmail;
+    @BindView(R.id.etUserPassword) EditText etUserPassword;
+    @BindView(R.id.btnCreateAccount) Button btnCreateAccount;
+    @BindView(R.id.btnSignIn) Button btnSignIn;
+    @BindView(R.id.tvRegistrationInfo) TextView tvRegistrationInfo;
 
     private AccountViewModel viewModel;
 
@@ -34,22 +33,14 @@ public class UserRegistrationFragment extends Fragment implements RegistrationFr
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_registration, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        etUserEmail = view.findViewById(R.id.etUserEmail);
-        etUserPassword = view.findViewById(R.id.etUserPassword);
-        btnCreateAccount = view.findViewById(R.id.btnCreateAccount);
-        btnSignIn = view.findViewById(R.id.btnSignIn);
-        tvRegistrationInfo = view.findViewById(R.id.tvRegistrationInfo);
-        super.onViewCreated(view, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_user_registration, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        viewModel = ViewModelProviders.of(getActivity()).get(AccountViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity()).get(AccountViewModel.class);
         viewModel.setRegistrationFragmentNavigator(this);
         btnCreateAccount.setOnClickListener(btn -> {
             if (validateForm()) {
@@ -87,12 +78,7 @@ public class UserRegistrationFragment extends Fragment implements RegistrationFr
     }
 
     @Override
-    public void onSuccessfulRegistration() {
-        tvRegistrationInfo.setText("Registration succeed !");
-    }
-
-    @Override
     public void onFailedRegistration() {
-        tvRegistrationInfo.setText("Registration failed !");
+        tvRegistrationInfo.setText(R.string.registration_failed);
     }
 }

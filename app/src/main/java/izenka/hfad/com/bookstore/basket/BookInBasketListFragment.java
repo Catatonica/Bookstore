@@ -17,6 +17,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import izenka.hfad.com.bookstore.R;
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -24,10 +26,10 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
 
     private BasketViewModel viewModel;
 
-    private RecyclerView rvBookList;
-    private FancyButton btnRegister;
-    private FancyButton btnChooseEth;
-    private TextView tvTotalPrise;
+    @BindView(R.id.rvBookList) RecyclerView rvBookList;
+    @BindView(R.id.btnRegister) FancyButton btnRegister;
+    @BindView(R.id.btnChooseEth) FancyButton btnChooseEth;
+    @BindView(R.id.tvTotalPriceForAll) TextView tvTotalPrise;
 
     private boolean checkAll = false;
     private List<BookIdAndCountModel> bookInBasketModelList = new ArrayList<>();
@@ -37,20 +39,20 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_filled_basket, container, false);
+        View view = inflater.inflate(R.layout.fragment_filled_basket, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        rvBookList = view.findViewById(R.id.rvBookList);
         LinearLayoutManager manager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         rvBookList.setLayoutManager(manager);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(rvBookList);
 
-        btnChooseEth = view.findViewById(R.id.btnChooseEth);
         btnChooseEth.setOnClickListener(btn -> {
             if (checkAll) {
                 ((FancyButton) btn).setText(getString(R.string.checkAll));
@@ -60,10 +62,7 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
                 checkAll = true;
             }
         });
-        btnRegister = view.findViewById(R.id.btnRegister);
         btnRegister.setEnabled(false);
-
-        tvTotalPrise = view.findViewById(R.id.tvTotalPriceForAll);
     }
 
     @Override
@@ -75,12 +74,8 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
         viewModel.setButtonsClickListener(this);
         viewModel.getBookListLiveData().observe(this, adapter::setList);
         rvBookList.setAdapter(adapter);
-        btnChooseEth.setOnClickListener(btn -> {
-            ((BookInBasketListAdapter) rvBookList.getAdapter()).checkAll();
-        });
-        btnRegister.setOnClickListener(btn -> {
-            viewModel.onRegisterClicked(bookInBasketModelList, Float.valueOf(tvTotalPrise.getText().toString()));
-        });
+        btnChooseEth.setOnClickListener(btn -> adapter.checkAll());
+        btnRegister.setOnClickListener(btn -> viewModel.onRegisterClicked(bookInBasketModelList, Float.valueOf(tvTotalPrise.getText().toString())));
     }
 
     @Override
@@ -125,5 +120,4 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
             ((BookInBasketListAdapter) rvBookList.getAdapter()).removeItem(viewHolder);
         }
     }
-
 }

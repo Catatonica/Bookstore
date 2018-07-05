@@ -10,8 +10,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.model.db_classes.Order;
 import izenka.hfad.com.bookstore.order_registration.OrderRegistrationModel;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.OrderViewHolder> {
@@ -19,7 +20,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     private List<OrderRegistrationModel> orderList;
     private OrdersViewModel viewModel;
 
-    public OrderListAdapter(List<OrderRegistrationModel> orderList, OrdersViewModel viewModel) {
+    OrderListAdapter(List<OrderRegistrationModel> orderList, OrdersViewModel viewModel) {
         this.orderList = orderList;
         this.viewModel = viewModel;
     }
@@ -34,10 +35,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         OrderRegistrationModel order = orderList.get(position);
-        holder.tvDate.setText(order.date);
-        holder.tvStatus.setText(order.status);
-        holder.tvPrice.setText(String.format("%.1f р.", order.price));
-        holder.itemView.setOnClickListener(item->viewModel.openDetailsScreen(order));
+        holder.tvDate.setText(order.getDate());
+        holder.tvStatus.setText(order.getStatus());
+        holder.tvPrice.setText(String.format("%.1f р.", order.getPrice()));
+        holder.itemView.setOnClickListener(item -> viewModel.openDetailsScreen(order));
     }
 
     @Override
@@ -45,18 +46,18 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         return orderList.size();
     }
 
-    static class OrderViewHolder extends RecyclerView.ViewHolder{
-
-        TextView tvDate;
-        TextView tvPrice;
-        TextView tvStatus;
-
-        public OrderViewHolder(View itemView) {
-            super(itemView);
-            tvDate = itemView.findViewById(R.id.tvDate);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
-        }
+    public void setList(List<OrderRegistrationModel> orderList) {
+        this.orderList = orderList;
     }
 
+    static class OrderViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tvDate) TextView tvDate;
+        @BindView(R.id.tvPrice) TextView tvPrice;
+        @BindView(R.id.tvStatus) TextView tvStatus;
+
+        OrderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
 }

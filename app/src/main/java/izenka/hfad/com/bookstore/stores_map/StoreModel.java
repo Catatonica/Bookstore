@@ -5,7 +5,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class StoreModel {
-    public Map<String, Float> geolocation = new HashMap<>();
-    public String address;
-    public String phone;
+    private Map<String, Float> geolocation = new HashMap<>();
+    private String address;
+    private String phone;
+
+    Map<String, Float> getGeolocation() {
+        return geolocation;
+    }
+
+    String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 }

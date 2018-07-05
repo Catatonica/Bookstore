@@ -13,9 +13,11 @@ import izenka.hfad.com.bookstore.model.db_classes.Publisher;
 public class BookViewModel extends ViewModel {
 
     private int bookID;
+
     private MutableLiveData<Book> bookLiveData;
     private MutableLiveData<List<Author>> authorListLiveData;
     private MutableLiveData<Publisher> publisherLiveData;
+
     private BookNavigator navigator;
 
     public void setBookID(int bookID) {
@@ -62,8 +64,8 @@ public class BookViewModel extends ViewModel {
 
     void notifyOfBookAppearance() {
         DatabaseSingleton.getInstance().getBookCount(String.valueOf(bookID), count -> {
-            if (count > 0) {
-                navigator.notifyUser(bookLiveData.getValue().title);
+            if (count > 0 && bookLiveData.getValue() != null) {
+                navigator.notifyUser(bookLiveData.getValue().getTitle());
             }
         });
     }

@@ -15,15 +15,20 @@ import android.view.ViewGroup;
 
 import com.beardedhen.androidbootstrap.BootstrapEditText;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import izenka.hfad.com.bookstore.R;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 
 public class CategoryFragment extends Fragment {
 
-    private RecyclerView rvBookList;
     private CategorizedBooksViewModel viewModel;
+
+    @BindView((R.id.rvBookList))
+    RecyclerView rvBookList;
+    @BindView((R.id.etCategorySearch))
+    BootstrapEditText etSearchCategory;
     private boolean itemShouldBeScaled;
-    private BootstrapEditText etSearchCategory;
 
     @Nullable
     @Override
@@ -34,13 +39,12 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
 
-        etSearchCategory = view.findViewById(R.id.etCategorySearch);
         etSearchCategory.setOnClickListener(view1 -> {
             viewModel.onSearchInCategoryClicked();
         });
 
-        rvBookList = view.findViewById(R.id.rvBookList);
         GridLayoutManager layoutManager = null;
         switch (getResources().getConfiguration().orientation) {
             case Configuration.ORIENTATION_LANDSCAPE:
@@ -71,7 +75,7 @@ public class CategoryFragment extends Fragment {
                 @Override
                 public boolean areItemsTheSame(
                         @NonNull Book oldBook, @NonNull Book newBook) {
-                    return oldBook.book_id == newBook.book_id;
+                    return oldBook.getBook_id() == newBook.getBook_id();
                 }
 
                 @Override

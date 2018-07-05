@@ -2,6 +2,7 @@ package izenka.hfad.com.bookstore;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -13,13 +14,6 @@ import java.util.Map;
 
 import izenka.hfad.com.bookstore.account.User;
 import izenka.hfad.com.bookstore.basket.BookInBasketModel;
-import izenka.hfad.com.bookstore.callbacks.AuthorListCallback;
-import izenka.hfad.com.bookstore.callbacks.BookCallback;
-import izenka.hfad.com.bookstore.callbacks.BookCountCallback;
-import izenka.hfad.com.bookstore.callbacks.BooksFromBasketCallback;
-import izenka.hfad.com.bookstore.callbacks.CategorizedBooksCallback;
-import izenka.hfad.com.bookstore.callbacks.DatabaseCallback;
-import izenka.hfad.com.bookstore.callbacks.UserCallback;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 import izenka.hfad.com.bookstore.model.db_classes.Publisher;
@@ -32,11 +26,6 @@ public class DatabaseSingleton {
 
     private static DatabaseSingleton singleton = new DatabaseSingleton();
 
-//    private static DatabaseReference database = FirebaseDatabase.getInstance().getReference("bookstore");
-
-    //    public static FirebaseAuth auth = FirebaseAuth.getInstance();
-//    public static FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
     private DatabaseSingleton() {
 
     }
@@ -45,12 +34,10 @@ public class DatabaseSingleton {
         return singleton;
     }
 
-//    public void enabledPersistence() {
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-//    }
-
-
-    public void getCategorizedPagedBookList(int categoryID, int startPosition, int loadSize, CategorizedBooksCallback callback) {
+    public void getCategorizedPagedBookList(int categoryID,
+                                            int startPosition,
+                                            int loadSize,
+                                            DatabaseCallback<List<Book>> callback) {
         FirebaseDatabase
                 .getInstance()
                 .getReference("bookstore")
@@ -60,29 +47,11 @@ public class DatabaseSingleton {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<Book> bookList = new ArrayList<>();
                         List<DataSnapshot> bookSnapshotsList = new ArrayList<>();
                         for (DataSnapshot bookData : dataSnapshot.getChildren()) {
                             bookSnapshotsList.add(bookData);
                         }
-                        int rightLoadSize;
-                        if (bookSnapshotsList.size() - startPosition < loadSize) {
-                            rightLoadSize = bookSnapshotsList.size() - startPosition;
-                        } else {
-                            rightLoadSize = loadSize;
-                        }
-
-                        for (DataSnapshot bookData : bookSnapshotsList.subList(startPosition, startPosition + rightLoadSize)) {
-                            Book book = bookData.getValue(Book.class);
-                            for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
-                                book.imagesPaths.add(imagesID.getValue().toString());
-                            }
-                            for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
-                                book.authorsIDs.add(String.valueOf(authID.getKey()));
-                            }
-                            bookList.add(book);
-                        }
-                        callback.onBooksLoaded(bookList);
+                        callback.onResult(getBookList(bookSnapshotsList, startPosition, loadSize));
                     }
 
                     @Override
@@ -92,7 +61,29 @@ public class DatabaseSingleton {
                 });
     }
 
-    public void getAuthorList(List<String> authorsIDs, AuthorListCallback callback) {
+    private List<Book> getBookList(List<DataSnapshot> bookSnapshotsList, int startPosition, int loadSize) {
+        List<Book> bookList = new ArrayList<>();
+        int rightLoadSize;
+        if (bookSnapshotsList.size() - startPosition < loadSize) {
+            rightLoadSize = bookSnapshotsList.size() - startPosition;
+        } else {
+            rightLoadSize = loadSize;
+        }
+
+        for (DataSnapshot bookData : bookSnapshotsList.subList(startPosition, startPosition + rightLoadSize)) {
+            Book book = bookData.getValue(Book.class);
+            for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
+                book.getImagesPaths().add(imagesID.getValue().toString());
+            }
+            for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
+                book.getAuthorsIDs().add(String.valueOf(authID.getKey()));
+            }
+            bookList.add(book);
+        }
+        return bookList;
+    }
+
+    public void getAuthorList(List<String> authorsIDs, DatabaseCallback<List<Author>> callback) {
         List<Author> authorList = new ArrayList<>();
         for (String authorID : authorsIDs) {
             FirebaseDatabase
@@ -106,7 +97,7 @@ public class DatabaseSingleton {
                             Author author = dataSnapshot.getValue(Author.class);
                             authorList.add(author);
                             if (authorList.size() == authorsIDs.size()) {
-                                callback.onAuthorsReceived(authorList);
+                                callback.onResult(authorList);
                             }
                         }
 
@@ -118,7 +109,7 @@ public class DatabaseSingleton {
         }
     }
 
-    public void getBook(String bookID, BookCallback callback) {
+    public void getBook(String bookID, DatabaseCallback<Book> callback) {
         FirebaseDatabase
                 .getInstance()
                 .getReference("bookstore")
@@ -129,12 +120,12 @@ public class DatabaseSingleton {
                     public void onDataChange(DataSnapshot data) {
                         Book book = data.getValue(Book.class);
                         for (DataSnapshot imagesID : data.child("Images").getChildren()) {
-                            book.imagesPaths.add(imagesID.getValue().toString());
+                            book.getImagesPaths().add(imagesID.getValue().toString());
                         }
                         for (DataSnapshot authID : data.child("Authors").getChildren()) {
-                            book.authorsIDs.add(String.valueOf(authID.getKey()));
+                            book.getAuthorsIDs().add(String.valueOf(authID.getKey()));
                         }
-                        callback.onBookLoaded(book);
+                        callback.onResult(book);
                     }
 
                     @Override
@@ -145,18 +136,21 @@ public class DatabaseSingleton {
     }
 
     public void addBookToUserBasket(int bookID) {
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase
-                .getInstance()
-                .getReference("bookstore")
-                .child("users/" + userID)
-                .child("Basket")
-                .child(String.valueOf(bookID))
-                .setValue(bookID);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("bookstore")
+                    .child("users/" + userID)
+                    .child("Basket")
+                    .child(String.valueOf(bookID))
+                    .setValue(bookID);
+        }
     }
 
 
-    public void getBookCount(String bookID, BookCountCallback callback) {
+    public void getBookCount(String bookID, DatabaseCallback<Integer> callback) {
         FirebaseDatabase
                 .getInstance()
                 .getReference("bookstore")
@@ -167,7 +161,7 @@ public class DatabaseSingleton {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         int count = dataSnapshot.getValue(Integer.TYPE);
-                        callback.onBookCountLoaded(count);
+                        callback.onResult(count);
                     }
 
                     @Override
@@ -177,51 +171,72 @@ public class DatabaseSingleton {
                 });
     }
 
-    public void getUser(UserCallback callback) {
-        FirebaseDatabase
-                .getInstance()
-                .getReference("bookstore")
-                .child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        callback.onUserLoaded(user);
-                    }
+    public void getUser(DatabaseCallback<User> callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("bookstore")
+                    .child("users")
+                    .child(userID)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            callback.onResult(user);
+                        }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+        }
     }
 
     public void createUser() {
-        FirebaseDatabase
-                .getInstance()
-                .getReference("bookstore")
-                .child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("email")
-                .setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("bookstore")
+                    .child("users")
+                    .child(userID)
+                    .child("email")
+                    .setValue(user.getEmail());
+        }
     }
 
     public void updateUserInfo(Map<String, Object> updates) {
-        FirebaseDatabase
-                .getInstance()
-                .getReference("bookstore")
-                .child("users")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .updateChildren(updates);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("bookstore")
+                    .child("users")
+                    .child(userID)
+                    .updateChildren(updates);
+        }
     }
 
     public void deleteBookFromBasket(String bookID) {
-        FirebaseDatabase
-                .getInstance()
-                .getReference("bookstore").child("users/" + FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Basket").child(bookID).removeValue();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
+            FirebaseDatabase
+                    .getInstance()
+                    .getReference("bookstore")
+                    .child("users/" + userID)
+                    .child("Basket")
+                    .child(bookID)
+                    .removeValue();
+        }
     }
 
+    /*
     public void getPagedBooksFromBasket(Map<String, Integer> booksIDsAndCount,
                                         int startPosition,
                                         int loadSize,
@@ -242,14 +257,14 @@ public class DatabaseSingleton {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             BookInBasketModel bookInBasketModel = new BookInBasketModel();
                             Book book = dataSnapshot.getValue(Book.class);
-                            book.imagesPaths = new ArrayList<>();
+                            book.setImagesPaths(new ArrayList<>());
 
                             //TODO: auto-convert : List -> Map
                             for (DataSnapshot imagesID : dataSnapshot.child("Images").getChildren()) {
-                                book.imagesPaths.add(imagesID.getValue().toString());
+                                book.getImagesPaths().add(imagesID.getValue().toString());
                             }
                             for (DataSnapshot authID : dataSnapshot.child("Authors").getChildren()) {
-                                book.authorsIDs.add(String.valueOf(authID.getKey()));
+                                book.getAuthorsIDs().add(String.valueOf(authID.getKey()));
                             }
 
                             bookInBasketModel.count = booksIDsAndCount.get(booksIDs[finalI]);
@@ -268,8 +283,10 @@ public class DatabaseSingleton {
         }
 
     }
+    */
 
-    public void getBooksFromBasket(Map<String, Integer> booksIDsAndCount, BooksFromBasketCallback callback) {
+    public void getBooksFromBasket(Map<String, Integer> booksIDsAndCount,
+                                   DatabaseCallback<List<BookInBasketModel>> callback) {
         List<BookInBasketModel> bookInBasketModelList = new ArrayList<>();
         for (String bookID : booksIDsAndCount.keySet()) {
             FirebaseDatabase
@@ -282,21 +299,21 @@ public class DatabaseSingleton {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             BookInBasketModel bookInBasketModel = new BookInBasketModel();
                             Book book = dataSnapshot.getValue(Book.class);
-                            book.imagesPaths = new ArrayList<>();
+                            book.setImagesPaths(new ArrayList<>());
 
                             //TODO: auto-convert : List -> Map
                             for (DataSnapshot imagesID : dataSnapshot.child("Images").getChildren()) {
-                                book.imagesPaths.add(imagesID.getValue().toString());
+                                book.getImagesPaths().add(imagesID.getValue().toString());
                             }
                             for (DataSnapshot authID : dataSnapshot.child("Authors").getChildren()) {
-                                book.authorsIDs.add(String.valueOf(authID.getKey()));
+                                book.getAuthorsIDs().add(String.valueOf(authID.getKey()));
                             }
 
                             bookInBasketModel.count = booksIDsAndCount.get(bookID);
                             bookInBasketModel.book = book;
                             bookInBasketModelList.add(bookInBasketModel);
                             if (bookInBasketModelList.size() == booksIDsAndCount.size()) {
-                                callback.onBooksLoaded(bookInBasketModelList);
+                                callback.onResult(bookInBasketModelList);
                             }
                         }
 
@@ -328,15 +345,6 @@ public class DatabaseSingleton {
                 });
     }
 
-    //        DatabaseReference db =  FirebaseDatabase.getInstance().getReference("/bookstore");
-//        String key = db.child("orders").push().getKey();
-//        Map<String, Object> newOrder = orderModel.toMap();
-//        db.child("order").child(key).setValue(newOrder).addOnSuccessListener(aVoid -> subtractBookCount(db, orderModel));
-//        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        db.child("users").child(userID).child("Orders").child(orderModel.date).setValue(key).addOnSuccessListener(aVoid ->{
-//          cleanBasket(db, orderModel, userID);
-//        });
-
     public void writeNewOrder(OrderRegistrationModel orderModel) {
         Map<String, Object> newOrder = orderModel.toMap();
         String key = FirebaseDatabase
@@ -351,35 +359,40 @@ public class DatabaseSingleton {
                 .child("order")
                 .child(key)
                 .setValue(newOrder).addOnSuccessListener(aVoid -> subtractBookCount(orderModel));
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase
-                .getInstance()
-                .getReference("bookstore")
-                .child("users")
-                .child(userID)
-                .child("Orders")
-                .child(orderModel.date)
-                .setValue(key)
-                .addOnSuccessListener(aVoid -> {
-                    cleanBasket(orderModel);
-                });
-    }
-
-    private void cleanBasket(OrderRegistrationModel orderModel) {
-        for (String bookID : orderModel.Books.keySet()) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
             FirebaseDatabase
                     .getInstance()
                     .getReference("bookstore")
                     .child("users")
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("Basket")
-                    .child(bookID)
-                    .removeValue();
+                    .child(userID)
+                    .child("Orders")
+                    .child(orderModel.getDate())
+                    .setValue(key)
+                    .addOnSuccessListener(aVoid -> cleanBasket(orderModel));
+        }
+    }
+
+    private void cleanBasket(OrderRegistrationModel orderModel) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userID = user.getUid();
+            for (String bookID : orderModel.getBooks().keySet()) {
+                FirebaseDatabase
+                        .getInstance()
+                        .getReference("bookstore")
+                        .child("users")
+                        .child(userID)
+                        .child("Basket")
+                        .child(bookID)
+                        .removeValue();
+            }
         }
     }
 
     private void subtractBookCount(OrderRegistrationModel orderModel) {
-        for (Map.Entry<String, Integer> bookIDAndCount : orderModel.Books.entrySet()) {
+        for (Map.Entry<String, Integer> bookIDAndCount : orderModel.getBooks().entrySet()) {
             FirebaseDatabase
                     .getInstance()
                     .getReference("bookstore")
@@ -447,8 +460,8 @@ public class DatabaseSingleton {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             BookInOrderModel bookInOrderModel = new BookInOrderModel();
-                            bookInOrderModel.book = dataSnapshot.getValue(Book.class);
-                            bookInOrderModel.count = booksIDsAndCount.get(bookID);
+                            bookInOrderModel.setBook(dataSnapshot.getValue(Book.class));
+                            bookInOrderModel.setCount(booksIDsAndCount.get(bookID));
                             bookInOrderModelList.add(bookInOrderModel);
                             if (bookInOrderModelList.size() == booksIDsAndCount.size()) {
                                 callback.onResult(bookInOrderModelList);
@@ -498,47 +511,21 @@ public class DatabaseSingleton {
                         for (DataSnapshot bookData : dataSnapshot.getChildren()) {
                             Book book = bookData.getValue(Book.class);
                             for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
-                                book.imagesPaths.add(imagesID.getValue().toString());
+                                book.getImagesPaths().add(imagesID.getValue().toString());
                             }
                             for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
-                                book.authorsIDs.add(String.valueOf(authID.getKey()));
+                                book.getAuthorsIDs().add(String.valueOf(authID.getKey()));
                             }
-                            if (book.title.toLowerCase().contains(searchedText.toLowerCase())) {
+                            if (book.getTitle().toLowerCase().contains(searchedText.toLowerCase())) {
                                 bookList.add(book);
                             }
-                            searchAuthors(book.authorsIDs, searchedText, bool -> {
+                            searchAuthors(book.getAuthorsIDs(), searchedText, bool -> {
                                 if (bool && !bookList.contains(book)) {
                                     bookList.add(book);
                                 }
                             });
                         }
                         callback.onResult(bookList);
-//                        List<Book> bookList = new ArrayList<>();
-//                        for (DataSnapshot bookData : dataSnapshot.child("book").getChildren()) {
-//                            Book book = bookData.getValue(Book.class);
-//                            if (book.title.toLowerCase().contains(searchedText.toLowerCase())) {
-//                                bookList.add(book);
-//                            }
-//
-//                            for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
-//                                book.imagesPaths.add(imagesID.getValue().toString());
-//                            }
-//                            for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
-//                                book.authorsIDs.add(String.valueOf(authID.getKey()));
-//                            }
-//                            book.authors = new ArrayList<>();
-//                            for (String authorID : book.authorsIDs) {
-//                                book.authors.add(dataSnapshot.child("author/" + authorID).getValue(Author.class));
-//                            }
-//                            for (Author author : book.authors) {
-//                                if ((author.author_name.toLowerCase().contains(searchedText.toLowerCase()) ||
-//                                        author.author_surname.toLowerCase().contains(searchedText.toLowerCase()))
-//                                        && !bookList.contains(book)) {
-//                                    bookList.add(book);
-//                                }
-//                            }
-//                            searchedBookList.onResult(bookList);
-//                        }
                     }
 
                     @Override
@@ -564,15 +551,15 @@ public class DatabaseSingleton {
                         for (DataSnapshot bookData : dataSnapshot.getChildren()) {
                             Book book = bookData.getValue(Book.class);
                             for (DataSnapshot imagesID : bookData.child("Images").getChildren()) {
-                                book.imagesPaths.add(imagesID.getValue().toString());
+                                book.getImagesPaths().add(imagesID.getValue().toString());
                             }
                             for (DataSnapshot authID : bookData.child("Authors").getChildren()) {
-                                book.authorsIDs.add(String.valueOf(authID.getKey()));
+                                book.getAuthorsIDs().add(String.valueOf(authID.getKey()));
                             }
-                            if (book.title.toLowerCase().contains(searchedText.toLowerCase())) {
+                            if (book.getTitle().toLowerCase().contains(searchedText.toLowerCase())) {
                                 bookList.add(book);
                             }
-                            searchAuthors(book.authorsIDs, searchedText, bool -> {
+                            searchAuthors(book.getAuthorsIDs(), searchedText, bool -> {
                                 if (bool && !bookList.contains(book)) {
                                     bookList.add(book);
                                 }

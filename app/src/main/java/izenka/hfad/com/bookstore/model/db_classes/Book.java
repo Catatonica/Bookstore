@@ -5,33 +5,135 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Book implements Serializable {
-    public int book_id;
-    public int book_publisher_id;
-    public int count;
-    public String description;
-    public int pages_number;
-    public String price;
-    public int publication_year;
-    public String title;
-    public String cover;
-    public int rating;
-    public int discount;
-//    public List<Long> authorsIDs;
-    public List<String> authorsIDs = new ArrayList<>();
-    public List<String> imagesPaths = new ArrayList<>();
-    public List<Author> authors;
 
+    private int book_id;
+    private int book_publisher_id;
+    private int count;
+    private String description;
+    private int pages_number;
+    private String price;
+    private int publication_year;
+    private String title;
+    private String cover;
+    private int rating;
+    private int discount;
+//    public List<Long> authorsIDs;
+    private List<String> authorsIDs = new ArrayList<>();
+    private List<String> imagesPaths = new ArrayList<>();
+    private List<Author> authors;
 
     public Book() {
     }
 
+    public int getBook_id() {
+        return book_id;
+    }
 
-    public String toString() {
-        return "Book{book_id=" +
-                "" + book_id + book_publisher_id + ", count" + count + "" +
-                ", description=" + description + ", pages_number=" + pages_number + ", price=" + price + ", publication_year=" +
-                publication_year + ", title=" + title + ", cover=" + cover + ", rating=" + rating + ", discount=" + discount +",authors = "+authors+ "}";
-        //+", Authors="+Authors+", Images="+Images+", book_publisher_id="+
-        // book_publisher_id+"}";
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
+    }
+
+    public int getBook_publisher_id() {
+        return book_publisher_id;
+    }
+
+    public void setBook_publisher_id(int book_publisher_id) {
+        this.book_publisher_id = book_publisher_id;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPages_number() {
+        return pages_number;
+    }
+
+    public void setPages_number(int pages_number) {
+        this.pages_number = pages_number;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public int getPublication_year() {
+        return publication_year;
+    }
+
+    public void setPublication_year(int publication_year) {
+        this.publication_year = publication_year;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public List<String> getAuthorsIDs() {
+        return authorsIDs;
+    }
+
+    public void setAuthorsIDs(List<String> authorsIDs) {
+        this.authorsIDs = authorsIDs;
+    }
+
+    public List<String> getImagesPaths() {
+        return imagesPaths;
+    }
+
+    public void setImagesPaths(List<String> imagesPaths) {
+        this.imagesPaths = imagesPaths;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 }

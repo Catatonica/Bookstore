@@ -14,7 +14,7 @@ import izenka.hfad.com.bookstore.basket.BasketActivity;
 import izenka.hfad.com.bookstore.book.BookActivity;
 import izenka.hfad.com.bookstore.orders.OrdersActivity;
 import izenka.hfad.com.bookstore.search.SearchActivity;
-import izenka.hfad.com.bookstore.view.qr_code.QRCodeActivity;
+import izenka.hfad.com.bookstore.qr_code.QRCodeActivity;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryNavigator {
 

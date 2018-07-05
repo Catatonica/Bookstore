@@ -1,38 +1,59 @@
 package izenka.hfad.com.bookstore.orders;
 
-import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.model.db_classes.Author;
 
 
-public class BookListAdapter extends BaseAdapter {
+public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookAndCountViewHolder> {
 
     private List<BookInOrderModel> bookList;
 
-    BookListAdapter(List<BookInOrderModel> bookList){
+    BookListAdapter(List<BookInOrderModel> bookList) {
         this.bookList = bookList;
     }
 
-    public void setBookInOrderList(List<BookInOrderModel> bookList){
+    void setBookInOrderList(List<BookInOrderModel> bookList) {
         this.bookList = bookList;
+        notifyDataSetChanged();
+    }
+
+    static class BookAndCountViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView((R.id.tvTitle)) TextView title;
+        @BindView((R.id.tvPriceForOne)) TextView priceForOne;
+        @BindView((R.id.tvCount)) TextView count;
+
+        BookAndCountViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    @NonNull
+    @Override
+    public BookAndCountViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View bookView = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_in_order, parent, false);
+        return new BookAndCountViewHolder(bookView);
     }
 
     @Override
-    public int getCount() {
-        return bookList.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return bookList.get(i);
+    public void onBindViewHolder(@NonNull BookAndCountViewHolder holder, int position) {
+        BookInOrderModel bookInOrder = bookList.get(position);
+        if (bookInOrder != null) {
+            holder.title.setText(String.format("\"%s\"", bookInOrder.getBook().getTitle()));
+            holder.priceForOne.setText(bookInOrder.getBook().getPrice());
+            holder.count.setText(String.valueOf(bookInOrder.getCount()));
+        }
     }
 
     @Override
@@ -41,20 +62,7 @@ public class BookListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        View bookView = view;
-        if(view == null){
-            bookView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.book_in_order, viewGroup, false);
-        }
-        BookInOrderModel bookInOrder = bookList.get(i);
-        ((TextView) bookView.findViewById(R.id.tvTitle)).setText(String.format("\"%s\"",bookInOrder.book.title));
-        ((TextView) bookView.findViewById(R.id.tvPriceForOne)).setText(bookInOrder.book.price);
-        ((TextView) bookView.findViewById(R.id.tvCount)).setText(String.valueOf(bookInOrder.count));
-//        StringBuilder authors = new StringBuilder();
-//        for(Author author:bookInOrder.book.authors){
-//            authors.append(author.author_surname).append(author.author_name.substring(0, 1)).append(".");
-//        }
-//        ((TextView) bookView.findViewById(R.id.tvAuthor)).setText(authors);
-        return bookView;
+    public int getItemCount() {
+        return bookList.size();
     }
 }

@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:layout_span="1"
             android:layout_column="1"
             android:layout_marginStart="15dp"
             android:id="@+id/tvTitle"
@@ -25,6 +26,7 @@
             android:textStyle="bold" />
 
         <LinearLayout
+            android:layout_span="1"
             android:layout_column="1"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

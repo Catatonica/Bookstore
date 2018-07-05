@@ -1,4 +1,4 @@
-package izenka.hfad.com.bookstore.callbacks;
+package izenka.hfad.com.bookstore;
 
 @FunctionalInterface
 public interface DatabaseCallback<T> {

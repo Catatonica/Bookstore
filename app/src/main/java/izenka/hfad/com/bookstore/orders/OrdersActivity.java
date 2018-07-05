@@ -8,18 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import izenka.hfad.com.bookstore.R;
+import izenka.hfad.com.bookstore.order_registration.OrderRegistrationModel;
 
 public class OrdersActivity extends AppCompatActivity implements OrdersNavigator {
 
     private ProgressBar pbLoadingProgress;
-
-    private FrameLayout flBase;
-    private FrameLayout flOrderList;
-    private FrameLayout flOrder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,15 +42,10 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
         });
     }
 
-//    private void initViews() {
-//        flBase = findViewById(R.id.flBase);
-//        flOrderList = findViewById(R.id.flOrderList);
-//        flOrder = findViewById(R.id.flOrder);
-//    }
-
     private void setToolbar() {
         setSupportActionBar(findViewById(R.id.toolbar));
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(R.string.orders);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
@@ -76,7 +67,6 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
                 .beginTransaction()
                 .replace(R.id.flBase, new EmptyOrdersFragment())
                 .commit();
-
     }
 
     private void setOrderListFragment() {
@@ -85,40 +75,23 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
                 findViewById(R.id.flBase).setVisibility(View.GONE);
                 findViewById(R.id.flOrderList).setVisibility(View.VISIBLE);
                 findViewById(R.id.flOrder).setVisibility(View.VISIBLE);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flOrderList, new OrderListFragment(), "list")
-                        .commit();
+                setFragment(R.id.flOrderList, new OrderListFragment(), "list");
                 Fragment orderDetailsFragment = getSupportFragmentManager().findFragmentByTag("details");
                 if (orderDetailsFragment != null) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.flOrder, new OrderDetailsFragment(), "details")
-                            .commit();
+                    setFragment(R.id.flOrder, new OrderDetailsFragment(), "details");
                 }
                 break;
             case Configuration.ORIENTATION_PORTRAIT:
                 findViewById(R.id.flBase).setVisibility(View.VISIBLE);
                 Fragment orderDetailsFragment2 = getSupportFragmentManager().findFragmentByTag("details");
                 if (orderDetailsFragment2 == null) {
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.flBase, new OrderListFragment(), "list")
-                            .commit();
+                    setFragment(R.id.flBase, new OrderListFragment(), "list");
                 } else {
                     getSupportActionBar().setTitle(R.string.order);
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.flBase, new OrderDetailsFragment(), "details")
-                            .commit();
+                    setFragment(R.id.flBase, new OrderDetailsFragment(), "details");
                 }
                 break;
         }
-
-//        Fragment ordersFragment = getSupportFragmentManager().findFragmentById(R.id.flOrderList);
-//        if (ordersFragment == null) {
-
-//        }
     }
 
     @Override
@@ -127,36 +100,28 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
     }
 
     @Override
-    public void openDetailsScreen() {
+    public void openDetailsScreen(OrderRegistrationModel order) {
+        OrderDetailsFragment fragment = new OrderDetailsFragment();
+        fragment.setOrder(order);
         switch (getResources().getConfiguration().orientation) {
             case Configuration.ORIENTATION_LANDSCAPE:
                 findViewById(R.id.flBase).setVisibility(View.GONE);
                 findViewById(R.id.flOrderList).setVisibility(View.VISIBLE);
                 findViewById(R.id.flOrder).setVisibility(View.VISIBLE);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flOrder, new OrderDetailsFragment(), "details")
-                        .commit();
+                setFragment(R.id.flOrder, fragment, "details");
                 break;
             case Configuration.ORIENTATION_PORTRAIT:
                 findViewById(R.id.flBase).setVisibility(View.VISIBLE);
-//                getSupportActionBar().setTitle(R.string.order);
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.flBase, new OrderDetailsFragment(), "details")
-                        .commit();
+                setFragment(R.id.flBase, fragment, "details");
                 break;
         }
     }
 
-    private void setListFragment(int frameID) {
-//        Fragment orderListFragment = getSupportFragmentManager().findFragmentByTag("list");
-//        if (orderListFragment == null) {
+    private void setFragment(int contentFrameID, Fragment fragment, String tag) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(frameID, new OrderListFragment(), "list")
+                .replace(contentFrameID, fragment, tag)
                 .commit();
-//        }
     }
 
     @Override
@@ -165,13 +130,13 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
         Fragment detailsFragmentLand = getSupportFragmentManager().findFragmentById(R.id.flOrder);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && detailsFragmentPortrait != null) {
             getSupportActionBar().setTitle(R.string.orders);
-            if(detailsFragmentLand == null){
+            if (detailsFragmentLand == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .remove(detailsFragmentPortrait)
                         .replace(R.id.flBase, new OrderListFragment(), "list")
                         .commit();
-            } else{
+            } else {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .remove(detailsFragmentPortrait)
@@ -182,32 +147,32 @@ public class OrdersActivity extends AppCompatActivity implements OrdersNavigator
         } else {
             onBackPressed();
         }
-
         return super.onSupportNavigateUp();
     }
 
     @Override
     public void onBackPressed() {
-        Fragment detailsFragmentPortrait = getSupportFragmentManager().findFragmentByTag("details");
-        Fragment detailsFragmentLand = getSupportFragmentManager().findFragmentById(R.id.flOrder);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && detailsFragmentPortrait != null) {
-            getSupportActionBar().setTitle(R.string.orders);
-            if(detailsFragmentLand == null){
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .remove(detailsFragmentPortrait)
-                        .replace(R.id.flBase, new OrderListFragment(), "list")
-                        .commit();
-            } else{
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .remove(detailsFragmentPortrait)
-                        .remove(detailsFragmentLand)
-                        .replace(R.id.flBase, new OrderListFragment(), "list")
-                        .commit();
-            }
-        } else {
-            super.onBackPressed();
-        }
+//        Fragment detailsFragmentPortrait = getSupportFragmentManager().findFragmentByTag("details");
+//        Fragment detailsFragmentLand = getSupportFragmentManager().findFragmentById(R.id.flOrder);
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && detailsFragmentPortrait != null) {
+//            getSupportActionBar().setTitle(R.string.orders);
+//            if (detailsFragmentLand == null) {
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .remove(detailsFragmentPortrait)
+//                        .replace(R.id.flBase, new OrderListFragment(), "list")
+//                        .commit();
+//            } else {
+//                getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .remove(detailsFragmentPortrait)
+//                        .remove(detailsFragmentLand)
+//                        .replace(R.id.flBase, new OrderListFragment(), "list")
+//                        .commit();
+//            }
+//        } else {
+//            super.onBackPressed();
+//        }
+        super.onBackPressed();
     }
 }

@@ -6,7 +6,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Map;
 
@@ -14,40 +13,35 @@ import izenka.hfad.com.bookstore.DatabaseSingleton;
 
 public class AccountViewModel extends ViewModel {
 
-//    private FirebaseAuth mAuth;
+    private MutableLiveData<User> userLiveData;
+
     private AccountActivityNavigator accountActivityNavigator;
     private RegistrationFragmentNavigator registrationFragmentNavigator;
 
-//    public FirebaseUser getUser() {
-//        return FirebaseAuth.getInstance().getCurrentUser();
-//    }
-
     void createAccount(Activity activity, String email, String password) {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-             .addOnCompleteListener(activity, task -> {
-                 if (task.isSuccessful()) {
-//                     DatabaseSingleton.user = task.getResult().getUser();
-                     createUserNode();
-                     FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password);
-                     accountActivityNavigator.setFragment(new UserProfileFragment());
-                     loadUser();
-                 } else {
-                     registrationFragmentNavigator.onFailedRegistration();
-                 }
-             });
+                    .addOnCompleteListener(activity, task -> {
+                        if (task.isSuccessful()) {
+                            createUserNode();
+                            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password);
+                            accountActivityNavigator.setFragment(new UserProfileFragment());
+                            loadUser();
+                        } else {
+                            registrationFragmentNavigator.onFailedRegistration();
+                        }
+                    });
     }
 
     void signIn(Activity activity, String email, String password) {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-             .addOnCompleteListener(activity, task -> {
-                 if (task.isSuccessful()) {
-                     accountActivityNavigator.setFragment(new UserProfileFragment());
-//                     DatabaseSingleton.user = task.getResult().getUser();
-                     loadUser();
-                 } else {
-                     registrationFragmentNavigator.onFailedRegistration();
-                 }
-             });
+                    .addOnCompleteListener(activity, task -> {
+                        if (task.isSuccessful()) {
+                            accountActivityNavigator.setFragment(new UserProfileFragment());
+                            loadUser();
+                        } else {
+                            registrationFragmentNavigator.onFailedRegistration();
+                        }
+                    });
     }
 
     void signOut() {
@@ -69,10 +63,8 @@ public class AccountViewModel extends ViewModel {
 
     void saveChanges(Map<String, Object> updates) {
         DatabaseSingleton.getInstance().updateUserInfo(updates);
-        accountActivityNavigator.showMessage("Изменения сохранены");
+        accountActivityNavigator.showMessage();
     }
-
-    private MutableLiveData<User> userLiveData;
 
     public MutableLiveData<User> getUserLiveData() {
         if (userLiveData == null) {

@@ -16,9 +16,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+import izenka.hfad.com.bookstore.DatabaseCallback;
 import izenka.hfad.com.bookstore.DatabaseSingleton;
 import izenka.hfad.com.bookstore.R;
-import izenka.hfad.com.bookstore.callbacks.AuthorListCallback;
 import izenka.hfad.com.bookstore.model.db_classes.Author;
 import izenka.hfad.com.bookstore.model.db_classes.Book;
 
@@ -73,10 +73,28 @@ public class SearchedBookListAdapter extends RecyclerView.Adapter<SearchedBookLi
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = bookList.get(position);
-        holder.itemView.setId(book.book_id);
-        holder.tvBookName.setText(book.title);
-        holder.tvBookPrise.setText(book.price);
-        AuthorListCallback authorListCallback = authorList -> {
+        holder.itemView.setId(book.getBook_id());
+        holder.tvBookName.setText(book.getTitle());
+        holder.tvBookPrise.setText(book.getPrice());
+        holder.imgBtnBook.setId(book.getBook_id());
+
+        setAuthors(book, holder);
+        setImage(book, holder);
+    }
+
+    private void setImage(Book book, BookViewHolder holder) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        String bookImage = book.getImagesPaths().get(0);
+        StorageReference imageRef = storage.getReference().child(bookImage);
+        Glide.with(holder.itemView.getContext())
+             .using(new FirebaseImageLoader())
+             .load(imageRef)
+             .into(holder.imgBtnBook);
+        holder.itemView.setOnClickListener(view -> viewModel.onBookClicked(book));
+    }
+
+    private void setAuthors(Book book, BookViewHolder holder) {
+        DatabaseCallback<List<Author>> authorListCallback = authorList -> {
             StringBuilder authorsStringBuilder = new StringBuilder();
             for (Author author : authorList) {
                 authorsStringBuilder.append(author.author_surname)
@@ -88,21 +106,7 @@ public class SearchedBookListAdapter extends RecyclerView.Adapter<SearchedBookLi
             authorsStringBuilder.delete(authorsStringBuilder.length() - 3, authorsStringBuilder.length());
             holder.tvBookAuthor.setText(authorsStringBuilder);
         };
-        DatabaseSingleton.getInstance().getAuthorList(book.authorsIDs, authorListCallback);
-
-        holder.imgBtnBook.setId(book.book_id);
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        String bookImage = book.imagesPaths.get(0);
-        StorageReference imageRef = storage.getReference().child(bookImage);
-        Glide.with(holder.itemView.getContext()/* context */)
-             .using(new FirebaseImageLoader())
-             .load(imageRef)
-             .into(holder.imgBtnBook);
-        holder.itemView.setOnClickListener(view -> {
-            viewModel.onBookClicked(book);
-        });
-
+        DatabaseSingleton.getInstance().getAuthorList(book.getAuthorsIDs(), authorListCallback);
     }
 
     @Override

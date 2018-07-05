@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import izenka.hfad.com.bookstore.R;
 
 public class OrderListFragment extends Fragment {
@@ -36,9 +38,8 @@ public class OrderListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         OrdersViewModel viewModel = ViewModelProviders.of(requireActivity()).get(OrdersViewModel.class);
-        viewModel.getOrderListLiveData().observe(this, orderList->{
-            OrderListAdapter adapter = new OrderListAdapter(orderList, viewModel);
-            rvOrderList.setAdapter(adapter);
-        });
+        OrderListAdapter adapter = new OrderListAdapter(new ArrayList<>(), viewModel);
+        viewModel.getOrderListLiveData().observe(this, adapter::setList);
+        rvOrderList.setAdapter(adapter);
     }
 }

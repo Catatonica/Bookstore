@@ -10,7 +10,7 @@ public class User implements Serializable {
     public String name;
     public String surname;
     public String phone;
-//    public String photoPath;
+    //    public String photoPath;
 //    public String birthday;
     public Map<String, Object> Address = new HashMap<>();
     public Map<String, Integer> Basket = new HashMap<>();

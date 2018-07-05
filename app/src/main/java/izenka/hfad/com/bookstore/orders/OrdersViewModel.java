@@ -14,17 +14,14 @@ public class OrdersViewModel extends ViewModel {
 
     private MutableLiveData<List<OrderRegistrationModel>> orderListLiveData;
 
-    public MutableLiveData<List<BookInOrderModel>> getBookAndCountListLiveData() {
-        return bookAndCountListLiveData;
-    }
-
-    private void setBookAndCountListValue(OrderRegistrationModel order) {
+    MutableLiveData<List<BookInOrderModel>> getBookAndCountListLiveData(OrderRegistrationModel order) {
         if(bookAndCountListLiveData == null){
             bookAndCountListLiveData = new MutableLiveData<>();
         }
-        DatabaseSingleton.getInstance().getBookAndCountList(order.Books, bookAndCountList->{
+        DatabaseSingleton.getInstance().getBookAndCountList(order.getBooks(), bookAndCountList -> {
             bookAndCountListLiveData.postValue(bookAndCountList);
         });
+        return bookAndCountListLiveData;
     }
 
     private MutableLiveData<List<BookInOrderModel>> bookAndCountListLiveData;
@@ -35,7 +32,7 @@ public class OrdersViewModel extends ViewModel {
         this.navigator = navigator;
     }
 
-    public MutableLiveData<List<OrderRegistrationModel>> getOrderListLiveData() {
+    MutableLiveData<List<OrderRegistrationModel>> getOrderListLiveData() {
         if (orderListLiveData == null) {
             orderListLiveData = new MutableLiveData<>();
             DatabaseSingleton.getInstance().getUser(user -> {
@@ -43,52 +40,15 @@ public class OrdersViewModel extends ViewModel {
                     orderListLiveData.postValue(orderList);
                 });
             });
-//            loadOrderListLiveData();
         }
         return orderListLiveData;
     }
 
-//    private void loadOrderListLiveData() {
-//        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-//        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        db.child("bookstore").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                List<OrderModel> orderList = new ArrayList<>();
-//                for (DataSnapshot orderIDSnapshot : dataSnapshot.child("users").child(userID).child("Orders").getChildren()) {
-//                    String orderID = orderIDSnapshot.getValue().toString();
-//                    OrderRegistrationModel orderRegistrationModel = dataSnapshot.child("order").child(orderID).getValue(OrderRegistrationModel.class);
-//                    OrderModel orderModel = new OrderModel();
-//                    orderModel.date = orderRegistrationModel.date;
-//                    orderModel.price = orderRegistrationModel.price;
-//                    orderModel.status = orderRegistrationModel.status;
-//                    for (String bookID : orderRegistrationModel.Books.keySet()) {
-//                        int count = orderRegistrationModel.Books.get(bookID);
-//                        Book book = dataSnapshot.child("book").child(bookID).getValue(Book.class);
-////                        orderModel.booksMap.put(book, count);
-//                        BookInOrderModel bookInOrderModel = new BookInOrderModel();
-//                        bookInOrderModel.book = book;
-//                        bookInOrderModel.count = count;
-//                        orderModel.bookList.add(bookInOrderModel);
-//                    }
-//                    orderList.add(orderModel);
-//                }
-//                orderListLiveData.postValue(orderList);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-
-    public void onReturnClicked() {
+    void onReturnClicked() {
         navigator.onReturnClicked();
     }
 
-    public void openDetailsScreen(OrderRegistrationModel order) {
-        setBookAndCountListValue(order);
-        navigator.openDetailsScreen();
+    void openDetailsScreen(OrderRegistrationModel order) {
+        navigator.openDetailsScreen(order);
     }
 }

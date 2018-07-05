@@ -8,7 +8,6 @@ public class BookIdAndCountModel implements Parcelable {
     public int bookID;
     public int count;
 
-
     protected BookIdAndCountModel(Parcel in) {
         bookID = in.readInt();
         count = in.readInt();
