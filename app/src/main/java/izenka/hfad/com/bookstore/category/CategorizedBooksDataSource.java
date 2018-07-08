@@ -12,9 +12,9 @@ import izenka.hfad.com.bookstore.model.db_classes.Book;
 
 public class CategorizedBooksDataSource extends PositionalDataSource<Book> {
 
-    private int categoryID;
+    private String categoryID;
 
-    CategorizedBooksDataSource(int categoryID) {
+    CategorizedBooksDataSource(String categoryID) {
         this.categoryID = categoryID;
     }
 

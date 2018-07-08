@@ -192,7 +192,7 @@ public class MainMenuActivity extends AppCompatActivity implements MainMenuNavig
     }
 
     @Override
-    public void onCategoryClicked(int categoryID) {
+    public void onCategoryClicked(String categoryID) {
         Intent intent = new Intent();
         intent.putExtra("categoryID", categoryID);
         intent.setClass(this, CategoryActivity.class);

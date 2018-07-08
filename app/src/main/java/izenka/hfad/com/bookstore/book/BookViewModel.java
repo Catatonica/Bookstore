@@ -12,7 +12,7 @@ import izenka.hfad.com.bookstore.model.db_classes.Publisher;
 
 public class BookViewModel extends ViewModel {
 
-    private int bookID;
+    private String bookID;
 
     private MutableLiveData<Book> bookLiveData;
     private MutableLiveData<List<Author>> authorListLiveData;
@@ -20,7 +20,7 @@ public class BookViewModel extends ViewModel {
 
     private BookNavigator navigator;
 
-    public void setBookID(int bookID) {
+    public void setBookID(String bookID) {
         this.bookID = bookID;
     }
 

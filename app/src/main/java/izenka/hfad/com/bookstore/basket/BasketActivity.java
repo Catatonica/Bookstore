@@ -77,7 +77,7 @@ public class BasketActivity extends AppCompatActivity implements BasketNavigator
         Intent intent = new Intent(this, OrderRegistrationActivity.class);
         intent.putParcelableArrayListExtra("bookIDsAndCount", (ArrayList<? extends Parcelable>) BookIdAndCountModelList);
         intent.putExtra("totalPrice", totalPrice);
-        intent.putExtra("bookID", getIntent().getIntExtra("bookID", 0));
+        intent.putExtra("bookID", getIntent().getStringExtra("bookID"));
         startActivity(intent);
     }
 

@@ -12,6 +12,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -68,14 +70,21 @@ public class BookInBasketListFragment extends Fragment implements ButtonsClickLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Animation alpha = new AlphaAnimation(1f, 0f);
         viewModel = ViewModelProviders.of(requireActivity()).get(BasketViewModel.class);
         List<BookInBasketModel> bookList = new ArrayList<>();
         BookInBasketListAdapter adapter = new BookInBasketListAdapter(viewModel, bookList);
         viewModel.setButtonsClickListener(this);
         viewModel.getBookListLiveData().observe(this, adapter::setList);
+        btnChooseEth.setOnClickListener(btn -> {
+            btn.startAnimation(alpha);
+            adapter.checkAll();
+        });
         rvBookList.setAdapter(adapter);
-        btnChooseEth.setOnClickListener(btn -> adapter.checkAll());
-        btnRegister.setOnClickListener(btn -> viewModel.onRegisterClicked(bookInBasketModelList, Float.valueOf(tvTotalPrise.getText().toString())));
+        btnRegister.setOnClickListener(btn -> {
+            btn.startAnimation(alpha);
+            viewModel.onRegisterClicked(bookInBasketModelList, Float.valueOf(tvTotalPrise.getText().toString()));
+        });
     }
 
     @Override

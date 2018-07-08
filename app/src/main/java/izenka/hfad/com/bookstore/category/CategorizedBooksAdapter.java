@@ -1,12 +1,14 @@
 package izenka.hfad.com.bookstore.category;
 
 
+import android.animation.Animator;
 import android.arch.paging.PagedListAdapter;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,13 +74,28 @@ public class CategorizedBooksAdapter extends PagedListAdapter<Book, CategorizedB
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = getItem(position);
         if (book != null) {
-            holder.itemView.setId(book.getBook_id());
+//            holder.itemView.setId(book.getBook_id());
             holder.tvBookName.setText(book.getTitle());
             holder.tvBookPrise.setText(book.getPrice());
-
+            holder.itemView.setOnClickListener(view -> {
+                animateView(view);
+                viewModel.onBookClicked(book);
+            });
             setAuthors(book, holder);
             setImage(book, holder);
         }
+    }
+
+    private void animateView(View view) {
+        int cx = view.getWidth() / 2;
+        int cy = view.getHeight() / 2;
+
+        float finalRadius = (float) Math.hypot(cx, cy);
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
+
+        view.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     private void setImage(Book book, BookViewHolder holder) {
@@ -89,7 +106,6 @@ public class CategorizedBooksAdapter extends PagedListAdapter<Book, CategorizedB
              .using(new FirebaseImageLoader())
              .load(imageRef)
              .into(holder.imgBtnBook);
-        holder.itemView.setOnClickListener(view -> viewModel.onBookClicked(book));
     }
 
     private void setAuthors(Book book, BookViewHolder holder) {

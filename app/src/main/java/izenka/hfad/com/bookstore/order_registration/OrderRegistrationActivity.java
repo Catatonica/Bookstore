@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -64,7 +66,7 @@ public class OrderRegistrationActivity extends AppCompatActivity implements Acco
         List<BookIdAndCountModel> bookIDsAndCount = intent.getParcelableArrayListExtra("bookIDsAndCount");
         ordersMap = new HashMap<>();
         for (BookIdAndCountModel b : bookIDsAndCount) {
-            ordersMap.put(String.valueOf(b.bookID), b.count);
+            ordersMap.put(b.bookID, b.count);
         }
 
         initViews();
@@ -87,8 +89,15 @@ public class OrderRegistrationActivity extends AppCompatActivity implements Acco
     }
 
     private void initViews() {
-        btnAddLocation.setOnClickListener(btn -> addLocation());
-        btnRegister.setOnClickListener(btn -> register());
+        Animation alpha = new AlphaAnimation(1f, 0f);
+        btnAddLocation.setOnClickListener(btn ->{
+            btn.startAnimation(alpha);
+            addLocation();
+        });
+        btnRegister.setOnClickListener(btn -> {
+            btn.startAnimation(alpha);
+            register();
+        });
     }
 
     private void addLocation() {
@@ -107,12 +116,13 @@ public class OrderRegistrationActivity extends AppCompatActivity implements Acco
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(this, data);
                 etAddress.setText(place.getAddress());
-                etCity.setText("");
-                etCity.setHint("");
-                etStreet.setText("");
-                etStreet.setHint("");
-                etHouse.setText("");
-                etHouse.setHint("");
+                final String[] splitAddress = place.getAddress().toString().split(", ");
+                String city = splitAddress[1].replaceAll("\\d", "");
+                String street = splitAddress[0].replaceAll("\\d/\\d", "");
+                String house = splitAddress[0].replaceAll("[^\\d/\\d]", "");
+                etCity.setText(city);
+                etStreet.setText(street);
+                etHouse.setText(house);
                 etFlatNumber.setText("");
                 etPorchNumber.setText("");
                 etFloor.setText("");
@@ -199,7 +209,7 @@ public class OrderRegistrationActivity extends AppCompatActivity implements Acco
 
     private void onBtnOKClicked() {
         Intent intent = new Intent(getApplicationContext(), BookActivity.class);
-        intent.putExtra("bookID", getIntent().getIntExtra("bookID", 0));
+        intent.putExtra("bookID", getIntent().getStringExtra("bookID"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

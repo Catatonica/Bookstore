@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import izenka.hfad.com.bookstore.R;
 
@@ -26,6 +28,10 @@ public class EmptyBasketFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         BasketViewModel viewModel = ViewModelProviders.of(requireActivity()).get(BasketViewModel.class);
-        view.findViewById(R.id.btnReturnFromBasket).setOnClickListener(btn -> viewModel.onBackClicked());
+        Animation alpha = new AlphaAnimation(1f, 0f);
+        view.findViewById(R.id.btnReturnFromBasket).setOnClickListener(btn -> {
+            btn.startAnimation(alpha);
+            viewModel.onBackClicked();
+        });
     }
 }

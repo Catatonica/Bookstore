@@ -34,7 +34,7 @@ public class DatabaseSingleton {
         return singleton;
     }
 
-    public void getCategorizedPagedBookList(int categoryID,
+    public void getCategorizedPagedBookList(String categoryID,
                                             int startPosition,
                                             int loadSize,
                                             DatabaseCallback<List<Book>> callback) {
@@ -135,7 +135,7 @@ public class DatabaseSingleton {
                 });
     }
 
-    public void addBookToUserBasket(int bookID) {
+    public void addBookToUserBasket(String bookID) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String userID = user.getUid();
@@ -144,8 +144,8 @@ public class DatabaseSingleton {
                     .getReference("bookstore")
                     .child("users/" + userID)
                     .child("Basket")
-                    .child(String.valueOf(bookID))
-                    .setValue(bookID);
+                    .child(bookID)
+                    .setValue(1); /* book id and count*/
         }
     }
 

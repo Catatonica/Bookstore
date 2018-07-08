@@ -102,7 +102,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNavigator
     }
 
     @Override
-    public void onBookClicked(int bookID) {
+    public void onBookClicked(String bookID) {
         Intent intent = new Intent();
         intent.putExtra("bookID", bookID);
         intent.setClass(this, BookActivity.class);

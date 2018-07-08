@@ -31,12 +31,12 @@
     <string name="back">Вернуться</string>
     <string name="house">Дом*</string>
     <string name="price">Цена(1/n):</string>
-    <string name="foreignLit">Иностранная литература</string>
-    <string name="kidLit">Детская литература</string>
-    <string name="busienessLit">Бизнес-литература</string>
-    <string name="fictionLit">Художественная литература</string>
-    <string name="studyLit">Учебная литература</string>
-    <string name="fnonfictionLit">Нехудожественная литература</string>
+    <string name="foreign">Иностранная литература</string>
+    <string name="kid">Детская литература</string>
+    <string name="business">Бизнес-литература</string>
+    <string name="fiction">Художественная литература</string>
+    <string name="study">Учебная литература</string>
+    <string name="nonfiction">Нехудожественная литература</string>
     <string name="input_search">Введите книгу или автора</string>
     <string name="orders">Заказы</string>
     <string name="order">Заказ</string>
@@ -64,14 +64,6 @@
     <string name="status">Статус:</string>
     <string name="empty_orders">Список заказов пуст.</string>
     <string name="multiply"> * </string>
-    <string-array name="categoriesNames">
-        <item>Иностранная литература</item>
-        <item>Детская литература</item>
-        <item>Бизнес-литература</item>
-        <item>Художественная литература</item>
-        <item>Учебная литература</item>
-        <item>Нехудожественная литература</item>
-    </string-array>
     <string name="title_activity_maps">Map</string>
     <string name="search_title">Поиск</string>
     <string name="title_book_parameters">Параметры книги:</string>

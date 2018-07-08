@@ -5,11 +5,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BookIdAndCountModel implements Parcelable {
-    public int bookID;
+    public String bookID;
     public int count;
 
     protected BookIdAndCountModel(Parcel in) {
-        bookID = in.readInt();
+        bookID = in.readString();
         count = in.readInt();
     }
 
@@ -25,7 +25,7 @@ public class BookIdAndCountModel implements Parcelable {
         }
     };
 
-    public BookIdAndCountModel(int bookID, int count) {
+    public BookIdAndCountModel(String bookID, int count) {
         this.bookID = bookID;
         this.count = count;
     }
@@ -37,7 +37,7 @@ public class BookIdAndCountModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(bookID);
+        parcel.writeString(bookID);
         parcel.writeInt(count);
     }
 }

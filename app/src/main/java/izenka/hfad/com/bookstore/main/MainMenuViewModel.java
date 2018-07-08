@@ -11,7 +11,7 @@ public class MainMenuViewModel extends ViewModel {
         this.navigator = navigator;
     }
 
-    void onCategoryClicked(int categoryID) {
+    void onCategoryClicked(String categoryID) {
         navigator.onCategoryClicked(categoryID);
     }
 

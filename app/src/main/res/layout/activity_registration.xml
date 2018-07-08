@@ -140,6 +140,7 @@
                         android:id="@+id/etHouse"
                         android:layout_span="6"
                         android:hint="*"
+                        android:lines="1"
                         android:maxLines="1"
                         android:paddingStart="15dp" />
                 </TableRow>
@@ -152,6 +153,7 @@
                         android:id="@+id/etFlatNumber"
                         android:layout_span="6"
                         android:maxLines="1"
+                        android:lines="1"
                         android:paddingStart="15dp" />
                 </TableRow>
 
@@ -164,6 +166,7 @@
                         android:layout_span="6"
                         android:inputType="number"
                         android:maxLines="1"
+                        android:lines="1"
                         android:paddingStart="15dp" />
                 </TableRow>
 
@@ -176,6 +179,7 @@
                         android:layout_span="6"
                         android:inputType="number"
                         android:maxLines="1"
+                        android:lines="1"
                         android:paddingStart="15dp" />
                 </TableRow>
             </TableLayout>

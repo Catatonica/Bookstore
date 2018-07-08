@@ -12,11 +12,11 @@ import izenka.hfad.com.bookstore.model.db_classes.Book;
 
 public class CategorizedBooksViewModel extends ViewModel {
 
-    private int categoryID;
+    private String categoryID;
     private CategoryNavigator navigator;
     private MutableLiveData<PagedList<Book>> bookPagedListLiveData;
 
-    public void setCategoryID(int categoryID) {
+    void setCategoryID(String categoryID) {
         this.categoryID = categoryID;
     }
 
@@ -24,7 +24,7 @@ public class CategorizedBooksViewModel extends ViewModel {
         this.navigator = navigator;
     }
 
-    public void onBookClicked(Book book) {
+    void onBookClicked(Book book) {
         navigator.onBookClicked(book.getBook_id());
     }
 

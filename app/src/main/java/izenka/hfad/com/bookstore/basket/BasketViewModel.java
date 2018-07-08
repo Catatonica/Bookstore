@@ -65,8 +65,8 @@ public class BasketViewModel extends ViewModel {
         buttonsClickListener.removeBookInBasketModel(bookIdAndCountModel);
     }
 
-    void deleteBookFromBasket(int bookID) {
-        DatabaseSingleton.getInstance().deleteBookFromBasket(String.valueOf(bookID));
+    void deleteBookFromBasket(String bookID) {
+        DatabaseSingleton.getInstance().deleteBookFromBasket(bookID);
     }
 
     void addToTotalPrice(float value) {

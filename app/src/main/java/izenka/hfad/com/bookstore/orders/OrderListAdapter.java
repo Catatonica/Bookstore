@@ -1,10 +1,12 @@
 package izenka.hfad.com.bookstore.orders;
 
 
+import android.animation.Animator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -38,7 +40,22 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.Orde
         holder.tvDate.setText(order.getDate());
         holder.tvStatus.setText(order.getStatus());
         holder.tvPrice.setText(String.format("%.1f р.", order.getPrice()));
-        holder.itemView.setOnClickListener(item -> viewModel.openDetailsScreen(order));
+        holder.itemView.setOnClickListener(item -> {
+            animateView(item);
+            viewModel.openDetailsScreen(order);
+        });
+    }
+
+    private void animateView(View view) {
+        int cx = view.getWidth() / 2;
+        int cy = view.getHeight() / 2;
+
+        float finalRadius = (float) Math.hypot(cx, cy);
+
+        Animator anim = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, finalRadius);
+
+        view.setVisibility(View.VISIBLE);
+        anim.start();
     }
 
     @Override

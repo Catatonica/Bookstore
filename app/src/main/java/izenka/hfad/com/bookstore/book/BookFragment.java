@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +33,7 @@ import mehdi.sakout.fancybuttons.FancyButton;
 public class BookFragment extends Fragment {
 
     private BookViewModel viewModel;
+    private Animation alpha;
 
     @BindView((R.id.tvTitle)) TextView tvTitle;
     @BindView((R.id.tvYear))TextView tvYear;
@@ -64,11 +67,13 @@ public class BookFragment extends Fragment {
     }
 
     private void initViews(View view) {
+        alpha = new AlphaAnimation(1f, 0f);
         btnPutInBasket.setIconResource(R.drawable.ic_shopping_basket_black_24dp);
         btnPutInBasket.setIconPosition(FancyButton.POSITION_LEFT);
         btnPutInBasket.getIconImageObject().setLayoutParams(new LinearLayout.LayoutParams(60, 60));
         final boolean[] isExpanded = {false};
         ibExpand.setOnClickListener(btn -> {
+            btn.startAnimation(alpha);
             if (!isExpanded[0]) {
                 tvDescription.setMaxLines(30);
                 ibExpand.setBackground(view.getContext().getDrawable(R.drawable.narrow));
@@ -91,9 +96,11 @@ public class BookFragment extends Fragment {
             }
         });
         btnNotify.setOnClickListener(btn -> {
+            btn.startAnimation(alpha);
             viewModel.notifyOfBookAppearance();
         });
         btnPutInBasket.setOnClickListener(btn -> {
+            btn.startAnimation(alpha);
             viewModel.onPutInBasketClicked();
         });
     }

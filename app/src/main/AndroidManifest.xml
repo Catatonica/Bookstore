@@ -10,10 +10,10 @@
         android:name=".BookstoreApp"
         android:allowBackup="false"
         android:hardwareAccelerated="true"
-        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
@@ -34,9 +34,11 @@
             android:name=".category.CategoryActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
+            android:parentActivityName=".book.BookActivity"
             android:name=".basket.BasketActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".book.BookActivity" />
+        <activity
+            android:name=".book.BookActivity" />
         <activity
             android:name=".order_registration.OrderRegistrationActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />

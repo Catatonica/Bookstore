@@ -3,7 +3,7 @@ package izenka.hfad.com.bookstore.model.db_classes;
 import java.io.Serializable;
 
 public class Author implements Serializable {
-    public int author_id;
+    public String author_id;
     public String author_name;
     public String author_surname;
 

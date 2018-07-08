@@ -139,7 +139,10 @@ public class BookInBasketListAdapter extends RecyclerView.Adapter<BookInBasketLi
 
     @Override
     public int getItemCount() {
-        return bookInBasketModelList.size();
+        if(bookInBasketModelList!=null){
+            return bookInBasketModelList.size();
+        }
+        return 0;
     }
 
     void checkAll() {

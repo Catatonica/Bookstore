@@ -19,14 +19,14 @@ import izenka.hfad.com.bookstore.qr_code.QRCodeActivity;
 
 public class CategoryActivity extends AppCompatActivity implements CategoryNavigator {
 
-    private int categoryID;
+    private String categoryID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        categoryID = getIntent().getIntExtra("categoryID", 0);
+        categoryID = getIntent().getStringExtra("categoryID");
         CategorizedBooksViewModel viewModel = ViewModelProviders.of(this).get(CategorizedBooksViewModel.class);
         viewModel.setNavigator(this);
         viewModel.setCategoryID(categoryID);
@@ -44,7 +44,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryNavig
         setSupportActionBar(findViewById(R.id.toolbar));
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(getResources().getStringArray(R.array.categoriesNames)[categoryID]);
+            actionBar.setTitle(getResources().getString(getResources().getIdentifier(categoryID, "string", getPackageName())));
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
         }
@@ -68,21 +68,21 @@ public class CategoryActivity extends AppCompatActivity implements CategoryNavig
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent();
         switch (item.getItemId()) {
             case R.id.action_basket:
-                intent.setClass(this, BasketActivity.class);
-                startActivity(intent);
+                openScreen( BasketActivity.class);
                 break;
 
             case R.id.action_orders:
-                intent.setClass(this, OrdersActivity.class);
-                startActivity(intent);
+                openScreen(OrdersActivity.class);
+                break;
+
+            case R.id.action_search:
+                openScreen(SearchActivity.class);
                 break;
 
             case R.id.action_qrcode:
-                intent.setClass(this, QRCodeActivity.class);
-                startActivity(intent);
+                openScreen(QRCodeActivity.class);
                 break;
 
             default:
@@ -98,7 +98,7 @@ public class CategoryActivity extends AppCompatActivity implements CategoryNavig
     }
 
     @Override
-    public void onBookClicked(int bookID) {
+    public void onBookClicked(String bookID) {
         Intent intent = new Intent();
         intent.putExtra("bookID", bookID);
         intent.setClass(this, BookActivity.class);

@@ -73,10 +73,10 @@ public class SearchedBookListAdapter extends RecyclerView.Adapter<SearchedBookLi
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         Book book = bookList.get(position);
-        holder.itemView.setId(book.getBook_id());
+//        holder.itemView.setId(book.getBook_id());
         holder.tvBookName.setText(book.getTitle());
         holder.tvBookPrise.setText(book.getPrice());
-        holder.imgBtnBook.setId(book.getBook_id());
+//        holder.imgBtnBook.setId(book.getBook_id());
 
         setAuthors(book, holder);
         setImage(book, holder);

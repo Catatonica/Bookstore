@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Book implements Serializable {
 
-    private int book_id;
-    private int book_publisher_id;
+    private String book_id;
+    private String book_publisher_id;
     private int count;
     private String description;
     private int pages_number;
@@ -25,19 +25,19 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public int getBook_id() {
+    public String getBook_id() {
         return book_id;
     }
 
-    public void setBook_id(int book_id) {
+    public void setBook_id(String book_id) {
         this.book_id = book_id;
     }
 
-    public int getBook_publisher_id() {
+    public String getBook_publisher_id() {
         return book_publisher_id;
     }
 
-    public void setBook_publisher_id(int book_publisher_id) {
+    public void setBook_publisher_id(String book_publisher_id) {
         this.book_publisher_id = book_publisher_id;
     }
 

@@ -1,12 +1,14 @@
 package izenka.hfad.com.bookstore.book;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -21,7 +23,7 @@ import izenka.hfad.com.bookstore.search.SearchActivity;
 
 public class BookActivity extends AppCompatActivity implements BookNavigator {
 
-    private int bookID;
+    private String bookID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,7 @@ public class BookActivity extends AppCompatActivity implements BookNavigator {
 
         Intent intent = getIntent();
 
-        bookID = intent.getIntExtra("bookID", 0);
+        bookID = intent.getStringExtra("bookID");
 
         BookViewModel viewModel = ViewModelProviders.of(this).get(BookViewModel.class);
         viewModel.setBookID(bookID);
@@ -71,32 +73,43 @@ public class BookActivity extends AppCompatActivity implements BookNavigator {
 
     @Override
     public void notifyUser(String title) {
-        Intent intent = new Intent(this, BookActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "123")
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentTitle("Новые поступления!")
-                .setContentText("В продаже появилась книга \"/" + title + "\"")
+                .setContentText("В продаже появилась книга \"" + title + "\"")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(12345, mBuilder.build());
-        /*
-        The setFlags() method shown above helps preserve the user's expected navigation experience after
-         they open your app via the notification. But whether you want to use that depends on what type
-         of activity you're starting, which may be one of the following:
-                    An activity that exists exclusively for responses to the notification.
-                     There's no reason the user would navigate to this activity during normal app use,
-                     so the activity starts a new task instead of being added to your app's existing
-                     task and back stack. This is the type of intent created in the sample above.
-                     An activity that exists in your app's regular app flow. In this case, starting the
-                        activity should create a back stack so that the user's expectations for the
-                      Back and Up buttons is preserved.
-         */
+
+        Intent intent = new Intent(this, BookActivity.class);
+        intent.putExtra("bookID", bookID);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK/*Intent.FLAG_ACTIVITY_CLEAR_TOP*/);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(BookActivity.class);
+        stackBuilder.addNextIntent(intent);
+
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(12345, mBuilder.build());
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "123")
+//                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+//                .setContentTitle("Новые поступления!")
+//                .setContentText("В продаже появилась книга \"" + title + "\"")
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                .setContentIntent(pendingIntent)
+//                .setAutoCancel(true);
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//        // notificationId is a unique int for each notification that you must define
+//        notificationManager.notify(12345, mBuilder.build());
     }
 
     @Override
@@ -107,28 +120,35 @@ public class BookActivity extends AppCompatActivity implements BookNavigator {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent();
         switch (item.getItemId()) {
             case R.id.action_basket:
-                intent.setClass(this, BasketActivity.class);
+                Intent intent = new Intent(this, BasketActivity.class);
                 intent.putExtra("bookID", bookID);
                 startActivity(intent);
                 break;
 
             case R.id.action_orders:
-                intent.setClass(this, OrdersActivity.class);
-                startActivity(intent);
+                openScreen(OrdersActivity.class);
+                break;
+
+            case R.id.action_search:
+                openScreen(SearchActivity.class);
                 break;
 
             case R.id.action_qrcode:
-                intent.setClass(this, QRCodeActivity.class);
-                startActivity(intent);
+                openScreen(QRCodeActivity.class);
                 break;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void openScreen(Class activityClass) {
+        Intent intent = new Intent();
+        intent.setClass(this, activityClass);
+        startActivity(intent);
     }
 
     @Override
